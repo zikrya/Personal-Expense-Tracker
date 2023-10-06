@@ -5,7 +5,7 @@ function App() {
 
   return (
     <>
-    Personal Expense Tracker
+    <p className='text-4xl'>Personal Expense Tracker</p>
     </>
   )
 }
