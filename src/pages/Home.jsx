@@ -51,11 +51,10 @@ const Home = () => {
                 )}
             </div>
 
-            {/* Placeholder for the illustration or any other content on the right */}
             <div className="flex-1">
             <img
-                  src="Cifrão_symbol.svg.png"
-                  className="h-56 w-full object-contain lg:h-auto lg:rounded-lg"
+                  src="/symbol.svg.png"
+                  className="image"
                 />
             </div>
 
