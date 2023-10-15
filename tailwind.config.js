@@ -13,6 +13,13 @@ export default {
         darkblue: '#1F2937',
         lightblue: '#D6EBFF'
       },
+
+      fontFamily: {
+        'custom': ['Didact Gothic', 'sans']
+      },
+      backgroundImage: {
+        'custom-gradient': 'linear-gradient(to right, #D3F6DB, #DAE0FB)'
+      }
     },
   },
   plugins: [],
