@@ -27,36 +27,28 @@ const Register = () => {
         }
     }
     return (
-        <section className="bg-blue-600">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-                <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                    <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                        Register!
-                    </h1>
-                    <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6" action="#">
-                        <div>
-                            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-                            <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required=""/>
-                        </div>
-                        <div>
-                            <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
-                            <br />
-                            <br />
-                            {error && <p style={{color: 'red'}}>{error}</p>}
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-start">
-                            </div>
-                        </div>
-                        <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Registering..." : "Register"}</button>
-                    </form>
-                </div>
+        <section className="bg-custom-gradient flex items-center justify-center h-screen font-custom">
+            <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+                <h1 className="mb-4 text-2xl font-bold text-gray-900 text-center">
+                    Register
+                </h1>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    <div>
+                        <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">Your email</label>
+                        <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" name="email" id="email" className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="name@company.com" required=""/>
+                    </div>
+                    <div>
+                        <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-700">Password</label>
+                        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" name="password" id="password" className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="••••••••" required=""/>
+                    </div>
+                    {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+                    <div>
+                        <button type="submit" disabled={isSubmitting} className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50">{isSubmitting ? "Registering..." : "Register"}</button>
+                    </div>
+                </form>
             </div>
-        </div>
-      </section>
-     );
+        </section>
+    );
 }
 
 export default Register;
