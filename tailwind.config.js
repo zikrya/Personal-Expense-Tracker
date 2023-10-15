@@ -5,7 +5,14 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'custom': ['Didact Gothic', 'sans']
+      },
+      backgroundImage: {
+        'custom-gradient': 'linear-gradient(to right, #D3F6DB, #DAE0FB)'
+      }
+    },
   },
   plugins: [],
 }
