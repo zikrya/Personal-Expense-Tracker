@@ -11,11 +11,6 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
-    
-    const [monthlyIncome, setMonthlyIncome] = useState("");
-    const [monthlySavings, setMonthlySavings] = useState("");
-    const [topExpenses, setTopExpenses] = useState("");
-    const [startingBudget, setStartingBudget] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -45,25 +40,6 @@ const Register = () => {
                     <div>
                         <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-700">Password</label>
                         <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" name="password" id="password" className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="••••••••" required=""/>
-                    </div>
-                    <div>
-                        <label htmlFor="monthlyIncome" className="block mb-2 text-sm font-medium text-gray-700">Estimated Monthly Income</label>
-                        <input value={monthlyIncome} onChange={(e) => setMonthlyIncome(e.target.value)} type="number" name="monthlyIncome" id="monthlyIncome" className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="e.g., 5000" required=""/>
-                    </div>
-
-                    <div>
-                        <label htmlFor="monthlySavings" className="block mb-2 text-sm font-medium text-gray-700">How much do you want to save each month?</label>
-                        <input value={monthlySavings} onChange={(e) => setMonthlySavings(e.target.value)} type="number" name="monthlySavings" id="monthlySavings" className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="e.g., 500" required=""/>
-                    </div>
-
-                    <div>
-                        <label htmlFor="topExpenses" className="block mb-2 text-sm font-medium text-gray-700">What 3 things would you say you spend the most on?</label>
-                        <input value={topExpenses} onChange={(e) => setTopExpenses(e.target.value)} type="text" name="topExpenses" id="topExpenses" className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="e.g., Rent, Groceries, Entertainment" required=""/>
-                    </div>
-
-                    <div>
-                        <label htmlFor="startingBudget" className="block mb-2 text-sm font-medium text-gray-700">What is your starting budget for this month?</label>
-                        <input value={startingBudget} onChange={(e) => setStartingBudget(e.target.value)} type="number" name="startingBudget" id="startingBudget" className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="e.g., 4500" required=""/>
                     </div>
                     {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
                     <div>
