@@ -4,7 +4,8 @@ import AuthContextProvider from './context/AuthContext';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import DashboardCards from './pages/DashboardCards';
+import TransTable from './pages/TransTable';
+// import DashboardCards from './pages/DashboardCards';
 import NavBar from './components/NavBar';
 
 function App() {
@@ -19,7 +20,9 @@ function App() {
           <Route exact path="/" element={<Home/>} />
           <Route exact path="/login" element={<Login/>} />
           <Route exact path="/register" element={<Register/>} />
-          <Route exact path="/dashboard-card" element={<DashboardCards/>} />
+          <Route exact path="/transtable" element={<TransTable/>} /> 
+          {/* <Route exact path="/dashboard-card" element={<DashboardCards/>} /> */}
+          {/* the above line is redundant but we may utilize later for component-based building. Do not delete files associated. */}
           </Routes>
     </Router>
     </div>

@@ -1,6 +1,7 @@
 // Author: Siema Alam, Source: Flowbite
 // Needs: code optimization, creation to component --> dashboard page
 // Current: Displays four cards
+// For reference
 const DashboardCards = () => {
     return (
         <>
