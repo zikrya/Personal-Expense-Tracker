@@ -6,6 +6,14 @@ export default {
   ],
   theme: {
     extend: {
+      colors: {
+        mint: '#D3F6DB',
+        green: '#5b8266',
+        darkgreen: '#182825',
+        darkblue: '#1F2937',
+        lightblue: '#D6EBFF'
+      },
+
       fontFamily: {
         'custom': ['Didact Gothic', 'sans']
       },
