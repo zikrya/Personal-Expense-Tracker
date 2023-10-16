@@ -53,8 +53,8 @@ const TransTable = () => {
                         <span className="text-base font-normal text-gray-700 dark:text-gray-400">Total Savings</span>
                         <span className="text-sm font-medium text-darkblue dark:text-white">80%</span>
                     </div>
-                    <div className="w-full bg-lightblue rounded-full h-2.5 dark:bg-gray-700">
-                        <div className="bg-darkblue h-2.5 rounded-full w-4/5"></div>
+                    <div className="w-full bg-lightblue rounded-full h-2.5 dark:bg-gray-900">
+                        <div className="bg-darkblue h-2.5 rounded-full dark:bg-green w-4/5"></div>
                     </div>
                     <p className="mt-1 text-right italic font-normal text-gray-400 dark:text-gray-400">$100 to goal!</p>
 
