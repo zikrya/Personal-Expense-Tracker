@@ -8,6 +8,6 @@ test('Shows the correct error message', () => {
   expect(displayTotalSpent(1000, '', 100, 400)).toBe('Error in database. Spent should be an integer.');
 });
 
-test('Shows the correct error message', () => {
+test('Shows the correct error message with string number', () => {
   expect(displayTotalSpent(1000, '10', 100, 400)).toBe('Error in database. Spent should be an integer.');
 });
