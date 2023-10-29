@@ -1,4 +1,3 @@
-
 name: Test
 on:
   pull_request:
@@ -16,8 +15,8 @@ jobs:
         with:
           node-version: 19.x
       - name: install
-        run: pnpm install
+        run: npm ci
       - name: start
-        run: pnpm dev
+        run: npm dev
       - name: testing
-        run: pnpm test
+        run: npm test
