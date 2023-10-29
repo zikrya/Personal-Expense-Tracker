@@ -19,7 +19,7 @@ const Register = () => {
 
         try {
             await register(email, password);
-            navigate("/"); // Navigate to the home page or desired page after successful registration
+            navigate("/register-survey"); // Navigate to the home page or desired page after successful registration
         } catch (err) {
             setError(err.message);
         } finally {
