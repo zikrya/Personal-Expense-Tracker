@@ -17,4 +17,7 @@ jobs:
       - name: install
         run: npm ci
       - name: testing
-        run: npm test
+        run: |
+          npm run dev &
+          sleep 10
+          npm test

@@ -44,7 +44,7 @@ test("try to login with correct info", async () => {
 })
 test("try to login with wrong info", async () => {
     const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         sloMo: 80
     });
     const page = await browser.newPage();
