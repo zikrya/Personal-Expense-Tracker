@@ -21,4 +21,5 @@ jobs:
           npm run dev &
           sleep 10
           npm test &
+          sleep 10
           npx kill-port 5173
