@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1698620342002" clover="3.2.0">
+  <project timestamp="1698620342002" name="All files">
+    <metrics statements="15" coveredstatements="15" conditionals="12" coveredconditionals="11" methods="5" coveredmethods="5" elements="32" coveredelements="31" complexity="0" loc="15" ncloc="15" packages="1" files="1" classes="1"/>
+    <file name="util.js" path="D:\Documents\Projects\Personal-Expense-Tracker-fork\src\functions\util.js">
+      <metrics statements="15" coveredstatements="15" conditionals="12" coveredconditionals="11" methods="5" coveredmethods="5"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="4" count="3" type="cond" truecount="4" falsecount="0"/>
+      <line num="5" count="2" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="12" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="13" count="1" type="stmt"/>
+      <line num="15" count="1" type="stmt"/>
+      <line num="16" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="17" count="1" type="stmt"/>
+      <line num="19" count="1" type="stmt"/>
+      <line num="21" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="23" count="1" type="stmt"/>
+      <line num="25" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="26" count="1" type="stmt"/>
+      <line num="28" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>
