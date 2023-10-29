@@ -8,6 +8,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: setupNode
+        uses: actions/setup-node@v2
+        with:
+          node-version: 19.x
       - name: install
         run: pnpm install
       - name: start
