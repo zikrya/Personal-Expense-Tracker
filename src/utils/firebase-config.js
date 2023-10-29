@@ -22,9 +22,9 @@ export const auth = getAuth(app);
 export const storage = getStorage(app);
 export const firestore = getFirestore(app);
 
-export async function updateUserName(uid, name) {
+/* export async function updateUserName(uid, name) {
   await set(ref(database, `users/${uid}/name`), name);
-}
+} */
 
 export async function getUserName(uid) {
   const snapshot = await get(child(ref(database), `users/${uid}/name`));
@@ -37,4 +37,7 @@ export async function saveSurveyData(data) {
   } catch (error) {
       console.error("Error saving survey data: ", error);
   }
+}
+export async function markSurveyAsCompleted(uid) {
+  await set(ref(database, `users/${uid}/hasCompletedSurvey`), "true");
 }
