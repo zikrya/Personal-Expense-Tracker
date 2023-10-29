@@ -61,7 +61,7 @@ const Login = () => {
                         <a href="#" className="text-sm font-medium text-blue-600 hover:text-blue-700">Forgot password?</a>
                     </div>
                     <div>
-                        <button type="submit" disabled={isSubmitting} className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50">{isSubmitting ? "Logging in..." : "Login"}</button>
+                        <button type="submit" name="submit" id="submit" disabled={isSubmitting} className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50">{isSubmitting ? "Logging in..." : "Login"}</button>
                     </div>
                 </form>
             </div>
