@@ -24,7 +24,7 @@ test("if one infomation are valid", () => {
 //when login info is correct
 test("try to login with correct info", async () => {
     const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         sloMo: 80
     });
     const page = await browser.newPage();
