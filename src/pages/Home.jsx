@@ -36,6 +36,7 @@ const Home = () => {
                     <button
                         onClick={handleLogout}
                         className="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700 transition duration-300 ease-in-out"
+                        id="homeButton"
                         style={{ backgroundColor: colors.green, color: colors.lightBlue }}
                     >
                         Sign Out
@@ -44,6 +45,7 @@ const Home = () => {
                     <button
                         onClick={() => navigate("/register")}
                         className="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700 transition duration-300 ease-in-out"
+                        id="homeButton"
                         style={{ backgroundColor: colors.green, color: colors.lightBlue }}
                     >
                         Join Now
