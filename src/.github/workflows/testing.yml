@@ -15,8 +15,6 @@ jobs:
         with:
           node-version: 19.x
       - name: install
-        run: npm install
-      - name: start
-        run: npm run dev
+        run: npm ci
       - name: testing
         run: npm test
