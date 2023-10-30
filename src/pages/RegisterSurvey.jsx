@@ -9,7 +9,8 @@ const RegisterSurvey = () => {
 
   const navigate = useNavigate();
   const { currentUser } = useAuth();
-  const [fullName, setFullName] = useState('');
+  const [firstName, setfirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [college, setCollege] = useState('');
   const [expectedGraduationDate, setExpectedGraduationDate] = useState('');
   const [major, setMajor] = useState('');
@@ -64,7 +65,8 @@ const RegisterSurvey = () => {
     e.preventDefault();
 
     const surveyData = {
-      fullName: fullName,
+      firstName: firstName,
+      lastName: lastName,
       college: college,
       expectedGraduationDate: expectedGraduationDate,
       major: major,
@@ -97,13 +99,23 @@ const RegisterSurvey = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-custom-gradient font-custom">
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
-        <label htmlFor="fname">Full Name:</label><br />
+        <label htmlFor="fname">First Name:</label><br />
         <input
           type="text"
           id="fname"
           name="fname"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
+          value={firstName}
+          onChange={(e) => setfirstName(e.target.value)}
+          className="mt-1 p-2 w-full border rounded-md mb-4"
+        />
+        <br />
+        <label htmlFor="fname">Last Name:</label><br />
+        <input
+          type="text"
+          id="fname"
+          name="fname"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
           className="mt-1 p-2 w-full border rounded-md mb-4"
         />
         <br />
