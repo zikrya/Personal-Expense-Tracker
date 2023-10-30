@@ -13,6 +13,7 @@ class User_Dashboard {
 function returnTotalSpent(i, bs, bsv, ts) {
     // create a new user and display total spent and ensure the display is a number.
     const first_user = new User_Dashboard(i, bs, bsv, ts); // create a new user
+    // the code below is what we are testing -- to determine if the returned value is a number or not.
     if(Number.isInteger(first_user.budget_spent)) { // check if budgetspent is a number
         return first_user.budget_spent; // return the number
     } else {
