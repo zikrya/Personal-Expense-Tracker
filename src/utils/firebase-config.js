@@ -1,9 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth"
-import { getStorage } from "firebase/storage";
-import { getDatabase } from "firebase/database";
-import { ref, set, get, child } from "firebase/database";
-
+import { getAuth } from "firebase/auth";
+import { getDatabase, ref, set, get, child } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,15 +12,27 @@ const firebaseConfig = {
   appId: "1:33795573188:web:b72ed71684aa4a02695091"
 };
 
-
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth();
-export async function updateUserName(uid, name) {
-    await set(ref(database, `users/${uid}/name`), name);
-  }
 
-  export async function getUserName(uid) {
-    const snapshot = await get(child(ref(database), `users/${uid}/name`));
-    return snapshot.val();
-  }
+const database = getDatabase(app);
+
+// Allows for mocking during testing
+let databaseSet = set;
+let databaseGet = get;
+
+export function __setMockFunctions(setMock, getMock) {
+  databaseSet = setMock;
+  databaseGet = getMock;
+}
+
+export const updateUserName = async function(uid, name) {
+  await databaseSet(ref(database, `users/${uid}/name`), name);
+}
+
+export const getUserName = async function(uid) {
+  const snapshot = await databaseGet(child(ref(database), `users/${uid}/name`));
+  return snapshot.val();
+}
+

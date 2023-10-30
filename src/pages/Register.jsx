@@ -1,16 +1,16 @@
-import { useContext } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
+
 const Register = () => {
     const navigate = useNavigate();
-
-    const { register } = useAuth()
+    const { register } = useAuth();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
+    const [isRegistered, setIsRegistered] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,19 +19,22 @@ const Register = () => {
 
         try {
             await register(email, password);
-            navigate("/"); // Navigate to the home page or desired page after successful registration
+            setIsRegistered(true);
+            navigate("/");
         } catch (err) {
             setError(err.message);
         } finally {
             setIsSubmitting(false);
         }
     }
+
     return (
         <section className="bg-custom-gradient flex items-center justify-center h-screen font-custom">
             <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
                 <h1 className="mb-4 text-2xl font-bold text-gray-900 text-center">
                     Register
                 </h1>
+                {isRegistered && <div className="success text-green-600 mb-4">Registration Successful!</div>}
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                         <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">Your email</label>
@@ -43,7 +46,7 @@ const Register = () => {
                     </div>
                     {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
                     <div>
-                        <button type="submit" disabled={isSubmitting} className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50">{isSubmitting ? "Registering..." : "Register"}</button>
+                        <button type="submit" name="register" disabled={isSubmitting} className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50">{isSubmitting ? "Registering..." : "Register"}</button>
                     </div>
                 </form>
             </div>
@@ -52,3 +55,4 @@ const Register = () => {
 }
 
 export default Register;
+
