@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useProtectedRoute } from "../components/useProtectedRoute";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import AddTransactionForm from "./AddTransactionForm";
 
 const TransTable = () => {
+    useProtectedRoute();
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
     const handleLogout = async () => {
