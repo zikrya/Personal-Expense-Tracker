@@ -26,7 +26,7 @@ export default function AddTransactionForm({transactionList,setTransactionList})
   
     return (
       <>
-      <button className="w-100 h-20 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={()=> setOpen(!open)}>
+      <button className="w-100 h-20 bg-green hover:bg-darkgreen text-white font-bold py-2 px-4 rounded" onClick={()=> setOpen(!open)}>
       New Transaction
       </button>
 
@@ -59,12 +59,12 @@ export default function AddTransactionForm({transactionList,setTransactionList})
                   <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                     <div className="sm:flex sm:items-start">
                       <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                        <Dialog.Title as="h1" className="text-lg font-bold  leading-10 text-red-500">
+                        <Dialog.Title as="h1" className="text-lg font-bold leading-10 text-green pb-2 ">
                           New Transaction
                         </Dialog.Title>
                         <form >
                         <div className="flex items-center space-x-4">
-                          <div className="w-1/3 pr-4 text-right text-gray-900">
+                          <div className="w-1/3 text-right text-gray-900">
                             <label htmlFor="description">Description</label>
                           </div>
                           <input
@@ -74,12 +74,12 @@ export default function AddTransactionForm({transactionList,setTransactionList})
                             value={newDescription}
                             onChange={(e)=>setNewDescription(e.target.value)}
                             className="w-2/3 rounded-md border-0 py-1.5 pl-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            placeholder="Description"
+                            placeholder="Clothing"
                           />
                         </div>
-                        <div className="flex items-center space-x-4">
-                          <div className="w-1/3 pr-4 text-right text-gray-900">
-                            <label htmlFor="amount">Amount </label>
+                        <div className="pt-2 flex items-center space-x-4">
+                          <div className="w-1/3 text-right text-gray-900">
+                            <label htmlFor="amount">Amount $</label>
                           </div>
                           <input
                             type="number"
@@ -88,7 +88,7 @@ export default function AddTransactionForm({transactionList,setTransactionList})
                             value={newAmount}
                             onChange={(e)=>setAmount(e.target.value)}
                             className="w-2/3 rounded-md border-0 py-1.5 pl-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            placeholder="Amount"
+                            placeholder="100"
                             required
                           />
                         </div>
@@ -99,7 +99,7 @@ export default function AddTransactionForm({transactionList,setTransactionList})
                   <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                       type="button"
-                      className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                      className="inline-flex w-full justify-center rounded-md bg-green px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-darkgreen hover:text-white sm:ml-3 sm:w-auto"
                       onClick={handleSubmit}
                     >
                       Add Transaction
