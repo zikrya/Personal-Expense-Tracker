@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useProtectedRoute } from "../components/useProtectedRoute";
 import { useAuth } from "../context/AuthContext";
 
 const transactions = [
@@ -15,6 +16,7 @@ transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
 
 
 const TransTable = () => {
+    useProtectedRoute();
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
     const handleLogout = async () => {
