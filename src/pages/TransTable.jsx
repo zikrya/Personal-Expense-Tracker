@@ -4,8 +4,6 @@ import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import AddTransactionForm from "./AddTransactionForm";
 
-
-
 const TransTable = () => {
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
@@ -18,32 +16,6 @@ const TransTable = () => {
     };
 
     const [transactionList, setTransactionList] = useState([]);
-    const [newDescription,setNewDescription] = useState('')
-    const [newAmount, setAmount] = useState(0)
-
-    const addTransactions = (newDescription,newAmount) => {
-        const currentDate = new Date().toLocaleDateString();
-        const newTransaction = {date : currentDate, description : newDescription, amount: newAmount }
-        setTransactionList([newTransaction,...transactionList])
-        setNewDescription("")
-        setAmount(0)
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault(); 
-        setFormVisible(false);
-        addTransactions(newDescription,newAmount);
-      }
-
- const [isFormVisible, setFormVisible] = useState(false);
-
-  const openForm = () => {
-    setFormVisible(true);
-  };
-
-  const closeForm = () => {
-    setFormVisible(false);
-  };
 
 
     return (
@@ -96,7 +68,7 @@ const TransTable = () => {
                         <tbody>
                             {transactionList.map((transaction, index) => (
                                 <tr
-                                    key={index}
+                                    key={index} // use index this time, use transaction ID later when connect to the DB
                                     className="transition-colors hover:bg-gray-50"
                                 >
                                     <td className="border p-3">{transaction.date}</td>
@@ -108,20 +80,10 @@ const TransTable = () => {
                             ))}
                         </tbody>
                     </table>
-                    <button className="text-base h-1/4 py-2 font-normal rounded-lg bg-darkblue text-lightblue hover:bg-black" onClick={openForm}>
-                        Add Transaction
-                    </button>
-
-                    {isFormVisible && 
-                        <AddTransactionForm 
-                        description ={newDescription}
-                        Amount = {newAmount}
-                        setDescription ={setNewDescription}
-                        setAmount ={setAmount}
-                        handleSubmit ={handleSubmit}
-                        closeForm ={closeForm}
-                        />}
-
+                    <AddTransactionForm 
+                        transactionList ={transactionList}
+                        setTransactionList ={setTransactionList}
+                    />
                 </div>
             </div></>
     );
