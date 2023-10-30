@@ -1,3 +1,4 @@
+// The class below is just created as context, and is not what we are actually testing.
 class User_Dashboard {
     constructor(income, budget_spent, budget_savings, total_savings) {
         this.income = income;
@@ -5,20 +6,18 @@ class User_Dashboard {
         this.budget_savings = budget_savings;
         this.total_savings = total_savings;
     }
-    displaySpent() {
-        console.log(`You spent $${this.budget_spent}`);
-        return this.budget_spent;
-    }
 }
 
-function displayTotalSpent(i, bs, bsv, ts) {
-    // create a new user and display total spent
-    const first_user = new User_Dashboard(i, bs, bsv, ts);
-    if(Number.isInteger(first_user.budget_spent)) { // check if it's a number
-        return first_user.displaySpent(); // return the number
+// The function below is what we are testing to ensure that the displayed information is a number 
+// based on the given inputs to the function. 
+function returnTotalSpent(i, bs, bsv, ts) {
+    // create a new user and display total spent and ensure the display is a number.
+    const first_user = new User_Dashboard(i, bs, bsv, ts); // create a new user
+    if(Number.isInteger(first_user.budget_spent)) { // check if budgetspent is a number
+        return first_user.budget_spent; // return the number
     } else {
-        return 'Error in database. Spent should be an integer.' // error message
+        return 'Error in database. Spent should be an integer.' // display an error message
     }
 }
 
-module.exports = displayTotalSpent;
+module.exports = returnTotalSpent;
