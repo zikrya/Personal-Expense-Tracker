@@ -2,12 +2,45 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useProtectedRoute } from "../components/useProtectedRoute";
 import { useAuth } from "../context/AuthContext";
-// import { PaperClipIcon } from '@heroicons/react/20/solid'
+import { saveProfileData } from '../utils/firebase-config'; // I would need to add "get user firstname, email, etc."
 
 const Profile = () => {
     useProtectedRoute();
-    const { currentUser, logout } = useAuth();
+
     const navigate = useNavigate();
+    const { currentUser, logout } = useAuth();
+
+    // The commented code below follows RegisterSurvey.jsx
+
+    // const[firstName, setFirstName] = useState('');
+    // const[lastName, setLastName] = useState('');
+    // const [email, setEmail] = useState('');
+    // const [phoneNumber, setPhoneNumber] = useState('');
+    // const [college, setCollege] = useState('');
+    // const [gradDate, setGradDate] = useState('');
+
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+
+    //     const profileData = {
+    //         firstName: firstName,
+    //         lastName: lastName,
+    //         email: email,
+    //         phoneNumber: phoneNumber,
+    //         college: college,
+    //         gradDate: gradDate
+    //     };
+
+    //     try {
+    //         const docId = await saveProfileData(profileData);
+    //         console.log("Document written with ID: ", docId);
+
+    //         navigate('/profile');
+    //     } catch (error) {
+    //         console.error("Error adding document: ", error);
+    //     }
+    // };
+
     const handleLogout = async () => {
         try {
             await logout(navigate("/"));
@@ -15,11 +48,13 @@ const Profile = () => {
             console.error("Error logging out:", err);
         }
     };
+
     return (
         // Code taken from Tailwind Component library: forms and data display 
         <div>
+            <form>
             <div className="md:px-60 pt-10 sm:px-20">
-                <form>
+                
                     <div className="border-b border-gray-900/10 pb-12">
                         <h2 className="text-xl font-semibold leading-7 text-gray-900">Personal Information</h2>
                         <p className="mt-1 text-sm leading-6 text-gray-600">Review your user information and make any changes here.</p>
@@ -36,7 +71,11 @@ const Profile = () => {
                                         id="first-name"
                                         autoComplete="given-name"
                                         className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        placeholder="Jane"
+                                        value="Jane"
+                                    // once profile Collection is completed, update all input values as follows:
+                                    // 
+                                    // add value = {firstName}
+                                    // add onChange={(e) => setFirstName(e.target.value)}
                                     />
                                 </div>
                             </div>
@@ -52,7 +91,7 @@ const Profile = () => {
                                         id="last-name"
                                         autoComplete="family-name"
                                         className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        placeholder="Apple"
+                                        value="Apple"
                                     />
                                 </div>
                             </div>
@@ -67,7 +106,7 @@ const Profile = () => {
                                         id="email"
                                         autoComplete="email"
                                         className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        placeholder="janeapple@gmail.com"
+                                        value="janeapple@gmail.com"
                                     />
                                 </div>
                             </div>
@@ -83,8 +122,7 @@ const Profile = () => {
                                         id="phone-number"
                                         autoComplete="phone-number"
                                         className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        placeholder="347-123-4567"
-
+                                        value="347-123-4567"
                                     />
                                 </div>
                             </div>
@@ -102,7 +140,7 @@ const Profile = () => {
                                         id="street-address"
                                         autoComplete="street-address"
                                         className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        placeholder="The City College of New York"
+                                        value="The City College of New York"
 
                                     />
                                 </div>
@@ -118,8 +156,7 @@ const Profile = () => {
                                         id="graduation-date"
                                         autoComplete="graduation-date"
                                         className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        placeholder="May 2024"
-
+                                        value="May 2024"
                                     />
                                 </div>
                             </div>
@@ -169,7 +206,7 @@ const Profile = () => {
                                             <p className="text-gray-500">Get a reminder notification every three days to update your transactions list.</p>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </fieldset>
                             <fieldset>
@@ -216,7 +253,7 @@ const Profile = () => {
 
 
 
-                    <div className="mt-6 flex items-center justify-end gap-x-6">
+                    <div className="mt-6 mb-10 flex items-center justify-end gap-x-6">
                         <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
                             Cancel
                         </button>
@@ -227,8 +264,9 @@ const Profile = () => {
                             Save
                         </button>
                     </div>
-                </form>
+               
             </div>
+            </form>
         </div>
 
     );

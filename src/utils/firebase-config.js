@@ -41,3 +41,12 @@ export async function saveSurveyData(data) {
 export async function markSurveyAsCompleted(uid) {
   await set(ref(database, `users/${uid}/hasCompletedSurvey`), "true");
 }
+// function for getting profile data 
+// export async function saveProfileData(data) {
+//   try {
+//       const docRef = await addDoc(collection(firestore, "profileData"), data);
+//       return docRef.id;
+//   } catch (error) {
+//       console.error("Error saving profile data: ", error);
+//   }
+// }
