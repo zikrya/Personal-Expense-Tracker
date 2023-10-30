@@ -1,3 +1,4 @@
+// unit test
 const displayTotalSpent = require('./dashboard_test')
 
 test('Shows the correct total spent', () => {
