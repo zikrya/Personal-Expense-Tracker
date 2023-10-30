@@ -15,7 +15,7 @@ test('login should change navbar state', async () => {
   const passwordInput = screen.getByLabelText(/password/i);
   const loginButton = screen.getByRole('button', { name: /login/i });
 
-  fireEvent.change(emailInput, { target: { value: 'test@test.com' } });
+  fireEvent.change(emailInput, { target: { value: 'samira@example.com' } });
   fireEvent.change(passwordInput, { target: { value: 'password123' } });
   fireEvent.click(loginButton);
 
@@ -33,13 +33,17 @@ test('login error should show appropriate message', async () => {
       </AuthProvider>
     );
 
-    // Mock the login function to cause an error
-  jest.spyOn(AuthProvider, 'useAuth').mockImplementation(() => {
-    return {
-      ...jest.requireActual(AuthProvider).useAuth(),
-      login: () => Promise.reject(new Error('Invalid credentials'))
-    };
-  });
+    jest.mock('../context/AuthContext', () => {
+      const actual = jest.requireActual('../context/AuthContext');
+      return {
+        ...actual,
+        useAuth: () => ({
+          ...actual.useAuth(),
+          login: () => Promise.reject(new Error('Invalid credentials')),
+        }),
+      };
+    });
+    
 
   const emailInput = screen.getByLabelText(/email/i);
   const passwordInput = screen.getByLabelText(/password/i);

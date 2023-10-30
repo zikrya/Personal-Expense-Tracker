@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-test.use({ headless: false });
+// test.use({ headless: false });
 
 test('user can login successfully', async ({ page }) => {
   // Navigate to login
