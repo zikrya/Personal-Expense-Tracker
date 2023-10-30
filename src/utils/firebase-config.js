@@ -41,3 +41,10 @@ export async function saveSurveyData(data) {
 export async function markSurveyAsCompleted(uid) {
   await set(ref(database, `users/${uid}/hasCompletedSurvey`), "true");
 }
+export async function saveUserData(uid, data) {
+  try {
+      await setDoc(doc(firestore, "users", uid), data);
+  } catch (error) {
+      console.error("Error saving user data: ", error);
+  }
+}
