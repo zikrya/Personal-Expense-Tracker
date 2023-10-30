@@ -27,7 +27,7 @@ const Register = () => {
         }
     }
     return (
-        <section className="bg-custom-gradient flex items-center justify-center h-screen font-custom">
+        <section className="bg-custom-gradient flex items-center justify-center h-screen">
             <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
                 <h1 className="mb-4 text-2xl font-bold text-gray-900 text-center">
                     Register
