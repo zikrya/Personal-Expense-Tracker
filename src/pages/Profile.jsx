@@ -5,17 +5,18 @@ import { useAuth } from '../context/AuthContext';
 import { firestore, saveSurveyData } from '../utils/firebase-config';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
+
 const Profile = () => {
     useProtectedRoute();
     const navigate = useNavigate();
     const { currentUser } = useAuth();
 
-    const [firstName, setFirstName] = useState("Test");
-    const [lastName, setLastName] = useState("User");
-    const [email, setEmail] = useState("test@gmail.com");
-    const [phoneNumber, setPhoneNumber] = useState("347-123-4567");
-    const [college, setCollege] = useState("The City College of New York");
-    const [graduationDate, setGraduationDate] = useState("June 3, 2024");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [college, setCollege] = useState("");
+    const [graduationDate, setGraduationDate] = useState("");
 
     useEffect(() => {
       // Fetching the profile data from Firestore when the component mounts
@@ -30,6 +31,7 @@ const Profile = () => {
           setPhoneNumber(docSnap.data().phoneNumber || "");
           setCollege(docSnap.data().college || "");
           setGraduationDate(docSnap.data().graduationDate || "");
+          console.log("Document data:", docSnap.data());
         } else {
           console.log("No such document!");
         }
@@ -113,7 +115,7 @@ const Profile = () => {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    disabled />
+                                    />
                                 </div>
                             </div>
 
@@ -130,7 +132,7 @@ const Profile = () => {
                                         value={phoneNumber}
                                         onChange={(e) => setPhoneNumber(e.target.value)}
                                         className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    disabled />
+                                    />
                                 </div>
                             </div>
 
@@ -184,7 +186,7 @@ const Profile = () => {
                                 <div className="mt-6 space-y-6">
                                     <div className="relative flex gap-x-3">
                                         <div className="flex h-6 items-center">
-                                            <input checked
+                                            <input
                                                 id="comments"
                                                 name="comments"
                                                 type="checkbox"
@@ -222,7 +224,7 @@ const Profile = () => {
                                 <p className="mt-1 text-sm leading-6 text-gray-600">These are delivered via SMS to your mobile phone.</p>
                                 <div className="mt-6 space-y-6">
                                     <div className="flex items-center gap-x-3">
-                                        <input checked
+                                        <input
                                             id="push-everything"
                                             name="push-notifications"
                                             type="radio"

@@ -10,7 +10,7 @@ class User_Dashboard {
 
 // The function below is what we are testing to ensure that the displayed information is a number 
 // based on the given inputs to the function. 
-function returnTotalSpent(i, bs, bsv, ts) {
+export function returnTotalSpent(i, bs, bsv, ts) {
     // create a new user and display total spent and ensure the display is a number.
     const first_user = new User_Dashboard(i, bs, bsv, ts); // create a new user
     // the code below is what we are testing -- to determine if the returned value is a number or not.
@@ -21,4 +21,4 @@ function returnTotalSpent(i, bs, bsv, ts) {
     }
 }
 
-module.exports = returnTotalSpent;
+// export default returnTotalSpent;

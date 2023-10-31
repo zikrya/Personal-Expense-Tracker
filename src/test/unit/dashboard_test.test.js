@@ -1,7 +1,8 @@
 // This is a unit test that takes in the created class (in the file this is just for context, 
 // not what we are testing) and tests the displayTotalSpent function. This function is just
 // checking whether the user was created and displayed information is a number or not.
-const returnTotalSpent = require('./dashboard_test')
+import {returnTotalSpent} from './dashboard_test';
+
 
 test('Shows the correct total spent when input is a number', () => {
   expect(returnTotalSpent(1000, 300, 100, 400)).toBe(300);
