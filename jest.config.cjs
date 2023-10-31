@@ -7,4 +7,7 @@ module.exports = {
       '!**/node_modules/**',
       '!**/vendor/**',
   ],
+  moduleNameMapper: {
+    "\\.(css|less|scss)$": "identity-obj-proxy",
+  },
 };
