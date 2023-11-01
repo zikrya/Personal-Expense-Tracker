@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1698808189931" clover="3.2.0">
-  <project timestamp="1698808189931" name="All files">
+<coverage generated="1698814829261" clover="3.2.0">
+  <project timestamp="1698814829261" name="All files">
     <metrics statements="33" coveredstatements="20" conditionals="4" coveredconditionals="2" methods="8" coveredmethods="4" elements="45" coveredelements="26" complexity="0" loc="33" ncloc="33" packages="3" files="3" classes="3"/>
     <package name="test.integration">
       <metrics statements="9" coveredstatements="6" conditionals="2" coveredconditionals="0" methods="2" coveredmethods="2"/>
       <file name="profile_copy.js" path="/Users/siemaalam/Desktop/Fall 2023/Topics in SWE/Test-Wise-Wallet/src/test/integration/profile_copy.js">
         <metrics statements="9" coveredstatements="6" conditionals="2" coveredconditionals="0" methods="2" coveredmethods="2"/>
-        <line num="8" count="2" type="stmt"/>
         <line num="9" count="2" type="stmt"/>
         <line num="10" count="2" type="stmt"/>
         <line num="11" count="2" type="stmt"/>
-        <line num="13" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="15" count="0" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="21" count="2" type="stmt"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="14" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
         <line num="22" count="2" type="stmt"/>
+        <line num="23" count="2" type="stmt"/>
       </file>
     </package>
     <package name="test.unit">
