@@ -1,6 +1,8 @@
 // This is a unit test that takes in the created class (in the file this is just for context, 
 // not what we are testing) and tests the displayTotalSpent function. This function is just
 // checking whether the user was created and displayed information is a number or not.
+// resource used: https://www.youtube.com/watch?v=r9HdJ8P6GQI
+
 import {returnTotalSpent} from './dashboard_test';
 
 
