@@ -6,7 +6,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install modules
-      run: npm
+      run: npm install
     - name: Run all tests
       run: npm test
 # https://github.com/marketplace/actions/run-jest#%EF%B8%8F%EF%B8%8F%EF%B8%8F-you-dont-need-this-action-%EF%B8%8F%EF%B8%8F%EF%B8%8F
