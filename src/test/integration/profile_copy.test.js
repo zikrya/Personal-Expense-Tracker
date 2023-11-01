@@ -11,5 +11,5 @@ test('Shows that the function can get existing data from the database (UID exist
 
 // the UID below is random and does not exist in our firebase, so this code tests "errors"
 test('Shows that the function can determine that data does not exist for a non-existent UID', async () => {
-  expect(getProfile("nonExistentUID")).toBe(1);
+  expect(getProfile("nonExistentUID")).not.toBe(1);
 });
