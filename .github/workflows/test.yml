@@ -1,0 +1,12 @@
+name: all test try 1
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install modules
+      run: npm
+    - name: Run all tests
+      run: npm test
+# https://github.com/marketplace/actions/run-jest#%EF%B8%8F%EF%B8%8F%EF%B8%8F-you-dont-need-this-action-%EF%B8%8F%EF%B8%8F%EF%B8%8F
