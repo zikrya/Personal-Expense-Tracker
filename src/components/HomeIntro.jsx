@@ -39,7 +39,7 @@ const HomeIntro = () => {
                 with our Wise Wallet
             </h1>
             <p className = "mx-auto mt-6 max-w-2xl text-lg tracking-tight text-slate-700">
-            your smart ally in mastering the art of budgeting, expense tracking, and reaching financial goals. Developed with the unique challenges of college students in mind, our app simplifies financial management, turning it from a source of stress into a stepping stone towards a secure, financially stable future. Let's redefine your spending, together - because your financial well-being matters!
+            Your smart ally in mastering the art of budgeting, expense tracking, and reaching financial goals. Developed with the unique challenges of college students in mind, our app simplifies financial management, turning it from a source of stress into a stepping stone towards a secure, financially stable future. Let's redefine your spending, together - because your financial well-being matters!
             </p>
             <div className="mt-10 flex justify-center gap-x-6">
             {currentUser ? (
