@@ -1,17 +1,37 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState,useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-export default function AddTransactionForm({transactionList,setTransactionList}) {
+import { addTransactionToDb } from '../utils/firebase-config';
+import { useAuth } from "../context/AuthContext";
+import { getTransactionFromDB } from '../utils/firebase-config';
+import { v4 as uuidv4 } from 'uuid';
+
+
+export default function AddTransactionForm({setTransactionList}) {
+
+    const {currentUser} = useAuth();
+
+    useEffect(() => {fetchTransactions()},[currentUser])
 
     const [open, setOpen] = useState(false)
-
 
     const [newDescription,setNewDescription] = useState('')
     const [newAmount, setAmount] = useState("")
 
+
     const addTransactions = (newDescription,newAmount) => {
         const currentDate = new Date().toLocaleDateString();
-        const newTransaction = {date : currentDate, description : newDescription, amount: newAmount }
-        setTransactionList([newTransaction,...transactionList])
+        const transactionUUID =  uuidv4()
+
+        const newTransaction = {
+          date : currentDate, 
+          description : newDescription,
+          amount: newAmount, 
+          transactionID: transactionUUID, 
+          userID: currentUser?.uid
+        }
+        //setTransactionList([newTransaction,...transactionList])
+        addTransactionToDb(newTransaction) 
+        fetchTransactions()
         setNewDescription("")
         setAmount("")
     }
@@ -20,13 +40,25 @@ export default function AddTransactionForm({transactionList,setTransactionList})
       setOpen(false);
       if(newAmount){
         addTransactions(newDescription,newAmount)
+      }else
+      {
+        alert("fail to add new transaction, you didn't enter the new amount")
       }
     }
+
+    async function fetchTransactions() {
+      if(currentUser){
+        const data = await getTransactionFromDB(currentUser.uid);
+        setTransactionList(data);
+        console.log(12345)
+      }
+    }
+
 
   
     return (
       <>
-      <button className="w-100 h-20 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={()=> setOpen(!open)}>
+      <button className="w-100 h-20 bg-green hover:bg-darkgreen text-white font-bold py-2 px-4 rounded" onClick={()=> setOpen(!open)}>
       New Transaction
       </button>
 
@@ -59,7 +91,7 @@ export default function AddTransactionForm({transactionList,setTransactionList})
                   <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                     <div className="sm:flex sm:items-start">
                       <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                        <Dialog.Title as="h1" className="text-lg font-bold  leading-10 text-red-500">
+                        <Dialog.Title as="h1" className="text-lg font-bold leading-10 text-green pb-2 ">
                           New Transaction
                         </Dialog.Title>
                         <form >
@@ -99,7 +131,7 @@ export default function AddTransactionForm({transactionList,setTransactionList})
                   <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                       type="button"
-                      className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                      className="inline-flex w-full justify-center rounded-md bg-green px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-darkgreen hover:text-white sm:ml-3 sm:w-auto"
                       onClick={handleSubmit}
                     >
                       Add Transaction
