@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { addTransactionToDb } from '../utils/firebase-config';
 import { useAuth } from "../context/AuthContext";
 import { getTransactionFromDB } from '../utils/firebase-config';
-import { v4 as uuidv4 } from 'uuid';
+
 
 
 export default function AddTransactionForm({setTransactionList}) {
@@ -20,13 +20,11 @@ export default function AddTransactionForm({setTransactionList}) {
 
     const addTransactions = (newDescription,newAmount) => {
         const currentDate = new Date().toLocaleDateString();
-        const transactionUUID =  uuidv4()
 
         const newTransaction = {
           date : currentDate, 
           description : newDescription,
           amount: newAmount, 
-          transactionID: transactionUUID, 
           userID: currentUser?.uid
         }
         //setTransactionList([newTransaction,...transactionList])
@@ -50,7 +48,7 @@ export default function AddTransactionForm({setTransactionList}) {
       if(currentUser){
         const data = await getTransactionFromDB(currentUser.uid);
         setTransactionList(data);
-        console.log(12345)
+        console.log(data)
       }
     }
 
