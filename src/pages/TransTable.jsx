@@ -71,10 +71,10 @@ const TransTable = () => {
                         <tbody>
                             {transactionList.map((transaction) => {
 
-                                const {description,date,amount} = transaction;
+                                const {description,date,amount,id} = transaction;
                                 return(
                                 <tr
-                                    key={transaction.transactionID} // use index this time, use transaction ID later when connect to the DB
+                                    key={id} 
                                     className="transition-colors hover:bg-gray-50"
                                 >
                                     <td className="border p-3">{date}</td>
