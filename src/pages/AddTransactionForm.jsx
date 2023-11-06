@@ -52,8 +52,14 @@ export default function AddTransactionForm({setTransactionList}) {
       }
     }
 
+    const listOfExpenses  = [
+      'Food', 'Groceries', 'Dining Out', 'Snacks', 'Transportation','Textbooks ', 'Utilities',
+      'Tuition', 'Entertainment', 'Cell Phone Bill','Healthcare','Shopping','Clothing',
+      'Electronics', 'Home Goods','TextBooks','Supplies','Investments','Gifts','Haircut/Beauty',
+      'Subscriptions','Travel','Taxes','Other']
 
-  
+
+
     return (
       <>
       <button className="w-100 h-20 bg-green hover:bg-darkgreen text-white font-bold py-2 px-4 rounded" onClick={()=> setOpen(!open)}>
@@ -97,7 +103,7 @@ export default function AddTransactionForm({setTransactionList}) {
                           <div className="w-1/3 pr-4 text-right text-gray-900">
                             <label htmlFor="description">Description</label>
                           </div>
-                          <input
+{/*                           <input
                             type="text"
                             name="description"
                             id="description"
@@ -105,7 +111,13 @@ export default function AddTransactionForm({setTransactionList}) {
                             onChange={(e)=>setNewDescription(e.target.value)}
                             className="w-2/3 rounded-md border-0 py-1.5 pl-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             placeholder="Description"
-                          />
+                          /> */}
+                        <input type="text" className="w-2/3 rounded-md border-0 py-1.5 pl-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" id="payment1" list="Description-list" value={newDescription} onChange={(e)=>setNewDescription(e.target.value)}/>
+                        <datalist  id="Description-list">
+                          {listOfExpenses.map((listOfExpenses, index) => (
+                                  <option key={index} value={listOfExpenses} />
+                          ))}
+                        </datalist>
                         </div>
                         <div className="flex items-center space-x-4">
                           <div className="w-1/3 pr-4 text-right text-gray-900">
