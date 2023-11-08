@@ -4,8 +4,6 @@ import { addTransactionToDb } from '../utils/firebase-config';
 import { useAuth } from "../context/AuthContext";
 import { getTransactionFromDB } from '../utils/firebase-config';
 
-
-
 export default function AddTransactionForm({setTransactionList}) {
 
     const {currentUser} = useAuth();

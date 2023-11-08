@@ -5,7 +5,6 @@ import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import AddTransactionForm from "./AddTransactionForm";
 
-
 const TransTable = () => {
     useProtectedRoute();
     const { currentUser} = useAuth();
