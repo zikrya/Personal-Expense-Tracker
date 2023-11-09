@@ -56,8 +56,8 @@ const HomeGuide = () => {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
         {/*header*/}
         <div className="max-w-2xl md:mx-auto md:text-center xl:max-w-none">
-            <h2 class="font-display text-3xl tracking-tight text-white sm:text-4xl md:text-5xl">Everything you need to use your Wallet.</h2>
-            <p class="mt-6 text-lg tracking-tight text-blue-100">Well everything you need</p>
+            <h2 className="font-display text-3xl tracking-tight text-mint sm:text-4xl md:text-5xl">Personal Expense Tracking Essentials</h2>
+            <p className="mt-6 text-lg tracking-tight text-lightblue">Everything you need to use your wallet wisely</p>
         </div>
         <Tab.Group
           as="div"
