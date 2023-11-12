@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useProtectedRoute } from '../components/useProtectedRoute';
-import { saveSurveyData, markSurveyAsCompleted, getUserName } from '../utils/firebase-config';
+import { saveSurveyData, getUserName } from '../utils/firebase-config';
 import { useAuth } from "../context/AuthContext";
 
 const RegisterSurvey = () => {
@@ -66,6 +66,7 @@ const RegisterSurvey = () => {
         e.preventDefault();
 
         const surveyData = {
+            userId: currentUser.uid,
             firstName: firstName,
             lastName: lastName,
             college: college,
@@ -265,7 +266,6 @@ const RegisterSurvey = () => {
                 <br />
                 <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4">Submit</button>
             </form>
-            {/* <button onClick={() => navigate('/transtable')}>Test Navigate</button> */}
         </div>
     );
 }
