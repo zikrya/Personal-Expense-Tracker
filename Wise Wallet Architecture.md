@@ -1,5 +1,5 @@
 # Wise Wallet Architecture
-## Component Digram
+## Component Diagram
 ![Component Digram](/public/Component_Digram.png)
 
 ### Description:
