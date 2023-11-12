@@ -100,7 +100,7 @@ export default function AddTransactionForm({setTransactionList}) {
                         </Dialog.Title>
                         <form >
                         <div className="flex items-center space-x-4">
-                          <div className="w-1/3 pr-4 text-right text-gray-900">
+                          <div className="w-1/3 text-right text-gray-900">
                             <label htmlFor="description">Description</label>
                           </div>
 {/*                           <input
@@ -119,9 +119,9 @@ export default function AddTransactionForm({setTransactionList}) {
                           ))}
                         </datalist>
                         </div>
-                        <div className="flex items-center space-x-4">
-                          <div className="w-1/3 pr-4 text-right text-gray-900">
-                            <label htmlFor="amount">Amount </label>
+                        <div className="pt-2 flex items-center space-x-4">
+                          <div className="w-1/3 text-right text-gray-900">
+                            <label htmlFor="amount">Amount $</label>
                           </div>
                           <input
                             type="number"
@@ -130,7 +130,7 @@ export default function AddTransactionForm({setTransactionList}) {
                             value={newAmount}
                             onChange={(e)=>setAmount(e.target.value)}
                             className="w-2/3 rounded-md border-0 py-1.5 pl-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            placeholder="Amount"
+                            placeholder="100"
                             required
                           />
                         </div>
