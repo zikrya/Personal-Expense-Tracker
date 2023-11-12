@@ -43,6 +43,7 @@ export async function markSurveyAsCompleted(uid) {
   await set(ref(database, `users/${uid}/hasCompletedSurvey`), "true");
 }
 
+
 export async function addTransactionToDb(data){
       try {
 /*         const transactionsRef  = collection(doc(firestore, "User_TransactionDoc",uid), "transaction");
@@ -74,3 +75,12 @@ export async function getTransactionFromDB(userID) {
 
   return trans
 }
+
+export async function saveUserData(uid, data) {
+  try {
+      await setDoc(doc(firestore, "users", uid), data);
+  } catch (error) {
+      console.error("Error saving user data: ", error);
+  }
+}
+
