@@ -10,6 +10,9 @@
     "preview": "vite preview",
     "start": "serve -s dist"
   },
+  "engines": {
+    "node": ">=14"
+  },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
