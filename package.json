@@ -5,10 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "npm install vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "start": "serve -s dist"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
@@ -20,7 +24,8 @@
     "react-dom": "^18.2.0",
     "react-router": "^6.16.0",
     "react-router-dom": "^6.16.0",
-    "serve": "^11.3.2"
+    "serve": "^11.3.2",
+    "vite": "^4.4.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
@@ -31,7 +36,6 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
-    "tailwindcss": "^3.3.3",
-    "vite": "^4.4.5"
+    "tailwindcss": "^3.3.3"
   }
 }
