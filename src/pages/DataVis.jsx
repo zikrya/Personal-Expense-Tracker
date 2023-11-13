@@ -1,5 +1,6 @@
 import LineChart from "../components/LineChart";
 import AreaChart from "../components/AreaChart";
+import PieChart from "../components/PieChart";
 
 const DataVis = () => {
   return (
@@ -10,6 +11,9 @@ const DataVis = () => {
       <div className="flex-1">
         <AreaChart />
       </div>
+      <div>
+            <PieChart/>
+        </div>
     </div>
   );
 };
