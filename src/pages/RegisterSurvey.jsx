@@ -195,14 +195,27 @@ const RegisterSurvey = () => {
                     <option value="Never">Never</option>
                 </select>
                 <br />
-                <label>Notification Method</label><br />
-                <select id="notifications" name="notifications" onChange={(e) => setNotificationMethod(e.target.value)} className="mt-1 p-2 w-full border rounded-md mb-4">
-                    <option value="">--Please choose an option--</option>
-                    <option value="Email">Email</option>
-                    <option value="Phone">Phone</option>
-                    <option value="Both">Both</option>
-                    <option value="None">None</option>
-                </select>
+                {notificationPreferences !== "Never" && (
+                    <>
+                        <label>Notification Method</label><br />
+                        <select
+                            id="notificationMethod"
+                            name="notificationMethod"
+                            value={notificationMethod}
+                            onChange={(e) => setNotificationMethod(e.target.value === "None" ? false : e.target.value)}
+                            className="mt-1 p-2 w-full border rounded-md mb-4"
+                        >
+                            <option value="">--Please choose an option--</option>
+                            <option value="Email">Email</option>
+                            <option value="Phone">Phone</option>
+                            <option value="Both">Both</option>
+                            <option value="None">None</option>
+                        </select>
+                        <br />
+                    </>
+                )}
+
+
                 <br />
                 <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4">Submit</button>
             </form>
