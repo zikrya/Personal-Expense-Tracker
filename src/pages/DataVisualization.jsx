@@ -5,7 +5,7 @@ import AreaChart from "../components/AreaChart";
 const DataVis = () => {
     return (
         <div>
-            <div className="grid grid-cols-3 place-items-center">
+            <div className="grid grid-cols-3 place-items-center gap-y-4">
                 <div className="col-span-2"><LineChart /></div>
                 <div><AreaChart /></div>
                 <div><PieChart /></div>

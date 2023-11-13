@@ -28,7 +28,7 @@ window.addEventListener("load", function() {
               }
             },
           },
-          labels: ["Direct", "Organic search", "Referrals"],
+          labels: ["Rent", "Supplies", "Food"],
           dataLabels: {
             enabled: true,
             style: {

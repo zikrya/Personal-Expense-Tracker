@@ -52,12 +52,12 @@ window.addEventListener("load", function() {
           },
           series: [
             {
-              name: "Budget Spent",
+              name: "Planned Budget",
               data: [6500, 6418, 6456, 6526, 6356, 6456],
               color: "#D6EBFF",
             },
             {
-              name: "Budget Savings",
+              name: "Actual Spent",
               data: [6456, 6356, 6526, 6332, 6418, 6500],
               color: "#D3F6DB",
             },
@@ -122,7 +122,7 @@ const LineChart = () => {
   <div className="flex justify-between mb-1">
     <div className="grid gap-4 grid-cols-2">
       <div>
-        <h5 className="inline-flex items-center text-gray-500 dark:text-gray-400 leading-none font-normal mb-2">Budget Spent
+        <h5 className="inline-flex items-center text-gray-500 dark:text-gray-400 leading-none font-normal mb-2">Planned Budget
           <svg data-popover-target="clicks-info" data-popover-placement="bottom" className="w-3 h-3 text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
           </svg>
@@ -142,7 +142,7 @@ const LineChart = () => {
         <p className="text-gray-900 dark:text-white text-2xl leading-none font-bold">$400</p>
       </div>
       <div>
-        <h5 className="inline-flex items-center text-gray-500 dark:text-gray-400 leading-none font-normal mb-2">Budget Savings
+        <h5 className="inline-flex items-center text-gray-500 dark:text-gray-400 leading-none font-normal mb-2">Actual Spent
         <svg data-popover-target="cpc-info" data-popover-placement="bottom" className="w-3 h-3 text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
           </svg>
