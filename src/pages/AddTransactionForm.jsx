@@ -1,36 +1,97 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState,useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-export default function AddTransactionForm({transactionList,setTransactionList}) {
+import { addTransactionToDb } from '../utils/firebase-config';
+import { useAuth } from "../context/AuthContext";
+import { getTransactionFromDB } from '../utils/firebase-config';
+import { set } from 'firebase/database';
+
+
+
+export default function AddTransactionForm({setTransactionList}) {
+
+    const {currentUser} = useAuth();
+
+    useEffect(() => {fetchTransactions()},[currentUser])
 
     const [open, setOpen] = useState(false)
 
-
     const [newDescription,setNewDescription] = useState('')
     const [newAmount, setAmount] = useState("")
+    const [transactionDate, setTransactionDate] = useState("") 
 
-    const addTransactions = (newDescription,newAmount) => {
-        const currentDate = new Date().toLocaleDateString();
-        const newTransaction = {date : currentDate, description : newDescription, amount: newAmount }
-        setTransactionList([newTransaction,...transactionList])
+
+    useEffect(() => {
+      const today = new Date().toISOString().split('T')[0]; // Get today's date in "YYYY-MM-DD" format
+      setTransactionDate(today);
+    }, []);
+
+
+
+    const addTransactions = (newDescription,newAmount,transactionDate) => {
+        const today = new Date().toISOString().split('T')[0];
+        const currentTime = new Date().toISOString()
+
+        if(transactionDate === today ){
+          const newTransaction = {
+            date : currentTime, 
+            description : newDescription,
+            amount: newAmount, 
+            userID: currentUser?.uid
+          }
+          addTransactionToDb(newTransaction) 
+        }
+        else if (today < transactionDate){
+          alert("Never know tomorrow ")
+        }
+        else{
+          const otherDate = `${transactionDate}T${currentTime.split('T')[1]}`
+          const newTransaction = {
+            date : otherDate, 
+            description : newDescription,
+            amount: newAmount, 
+            userID: currentUser?.uid
+          }
+          addTransactionToDb(newTransaction) 
+        }
+
+        fetchTransactions()
         setNewDescription("")
         setAmount("")
+        setTransactionDate(today)
     }
 
     const handleSubmit = () => {
       setOpen(false);
       if(newAmount){
-        addTransactions(newDescription,newAmount)
+        const absAmount = Math.abs(parseFloat(newAmount).toFixed(2))
+        addTransactions(newDescription,absAmount,transactionDate)
+      }else
+      {
+        alert("fail to add new transaction, you didn't enter the new amount correctly")
       }
     }
 
-  
+    async function fetchTransactions() {
+      if(currentUser){
+        const data = await getTransactionFromDB(currentUser.uid);
+        setTransactionList(data);
+      }
+    }
+
+    const listOfExpenses  = [
+      'Food', 'Groceries', 'Dining Out', 'Snacks', 'Transportation','Textbooks ', 'Utilities',
+      'Tuition', 'Entertainment', 'Cell Phone Bill','Healthcare','Clothing',
+      'Electronics', 'Home Goods','Investments','Gifts','Haircut/Beauty',
+      'Subscriptions','Travel','Taxes','Other']
+
+
     return (
       <>
       <button className="w-100 h-20 bg-green hover:bg-darkgreen text-white font-bold py-2 px-4 rounded" onClick={()=> setOpen(!open)}>
       New Transaction
       </button>
 
-      <Transition.Root show={open} as={Fragment}>
+      <Transition.Root show={open} as={Fragment} >
         <Dialog as="div" className="relative z-10"  onClose={setOpen}>
           <Transition.Child
             as={Fragment}
@@ -63,23 +124,35 @@ export default function AddTransactionForm({transactionList,setTransactionList})
                           New Transaction
                         </Dialog.Title>
                         <form >
+                          <input
+                            type="date"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-1 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            value={transactionDate}
+                            onChange ={(e) => setTransactionDate(e.target.value)}
+                          />
                         <div className="flex items-center space-x-4">
-                          <div className="w-1/3 text-right text-gray-900">
+                          <div className="w-1/3 pr-4 text-right text-gray-900">
                             <label htmlFor="description">Description</label>
                           </div>
-                          <input
+{/*                           <input
                             type="text"
                             name="description"
                             id="description"
                             value={newDescription}
                             onChange={(e)=>setNewDescription(e.target.value)}
                             className="w-2/3 rounded-md border-0 py-1.5 pl-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            placeholder="Clothing"
-                          />
+                            placeholder="Description"
+                          /> */}
+                        <input type="text" className="w-2/3 rounded-md border-0 py-1.5 pl-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" id="payment1" list="Description-list" value={newDescription} onChange={(e)=>setNewDescription(e.target.value)}/>
+                        <datalist  id="Description-list">
+                          {listOfExpenses.map((listOfExpenses, index) => (
+                                  <option key={index} value={listOfExpenses} />
+                          ))}
+                        </datalist>
                         </div>
-                        <div className="pt-2 flex items-center space-x-4">
-                          <div className="w-1/3 text-right text-gray-900">
-                            <label htmlFor="amount">Amount $</label>
+                        <div className="flex items-center space-x-4">
+                          <div className="w-1/3 pr-4 text-right text-gray-900">
+                            <label htmlFor="amount">Amount </label>
                           </div>
                           <input
                             type="number"
@@ -88,7 +161,7 @@ export default function AddTransactionForm({transactionList,setTransactionList})
                             value={newAmount}
                             onChange={(e)=>setAmount(e.target.value)}
                             className="w-2/3 rounded-md border-0 py-1.5 pl-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            placeholder="100"
+                            placeholder="Amount"
                             required
                           />
                         </div>
