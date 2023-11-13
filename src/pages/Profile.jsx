@@ -3,6 +3,7 @@ import { firestore } from '../utils/firebase-config';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { useAuth } from "../context/AuthContext";
 
+
 const Profile = () => {
   const [userData, setUserData] = useState({});
   const { currentUser } = useAuth();
@@ -24,6 +25,33 @@ const Profile = () => {
           }
         } catch (error) {
           console.error("Error fetching user survey data: ", error);
+    useProtectedRoute();
+    const navigate = useNavigate();
+    const { currentUser } = useAuth();
+
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [college, setCollege] = useState("");
+    const [graduationDate, setGraduationDate] = useState("");
+
+    useEffect(() => {
+      // Fetching the profile data from Firestore when the component mounts
+      const fetchData = async () => {
+        const docRef = doc(firestore, "users", currentUser.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setFirstName(docSnap.data().firstName || "");
+          setLastName(docSnap.data().lastName || "");
+          setEmail(docSnap.data().email || "");
+          setPhoneNumber(docSnap.data().phoneNumber || "");
+          setCollege(docSnap.data().college || "");
+          setGraduationDate(docSnap.data().graduationDate || "");
+          console.log("Document data:", docSnap.data());
+        } else {
+          console.log("No such document!");
         }
       }
     };
@@ -73,6 +101,7 @@ const Profile = () => {
                             </div>
                         </div>
 
+
                         <div className="sm:col-span-3">
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                                 Email            </label>
@@ -85,6 +114,20 @@ const Profile = () => {
                                     value={userData.email || ''}
                                     className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 disabled />
+                            <div className="sm:col-span-3">
+                                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                                    Email            </label>
+                                <div className="mt-2">
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        id="email"
+                                        autoComplete="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    />
+                                </div>
                             </div>
                         </div>
 
@@ -101,6 +144,21 @@ const Profile = () => {
                                     value="347-232-5786"
                                     className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 disabled />
+                            <div className="sm:col-span-3">
+                                <label htmlFor="phone-number" className="block text-sm font-medium leading-6 text-gray-900">
+                                    Phone number
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        type="tel"
+                                        name="phone-number"
+                                        id="phone-number"
+                                        autoComplete="phone-number"
+                                        value={phoneNumber}
+                                        onChange={(e) => setPhoneNumber(e.target.value)}
+                                        className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    />
+                                </div>
                             </div>
                         </div>
 
@@ -157,6 +215,63 @@ const Profile = () => {
                                             name="comments"
                                             type="checkbox"
                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    </div>
+
+                    <div className="border-b border-gray-900/10 py-10">
+                        <h2 className="text-xl font-semibold leading-7 text-gray-900">Notifications</h2>
+                        <p className="mt-1 text-sm leading-6 text-gray-600">
+                            Customize what you want to be notified about.
+                        </p>
+
+                        <div className="mt-10 space-y-10">
+                            <fieldset>
+                                <legend className="text-sm font-semibold leading-6 text-gray-900">By Email</legend>
+                                <div className="mt-6 space-y-6">
+                                    <div className="relative flex gap-x-3">
+                                        <div className="flex h-6 items-center">
+                                            <input
+                                                id="comments"
+                                                name="comments"
+                                                type="checkbox"
+                                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                            />
+                                        </div>
+                                        <div className="text-sm leading-6">
+                                            <label htmlFor="comments" className="font-medium text-gray-900">
+                                                Budget
+                                            </label>
+                                            <p className="text-gray-500">Get notified when you are reaching your allocated budget.</p>
+                                        </div>
+                                    </div>
+                                    <div className="relative flex gap-x-3">
+                                        <div className="flex h-6 items-center">
+                                            <input
+                                                id="candidates"
+                                                name="candidates"
+                                                type="checkbox"
+                                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                            />
+                                        </div>
+                                        <div className="text-sm leading-6">
+                                            <label htmlFor="candidates" className="font-medium text-gray-900">
+                                                Reminders
+                                            </label>
+                                            <p className="text-gray-500">Get a reminder notification every three days to update your transactions list.</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend className="text-sm font-semibold leading-6 text-gray-900">Push Notifications</legend>
+                                <p className="mt-1 text-sm leading-6 text-gray-600">These are delivered via SMS to your mobile phone.</p>
+                                <div className="mt-6 space-y-6">
+                                    <div className="flex items-center gap-x-3">
+                                        <input
+                                            id="push-everything"
+                                            name="push-notifications"
+                                            type="radio"
+                                            className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                         />
                                     </div>
                                     <div className="text-sm leading-6">
