@@ -19,7 +19,7 @@ window.addEventListener("load", function() {
         let options = {
           chart: {
             height: "100%",
-            maxWidth: "100%",
+            width: "200%",
             type: "line",
             fontFamily: "Inter, sans-serif",
             dropShadow: {
@@ -118,7 +118,7 @@ const LineChart = () => {
           setIsDropdownOpen(false);
     }};
     return(
-        <div className="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+        <div className="max-w-max w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
   <div className="flex justify-between mb-1">
     <div className="grid gap-4 grid-cols-2">
       <div>

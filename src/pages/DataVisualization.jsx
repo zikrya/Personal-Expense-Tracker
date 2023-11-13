@@ -4,15 +4,11 @@ import AreaChart from "../components/AreaChart";
 
 const DataVis = () => {
     return (
-        <div className="flex">
-            <div className="flex-1">
-                <LineChart />
-            </div>
-            <div className="flex-1">
-                <AreaChart />
-            </div>
-            <div>
-                <PieChart />
+        <div>
+            <div className="grid grid-cols-3 place-items-center">
+                <div className="col-span-2"><LineChart /></div>
+                <div><AreaChart /></div>
+                <div><PieChart /></div>
             </div>
         </div>
     );
