@@ -9,8 +9,7 @@ import TransTable from './pages/TransTable';
 import NavBar from './components/NavBar';
 import Profile from './pages/Profile';
 import RegisterSurvery from './pages/RegisterSurvey';
-import DataVis from './pages/DataVis';
-//import DataVis from './pages/DataVisualization';
+import DataVis from './pages/DataVisualization';
 
 function App() {
 
