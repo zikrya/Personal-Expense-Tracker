@@ -7,15 +7,15 @@ import AddTransactionForm from "./AddTransactionForm";
 
 const TransTable = () => {
     useProtectedRoute();
-    const { currentUser, logout } = useAuth();
-    const navigate = useNavigate();
-    const handleLogout = async () => {
+    const { currentUser} = useAuth();
+
+/*     const handleLogout = async () => {
         try {
             await logout(navigate("/"));
         } catch (err) {
             console.error("Error logging out:", err);
         }
-    };
+    }; */
 
     const [transactionList, setTransactionList] = useState([]);
 
@@ -68,22 +68,26 @@ const TransTable = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {transactionList.map((transaction, index) => (
+                            {transactionList.map((transaction) => {
+                                const {description,date,amount,id} = transaction;
+                                const Date = date.split('T')[0]; 
+                                const [year, month, day] = Date.split('-')
+                                const formattedDate = `${month}/${day}/${year}`
+                                return(
                                 <tr
-                                    key={index} // use index this time, use transaction ID later when connect to the DB
+                                    key={id} 
                                     className="transition-colors hover:bg-gray-50"
                                 >
-                                    <td className="border p-3">{transaction.date}</td>
-                                    <td className="border p-3">{transaction.description}</td>
+                                    <td className="border p-3">{formattedDate}</td>
+                                    <td className="border p-3">{description}</td>
                                     <td className="border p-3 text-green font-semibold text-right">
-                                        ${parseFloat(transaction.amount).toFixed(2)}
+                                        ${parseFloat(amount).toFixed(2)}
                                     </td>
                                 </tr>
-                            ))}
+                            )})}
                         </tbody>
                     </table>
                     <AddTransactionForm 
-                        transactionList ={transactionList}
                         setTransactionList ={setTransactionList}
                     />
                 </div>
