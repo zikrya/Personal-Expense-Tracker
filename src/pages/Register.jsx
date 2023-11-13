@@ -34,7 +34,7 @@ const Register = () => {
                 </h1>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">Your email</label>
+                        <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">Email</label>
                         <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" name="email" id="email" className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="name@company.com" required=""/>
                     </div>
                     <div>
@@ -43,7 +43,7 @@ const Register = () => {
                     </div>
                     {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
                     <div>
-                        <button type="submit" disabled={isSubmitting} className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50">{isSubmitting ? "Registering..." : "Register"}</button>
+                        <button type="submit" disabled={isSubmitting} className="w-full px-4 py-2 text-white bg-green rounded-md hover:bg-darkgreen focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50">{isSubmitting ? "Registering..." : "Register"}</button>
                     </div>
                 </form>
             </div>
