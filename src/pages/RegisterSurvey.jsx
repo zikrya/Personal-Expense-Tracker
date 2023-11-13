@@ -87,9 +87,9 @@ const RegisterSurvey = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-custom-gradient pt-10 pb-10">
+        <div className="flex justify-center items-center min-h-screen bg-lightblue pt-10 pb-10">
             <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
-                <label htmlFor="fname">First Name:</label><br />
+                <label htmlFor="fname">First Name</label><br />
                 <input
                     type="text"
                     id="fname"
@@ -99,7 +99,7 @@ const RegisterSurvey = () => {
                     className="mt-1 p-2 w-full border rounded-md mb-4"
                 />
                 <br />
-                <label htmlFor="fname">Last Name:</label><br />
+                <label htmlFor="fname">Last Name</label><br />
                 <input
                     type="text"
                     id="fname"
@@ -186,7 +186,7 @@ const RegisterSurvey = () => {
                     className="mt-1 p-2 w-full border rounded-md mb-4"
                 />
                 <br />
-                <label>Notification Preferences:</label><br />
+                <label>Notification Preferences</label><br />
                 <select id="notifications" name="notifications" onChange={(e) => setNotificationPreferences(e.target.value)} className="mt-1 p-2 w-full border rounded-md mb-4">
                     <option value="">--Please choose an option--</option>
                     <option value="Daily">Daily</option>
@@ -217,7 +217,7 @@ const RegisterSurvey = () => {
 
 
                 <br />
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4">Submit</button>
+                <button type="submit" className="bg-green text-white px-4 py-2 rounded-md mt-4">Submit</button>
             </form>
         </div>
     );
