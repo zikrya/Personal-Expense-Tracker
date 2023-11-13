@@ -70,7 +70,7 @@ window.addEventListener("load", function() {
 
 const PieChart = () => {
     
-    return (
+    return ( 
         <div className="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 ml-8 mt-3 md:p-6">
             <div className="flex justify-between items-start w-full">
                 <div className="flex-col items-center">
