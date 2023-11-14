@@ -3,7 +3,8 @@ import { useState,useEffect } from "react";
 import AddTransactionForm from "./AddTransactionForm";
 import { useAuth } from "../context/AuthContext";
 import {TrashIcon} from '@heroicons/react/20/solid'
-import { deleteTransactionFromDB,getTransactionFromDB } from '../utils/firebase-config';
+import {getTransactionFromDB } from '../utils/firebase-config';
+import DeleteConfirm from "./DeleteConfirm";
 
 const TransTable = () => {
     useProtectedRoute();
@@ -23,15 +24,8 @@ const TransTable = () => {
 
     const [transactionList, setTransactionList] = useState([]);
 
-    const handleDelete = (id) =>{
+    const [showConfirmation, setShowConfirmation] = useState(false)
 
-        const userConirmed = window.confirm('Are you sure you want to proceed?')
-        if(userConirmed){
-            deleteTransactionFromDB(id)
-            console.log('Transaction successfully deleted!');
-            fetchTransactions()
-        }
-    }
 
 
     return (
@@ -108,8 +102,14 @@ const TransTable = () => {
                                     <td className="border p-3" style={{ width: '60px' }}>
                                         {/* feel free to change trash icon color or style */}
                                         {showTrashIcon &&
-                                        <button onClick={() => handleDelete(id)} className="p-2  border-green-500 rounded-md">
+                                        <button onClick={() => setShowConfirmation(!showConfirmation)} className="p-2  border-green-500 rounded-md">
                                             <TrashIcon  className="w-5 h-5 text-red-400 hover:text-blue-500 hover:bg-yellow-500" />
+                                            {showConfirmation &&
+                                                <DeleteConfirm
+                                                fetchTransactions = {fetchTransactions}
+                                                id = {id}
+                                                setShowConfirmation = {setShowConfirmation}
+                                            />}
                                         </button>
                                          }
                                     </td>
