@@ -1,5 +1,0 @@
-# Wise Wallet Architecture
-
-![image](https://github.com/aappacode/Test-Wise-Wallet/assets/53492402/dc039989-4132-44c8-bfb4-f6448eac4d16)
-
-The above diagram shows how the entity, a user, is related to a transaction document and a survey document. We are currently using the Firestore database, which is a NoSQL database, meaning there are no relations. The way we are "connecting" the documents is through the user's unique identifier, which is made upon account creation. In the ER diagram above, one user can have many transactions which include the user_id (to connect to the user), transaction_id, amount, date, and description. This is because one user can make many transactions. Additionally, the survey data is a one-to-one relationship including the user's first and last name, college and graduation information, budgeting information, and notification preferences. One user can have only one survey since it is part of the registration process (as a secondary to email/password authentication sign-up), and one survey is connected to only one user. 
