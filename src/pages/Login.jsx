@@ -1,4 +1,42 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
+import { useAuth } from "../context/AuthContext";
+import { useRef } from "react";
+import { useEffect } from "react";
+const Login = () => {
+    const navigate = useNavigate();
 
+    const { login } = useAuth()
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState('');
+
+    const mounted = useRef(false);
+
+    useEffect(() => {
+        mounted.current = true;
+        return () => {
+            mounted.current = false;
+        }
+    }, [])
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setError('');
+
+        try {
+            await login(email, password);
+            navigate("/"); // Navigate to the home page or desired page after successful login
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            mounted.current && setIsSubmitting(false);
+        }
+    }
     
     return (
         <section className="bg-custom-gradient flex items-center justify-center h-screen font-custom">
