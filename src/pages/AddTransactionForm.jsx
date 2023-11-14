@@ -16,19 +16,23 @@ export default function AddTransactionForm({fetchTransactions}) {
 
 
     useEffect(() => {
-      const today = new Date().toISOString().split('T')[0]; // Get today's date in "YYYY-MM-DD" format
+      let today = new Date().toLocaleString().split(',')[0]; 
+      const [month,day,year] = today.split('/')
+      today = `${year}-${month}-${day}`
       setTransactionDate(today);
     }, []);
 
 
 
     const addTransactions = (newDescription,newAmount,transactionDate) => {
-        const today = new Date().toISOString().split('T')[0];
-        const currentTime = new Date().toISOString()
+        let today = new Date().toLocaleString().split(',')[0]; 
+        const [month,day,year] = today.split('/')
+        today = `${year}-${month}-${day}`
+        const currentTime = new Date().toISOString().split('T')[1]
 
         if(transactionDate === today ){
           const newTransaction = {
-            date : currentTime, 
+            date : `${today}T${currentTime}`, 
             description : newDescription,
             amount: newAmount, 
             userID: currentUser?.uid
@@ -39,9 +43,8 @@ export default function AddTransactionForm({fetchTransactions}) {
           alert("Never know tomorrow ")
         }
         else{
-          const otherDate = `${transactionDate}T${currentTime.split('T')[1]}`
           const newTransaction = {
-            date : otherDate, 
+            date : `${transactionDate}T${currentTime}`, 
             description : newDescription,
             amount: newAmount, 
             userID: currentUser?.uid
