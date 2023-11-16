@@ -26,6 +26,8 @@ const TransTable = () => {
 
     const [showConfirmation, setShowConfirmation] = useState(false)
 
+    const [deleteID, setDeletID] = useState("")
+
 
 
     return (
@@ -102,12 +104,12 @@ const TransTable = () => {
                                     <td className="border p-3" style={{ width: '60px' }}>
                                         {/* feel free to change trash icon color or style */}
                                         {showTrashIcon &&
-                                        <button onClick={() => setShowConfirmation(!showConfirmation)} className="p-2  border-green-500 rounded-md">
+                                        <button onClick={() => {setShowConfirmation(!showConfirmation); setDeletID(id);}} className="p-2  border-green-500 rounded-md">
                                             <TrashIcon  className="w-5 h-5 text-red-400 hover:text-blue-500 hover:bg-yellow-500" />
                                             {showConfirmation &&
                                                 <DeleteConfirm
-                                                fetchTransactions = {fetchTransactions}
-                                                id = {id}
+                                                setTransactionList = {setTransactionList}
+                                                id = {deleteID}
                                                 setShowConfirmation = {setShowConfirmation}
                                             />}
                                         </button>
