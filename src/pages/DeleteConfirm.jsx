@@ -3,12 +3,14 @@ import { deleteTransactionFromDB } from '../utils/firebase-config';
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
 
-const DeleteConfirm = ({fetchTransactions,id,setShowConfirmation}) => {
+const DeleteConfirm = ({setTransactionList,id,setShowConfirmation}) => {
 
-  const handleDelete = () =>{
+  const handleDelete = (id) =>{
         deleteTransactionFromDB(id)
         console.log('Transaction successfully deleted!');
-        fetchTransactions()
+        setTransactionList(prevList => 
+          prevList.filter(transaction => transaction.id !== id)
+        )
         setShowConfirmation(false)
 }
 
@@ -33,7 +35,7 @@ const DeleteConfirm = ({fetchTransactions,id,setShowConfirmation}) => {
                   </div>
                 </div>
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                  <span className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" onClick={()=> handleDelete()}>
+                  <span className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" onClick={()=> handleDelete(id)}>
                     Confirm
                   </span>
                   <span onClick = {() => setShowConfirmation(false)}className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">

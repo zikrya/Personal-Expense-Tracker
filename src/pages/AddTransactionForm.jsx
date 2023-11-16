@@ -26,6 +26,7 @@ export default function AddTransactionForm({fetchTransactions}) {
 
     const addTransactions = (newDescription,newAmount,transactionDate) => {
         let today = new Date().toLocaleString().split(',')[0]; 
+        // format the time that can be sorted in firebase
         const [month,day,year] = today.split('/')
         today = `${year}-${month}-${day}`
         const currentTime = new Date().toISOString().split('T')[1]
