@@ -13,7 +13,7 @@ const TransTable = () => {
         try {
             await logout(navigate("/"));
         } catch (err) {
-            console.error("Error logging out:", err);
+
         }
     }; */
 
