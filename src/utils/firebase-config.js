@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { getDatabase, ref, set, get, child } from "firebase/database";
-import { getFirestore, orderBy } from "firebase/firestore";
+import { getFirestore, orderBy} from "firebase/firestore";
 import { collection, addDoc,query,where,getDocs } from "firebase/firestore";
 
 
@@ -67,8 +67,7 @@ export async function getTransactionFromDB(userID) {
         const id = doc.id;
         trans.push({...data, id});
       });
-/*       trans.sort((a, b) => (b.date - a.date))
-      console.log(trans) */
+      //trans.sort((a, b) => (new Date(b.date) - new Date(a.date)))
   }catch(error){
     console.log(error)
   }
@@ -83,3 +82,4 @@ export async function saveUserData(uid, data) {
       console.error("Error saving user data: ", error);
   }
 }
+

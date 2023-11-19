@@ -13,14 +13,10 @@ const RegisterSurvey = () => {
     const [lastName, setLastName] = useState('');
     const [college, setCollege] = useState('');
     const [graduationDate, setGraduationDate] = useState('');
-    const [major, setMajor] = useState('');
-    const [housingSituation, setHousingSituation] = useState('');
-    const [sourceOfIncome, setSourceOfIncome] = useState([]);
     const [monthlyIncome, setMonthlyIncome] = useState('');
     const [moneySaved, setMoneySaved] = useState('');
     const [savingsGoal, setSavingsGoal] = useState('');
     const [budgetCategories, setBudgetCategories] = useState([]);
-    const [totalExpenses, setTotalExpenses] = useState('');
     const [maximumBudget, setMaximumBudget] = useState('');
     const [notificationPreferences, setNotificationPreferences] = useState('');
     const [notificationMethod, setNotificationMethod] = useState(false);
@@ -71,14 +67,10 @@ const RegisterSurvey = () => {
             lastName: lastName,
             college: college,
             graduationDate: graduationDate,
-            major: major,
-            housingSituation: housingSituation,
-            sourceOfIncome: sourceOfIncome,
             monthlyIncome: monthlyIncome,
             moneySaved: moneySaved,
             savingsGoal: savingsGoal,
             budgetCategories: budgetCategories,
-            totalExpenses: totalExpenses,
             maximumBudget: maximumBudget,
             notificationPreferences: notificationPreferences,
             notificationMethod: notificationMethod
@@ -88,11 +80,6 @@ const RegisterSurvey = () => {
             const docId = await saveSurveyData(surveyData);
             console.log("Document written with ID: ", docId);
 
-            //   if (currentUser) {
-            //     await markSurveyAsCompleted(currentUser.uid);
-            //     setHasCompletedSurvey(true);
-            //   }
-
             navigate('/transtable');
         } catch (error) {
             console.error("Error adding document: ", error);
@@ -100,9 +87,9 @@ const RegisterSurvey = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-custom-gradient pt-10 pb-10">
+        <div className="flex justify-center items-center min-h-screen bg-lightblue pt-10 pb-10">
             <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
-                <label htmlFor="fname">First Name:</label><br />
+                <label htmlFor="fname">First Name</label><br />
                 <input
                     type="text"
                     id="fname"
@@ -112,7 +99,7 @@ const RegisterSurvey = () => {
                     className="mt-1 p-2 w-full border rounded-md mb-4"
                 />
                 <br />
-                <label htmlFor="fname">Last Name:</label><br />
+                <label htmlFor="fname">Last Name</label><br />
                 <input
                     type="text"
                     id="fname"
@@ -142,42 +129,6 @@ const RegisterSurvey = () => {
                     className="mt-1 p-2 w-full border rounded-md mb-4"
                 />
                 <br />
-                <label htmlFor="major">Major / Field of Study:</label><br />
-                <input
-                    type="text"
-                    id="major"
-                    name="major"
-                    value={major}
-                    onChange={(e) => setMajor(e.target.value)}
-                    className="mt-1 p-2 w-full border rounded-md mb-4"
-                />
-                <br />
-                <label>Housing Situation:</label><br />
-                <select id="housing" name="housing" onChange={(e) => setHousingSituation(e.target.value)} className="mt-1 p-2 w-full border rounded-md mb-4">
-                    <option value="">--Please choose an option--</option>
-                    <option value="On-campus">On-campus</option>
-                    <option value="Off-campus">Off-campus</option>
-                    <option value="Living at home">Living at home</option>
-                    <option value="Other">Other</option>
-                </select>
-                <br />
-                <label>Source of Income: (Select all that apply)</label><br />
-                <div className="flex flex-col">
-                    {['Part-time job', 'Full-time job', 'Parental support', 'Scholarships', 'Loans', 'Savings', 'Other'].map((source) => (
-                        <label key={source} className="inline-flex items-center mt-3">
-                            <input
-                                type="checkbox"
-                                value={source}
-                                checked={sourceOfIncome.includes(source)}
-                                onChange={(e) => handleCheckboxChange(e, setSourceOfIncome, source)}
-                                className="rounded"
-                            />
-                            <span className="ml-2">{source}</span>
-                        </label>
-                    ))}
-                </div>
-
-                <br />
                 <label htmlFor="monthlyIncome">What is your estimated monthly income?</label><br />
                 <input
                     type="number"
@@ -198,7 +149,7 @@ const RegisterSurvey = () => {
                     className="mt-1 p-2 w-full border rounded-md mb-4"
                 />
                 <br />
-                <label htmlFor="savingsGoal">How much more do you want to save</label><br />
+                <label htmlFor="savingsGoal">How much more do you want to save?</label><br />
                 <input
                     type="number"
                     id="savingsGoal"
@@ -225,16 +176,6 @@ const RegisterSurvey = () => {
                 </div>
 
                 <br />
-                <label htmlFor="totalExpenses">What is your total monthly expense?</label><br />
-                <input
-                    type="number"
-                    id="totalExpenses"
-                    name="totalExpenses"
-                    value={totalExpenses}
-                    onChange={(e) => setTotalExpenses(e.target.value)}
-                    className="mt-1 p-2 w-full border rounded-md mb-4"
-                />
-                <br />
                 <label htmlFor="maximumBudget">What is the maximum amount you can spend in a month?</label><br />
                 <input
                     type="number"
@@ -245,26 +186,38 @@ const RegisterSurvey = () => {
                     className="mt-1 p-2 w-full border rounded-md mb-4"
                 />
                 <br />
-                <label>Notification Preferences:</label><br />
+                <label>Notification Preferences</label><br />
                 <select id="notifications" name="notifications" onChange={(e) => setNotificationPreferences(e.target.value)} className="mt-1 p-2 w-full border rounded-md mb-4">
                     <option value="">--Please choose an option--</option>
                     <option value="Daily">Daily</option>
                     <option value="Weekly">Weekly</option>
                     <option value="Monthly">Monthly</option>
-                    <option value="Only when I'm nearing my budget limit">Only when I'm nearing my budget limit</option>
                     <option value="Never">Never</option>
                 </select>
                 <br />
-                <label>Notification Method</label><br />
-                <select id="notifications" name="notifications" onChange={(e) => setNotificationMethod(e.target.value)} className="mt-1 p-2 w-full border rounded-md mb-4">
-                    <option value="">--Please choose an option--</option>
-                    <option value="Email">Email</option>
-                    <option value="Phone">Phone</option>
-                    <option value="Both">Both</option>
-                    <option value="None">None</option>
-                </select>
+                {notificationPreferences !== "Never" && (
+                    <>
+                        <label>Notification Method</label><br />
+                        <select
+                            id="notificationMethod"
+                            name="notificationMethod"
+                            value={notificationMethod}
+                            onChange={(e) => setNotificationMethod(e.target.value === "None" ? false : e.target.value)}
+                            className="mt-1 p-2 w-full border rounded-md mb-4"
+                        >
+                            <option value="">--Please choose an option--</option>
+                            <option value="Email">Email</option>
+                            <option value="Phone">Phone</option>
+                            <option value="Both">Both</option>
+                            <option value="None">None</option>
+                        </select>
+                        <br />
+                    </>
+                )}
+
+
                 <br />
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4">Submit</button>
+                <button type="submit" className="bg-green text-white px-4 py-2 rounded-md mt-4">Submit</button>
             </form>
         </div>
     );

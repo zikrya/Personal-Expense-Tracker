@@ -3,6 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { addTransactionToDb } from '../utils/firebase-config';
 import { useAuth } from "../context/AuthContext";
 import { getTransactionFromDB } from '../utils/firebase-config';
+import { set } from 'firebase/database';
 
 
 
@@ -16,31 +17,57 @@ export default function AddTransactionForm({setTransactionList}) {
 
     const [newDescription,setNewDescription] = useState('')
     const [newAmount, setAmount] = useState("")
+    const [transactionDate, setTransactionDate] = useState("") 
 
 
-    const addTransactions = (newDescription,newAmount) => {
-        const currentDate = new Date().toLocaleDateString();
+    useEffect(() => {
+      const today = new Date().toISOString().split('T')[0]; // Get today's date in "YYYY-MM-DD" format
+      setTransactionDate(today);
+    }, []);
 
-        const newTransaction = {
-          date : currentDate, 
-          description : newDescription,
-          amount: newAmount, 
-          userID: currentUser?.uid
+
+
+    const addTransactions = (newDescription,newAmount,transactionDate) => {
+        const today = new Date().toISOString().split('T')[0];
+        const currentTime = new Date().toISOString()
+
+        if(transactionDate === today ){
+          const newTransaction = {
+            date : currentTime, 
+            description : newDescription,
+            amount: newAmount, 
+            userID: currentUser?.uid
+          }
+          addTransactionToDb(newTransaction) 
         }
-        //setTransactionList([newTransaction,...transactionList])
-        addTransactionToDb(newTransaction) 
+        else if (today < transactionDate){
+          alert("Never know tomorrow ")
+        }
+        else{
+          const otherDate = `${transactionDate}T${currentTime.split('T')[1]}`
+          const newTransaction = {
+            date : otherDate, 
+            description : newDescription,
+            amount: newAmount, 
+            userID: currentUser?.uid
+          }
+          addTransactionToDb(newTransaction) 
+        }
+
         fetchTransactions()
         setNewDescription("")
         setAmount("")
+        setTransactionDate(today)
     }
 
     const handleSubmit = () => {
       setOpen(false);
       if(newAmount){
-        addTransactions(newDescription,newAmount)
+        const absAmount = Math.abs(parseFloat(newAmount).toFixed(2))
+        addTransactions(newDescription,absAmount,transactionDate)
       }else
       {
-        alert("fail to add new transaction, you didn't enter the new amount")
+        alert("fail to add new transaction, you didn't enter the new amount correctly")
       }
     }
 
@@ -48,16 +75,14 @@ export default function AddTransactionForm({setTransactionList}) {
       if(currentUser){
         const data = await getTransactionFromDB(currentUser.uid);
         setTransactionList(data);
-        console.log(data)
       }
     }
 
     const listOfExpenses  = [
       'Food', 'Groceries', 'Dining Out', 'Snacks', 'Transportation','Textbooks ', 'Utilities',
-      'Tuition', 'Entertainment', 'Cell Phone Bill','Healthcare','Shopping','Clothing',
-      'Electronics', 'Home Goods','TextBooks','Supplies','Investments','Gifts','Haircut/Beauty',
+      'Tuition', 'Entertainment', 'Cell Phone Bill','Healthcare','Clothing',
+      'Electronics', 'Home Goods','Investments','Gifts','Haircut/Beauty',
       'Subscriptions','Travel','Taxes','Other']
-
 
 
     return (
@@ -66,7 +91,7 @@ export default function AddTransactionForm({setTransactionList}) {
       New Transaction
       </button>
 
-      <Transition.Root show={open} as={Fragment}>
+      <Transition.Root show={open} as={Fragment} >
         <Dialog as="div" className="relative z-10"  onClose={setOpen}>
           <Transition.Child
             as={Fragment}
@@ -99,8 +124,14 @@ export default function AddTransactionForm({setTransactionList}) {
                           New Transaction
                         </Dialog.Title>
                         <form >
+                          <input
+                            type="date"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-1 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            value={transactionDate}
+                            onChange ={(e) => setTransactionDate(e.target.value)}
+                          />
                         <div className="flex items-center space-x-4">
-                          <div className="w-1/3 text-right text-gray-900">
+                          <div className="w-1/3 pr-4 text-right text-gray-900">
                             <label htmlFor="description">Description</label>
                           </div>
 {/*                           <input
@@ -119,9 +150,9 @@ export default function AddTransactionForm({setTransactionList}) {
                           ))}
                         </datalist>
                         </div>
-                        <div className="pt-2 flex items-center space-x-4">
-                          <div className="w-1/3 text-right text-gray-900">
-                            <label htmlFor="amount">Amount $</label>
+                        <div className="flex items-center space-x-4">
+                          <div className="w-1/3 pr-4 text-right text-gray-900">
+                            <label htmlFor="amount">Amount </label>
                           </div>
                           <input
                             type="number"
@@ -130,7 +161,7 @@ export default function AddTransactionForm({setTransactionList}) {
                             value={newAmount}
                             onChange={(e)=>setAmount(e.target.value)}
                             className="w-2/3 rounded-md border-0 py-1.5 pl-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            placeholder="100"
+                            placeholder="Amount"
                             required
                           />
                         </div>

@@ -70,14 +70,16 @@ const TransTable = () => {
                         </thead>
                         <tbody>
                             {transactionList.map((transaction) => {
-
                                 const {description,date,amount,id} = transaction;
+                                const Date = date.split('T')[0]; 
+                                const [year, month, day] = Date.split('-')
+                                const formattedDate = `${month}/${day}/${year}`
                                 return(
                                 <tr
                                     key={id} 
                                     className="transition-colors hover:bg-gray-50"
                                 >
-                                    <td className="border p-3">{date}</td>
+                                    <td className="border p-3">{formattedDate}</td>
                                     <td className="border p-3">{description}</td>
                                     <td className="border p-3 text-green font-semibold text-right">
                                         ${parseFloat(amount).toFixed(2)}
