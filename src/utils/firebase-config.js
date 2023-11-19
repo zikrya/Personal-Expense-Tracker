@@ -4,6 +4,7 @@ import { getStorage } from "firebase/storage";
 import { getDatabase, ref, set, get, child } from "firebase/database";
 import { getFirestore, orderBy} from "firebase/firestore";
 import { collection, addDoc,query,where,getDocs } from "firebase/firestore";
+import { getMessaging, getToken } from "firebase/messaging";
 
 
 // Your web app's Firebase configuration
@@ -82,4 +83,39 @@ export async function saveUserData(uid, data) {
       console.error("Error saving user data: ", error);
   }
 }
+
+// setting up firebase messaging for notification sending
+
+const messaging = getMessaging(app);
+
+export function requestPermission() {
+  console.log('Requesting permission...');
+  Notification.requestPermission().then((permission) => {
+    if (permission === 'granted') {
+      console.log('Notification permission granted.');}
+  })
+}
+
+// reference: https://blog.logrocket.com/push-notifications-react-firebase/
+
+export const gettingToken = (setTokenFound) => {
+  return getToken(messaging, { vapidKey: 'BDyYb5V-21r8mIfR8vj-ti3mg_u8tYcffLMg3Y_ZU2BYBxV_i5cOesAkYhf80d34ABHav1DlJhrsaR2T_3daxMM' }).then((currentToken) => {
+    if (currentToken) {
+      // Send the token to your server and update the UI if necessary
+      // ...
+      console.log('Client Token: ', currentToken);
+      setTokenFound(true);
+    } else {
+      // Show permission request UI
+      console.log('No registration token available. Request permission to generate one.');
+      setTokenFound(false);
+      // ...
+    }
+  }).catch((err) => {
+    console.log('An error occurred while retrieving token. ', err);
+    // ...
+  });
+}
+
+
 
