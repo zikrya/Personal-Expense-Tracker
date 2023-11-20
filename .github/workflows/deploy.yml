@@ -43,6 +43,6 @@ jobs:
         aws-region: "us-east-2" # Replace with your AWS region
 
     - name: Upload build file to S3 (if using S3 for hosting)
-      run: aws s3 cp build-${{github.sha}}.zip s3://your-s3-bucket-name
+      run: aws s3 cp build-${{ github.sha }}.zip s3://terraform-state-wise-wallet-zikrya/Personal-Expense-Tracker/
 
     # Add any additional AWS deployment steps here, if necessary
