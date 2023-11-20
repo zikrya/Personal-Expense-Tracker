@@ -1,0 +1,48 @@
+name: Deploy Vite React Application
+
+on:
+  workflow_run:
+    workflows: [build-test] # Replace with your actual build/test workflow name
+    types: [completed]
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14' # or the version you're using
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build Vite React App
+      run: npm run build
+
+    - name: Zip the build directory
+      run: zip -r build-${{github.sha}}.zip dist/ # 'dist' should be replaced with your build output directory
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: vite-react-application-artifact
+        path: build-${{github.sha}}.zip
+
+    # AWS Deployment Steps (if you're using AWS alongside Firebase)
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
+        aws-region: "us-east-1" # Replace with your AWS region
+
+    - name: Upload build file to S3 (if using S3 for hosting)
+      run: aws s3 cp build-${{github.sha}}.zip s3://your-s3-bucket-name
+
+    # Add any additional AWS deployment steps here, if necessary
