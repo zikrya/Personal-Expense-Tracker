@@ -1,24 +1,34 @@
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { useProtectedRoute } from "../components/useProtectedRoute";
-import { useAuth } from "../context/AuthContext";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import AddTransactionForm from "./AddTransactionForm";
+import { useAuth } from "../context/AuthContext";
+import {TrashIcon} from '@heroicons/react/20/solid'
+import {getTransactionFromDB } from '../utils/firebase-config';
+import DeleteConfirm from "./DeleteConfirm";
 
 
 const TransTable = () => {
     useProtectedRoute();
     const { currentUser} = useAuth();
 
-/*     const handleLogout = async () => {
-        try {
-            await logout(navigate("/"));
-        } catch (err) {
-            console.error("Error logging out:", err);
+    useEffect(() => {fetchTransactions()},[currentUser])
+
+    async function fetchTransactions() {
+        if(currentUser){
+          const data = await getTransactionFromDB(currentUser.uid);
+          setTransactionList(data);
         }
-    }; */
+      }
+
+    
+    const [showTrashIcon, setShowTrashIcon] = useState(false)
 
     const [transactionList, setTransactionList] = useState([]);
+
+    const [showConfirmation, setShowConfirmation] = useState(false)
+
+    const [deleteID, setDeletID] = useState("")
+
 
 
     return (
@@ -66,6 +76,14 @@ const TransTable = () => {
                                 <th className="border p-3 bg-gray-100 text-left">Date</th>
                                 <th className="border p-3 bg-gray-100 text-left">Category</th>
                                 <th className="border p-3 bg-gray-100 text-right">Amount</th>
+                                <th className="border p-3 bg-gray-100 text-right">
+
+                                {/* feel free to change trash icon color or style */}
+
+                                <button onClick={() => setShowTrashIcon(!showTrashIcon)} className="p-2  border-green-500 rounded-md">
+                                <TrashIcon  className="w-5 h-5 text-red-400 hover:text-blue-500 hover:bg-yellow-500" />
+                                </button>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,12 +102,26 @@ const TransTable = () => {
                                     <td className="border p-3 text-green font-semibold text-right">
                                         ${parseFloat(amount).toFixed(2)}
                                     </td>
+                                    <td className="border p-3" style={{ width: '60px' }}>
+                                        {/* feel free to change trash icon color or style */}
+                                        {showTrashIcon &&
+                                        <button onClick={() => {setShowConfirmation(!showConfirmation); setDeletID(id);}} className="p-2  border-green-500 rounded-md">
+                                            <TrashIcon  className="w-5 h-5 text-red-400 hover:text-blue-500 hover:bg-yellow-500" />
+                                            {showConfirmation &&
+                                                <DeleteConfirm
+                                                setTransactionList = {setTransactionList}
+                                                id = {deleteID}
+                                                setShowConfirmation = {setShowConfirmation}
+                                            />}
+                                        </button>
+                                         }
+                                    </td>
                                 </tr>
                             )})}
                         </tbody>
                     </table>
                     <AddTransactionForm 
-                        setTransactionList ={setTransactionList}
+                        fetchTransactions ={fetchTransactions}
                     />
                 </div>
             </div></>
