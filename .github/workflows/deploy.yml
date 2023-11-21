@@ -1,0 +1,54 @@
+# This workflow will deploy the application to the running environment after a successful merge to main
+# This workflow was taken from Professor Avteniev: https://github.com/navteniev/modern_software_engineering_corise_flaskbb/blob/week3_solution/.github/workflows/deploy.yml
+
+name: deploy
+
+on:
+    workflow_run:
+        workflows: [test] # Triggered by the test workflow
+        types: [completed] # The test workflow must complete
+        branches: [main] # Only when main is updated
+
+jobs:
+    on-success:
+        runs-on: ubuntu-latest
+        if: ${{ github.event.workflow_run.conclusion == 'success' }} # Only when test completed successfully 
+        steps:
+            - uses: actions/checkout@v2 # check out the code and install dependencies
+            - name: Install dependencies
+              run: |
+                npm install
+      
+            - name: Build Prod in Next.js
+              run: |
+                npm run build
+
+            - name: Build binary distribution and upload to artifactory
+              run: zip -r "react_deploy-${{github.sha}}.zip" ./public ./src .babelrc .eslintrc.cjs index.html jest.config.js package-lock.json package.json pnpm-lock.yaml postcss.config.js README.md tailwind.config.js vite.config.js 
+              
+            - name: Upload application artifact
+              uses: actions/upload-artifact@v3
+              with:
+                name: react_application_artifact
+                path: react_deploy-${{github.sha}}.zip
+
+            - name: Congifure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v2
+              with:
+                aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
+                aws-region: "us-east-1" 
+
+            - name: Upload application file to AWS
+              run: aws s3 cp react_deploy-${{github.sha}}.zip s3://reactapp
+
+            - name: Create new application version
+              run: |  
+                aws elasticbeanstalk create-application-version \
+                --application-name react \
+                --source-bundle S3Bucket="reactapp",S3Key="react_deploy-${{github.sha}}.zip " \
+                --version-label "ver-${{ github.sha }}" \
+                --description "commit-sha-${{ github.sha }}"
+
+            - name: Deploy application
+              run: aws elasticbeanstalk update-environment --environment-name react-environment --version-label "ver-${{ github.sha }}"
