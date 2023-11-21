@@ -42,7 +42,7 @@ describe("login screen", () => {
             fireEvent.click(button);
         }
 
-        test("login with valid credential", async () => {
+        test("login is called", async () => {
             render(<MockLoginScreen/>);
             const loginButton = screen.getByRole("button", {name: /login/i });
             fillAndSubmit("asdasd@gmail.com", "Zhou123123", loginButton);
