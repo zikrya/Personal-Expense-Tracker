@@ -32,7 +32,7 @@ jobs:
                 name: react_application_artifact
                 path: react_deploy-${{github.sha}}.zip
 
-            - name: Congifure AWS Credentials
+            - name: Configure AWS Credentials
               uses: aws-actions/configure-aws-credentials@v2
               with:
                 aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
@@ -40,13 +40,13 @@ jobs:
                 aws-region: "us-east-1" 
 
             - name: Upload application file to AWS
-              run: aws s3 cp react_deploy-${{github.sha}}.zip s3://reactapp
+              run: aws s3 cp react_deploy-${{github.sha}}.zip s3://aappacode-wisewallet
 
             - name: Create new application version
               run: |  
                 aws elasticbeanstalk create-application-version \
                 --application-name react \
-                --source-bundle S3Bucket="reactapp",S3Key="react_deploy-${{github.sha}}.zip " \
+                --source-bundle S3Bucket="aappacode-wisewallet",S3Key="react_deploy-${{github.sha}}.zip " \
                 --version-label "ver-${{ github.sha }}" \
                 --description "commit-sha-${{ github.sha }}"
 
