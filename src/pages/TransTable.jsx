@@ -42,7 +42,7 @@ const TransTable = () => {
                 </a>
             </div>
             <div>
-                <a href="#" className="h-36 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                <a href="#" className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-darkblue dark:text-white">$ 400</h5>
                     {/* Flowbite Progress Bar */}
                     <div className="flex justify-between mb-1">
