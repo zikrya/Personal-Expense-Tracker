@@ -96,7 +96,7 @@ const RegisterSurvey = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-lightblue pt-10 pb-10">
+        <div className="flex justify-center items-center min-h-screen bg-lightblue pt-10 pb-10" data-testid= "survey-page">
             <form data-testid= "survey" onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
                 <label htmlFor="fname">First Name</label><br />
                 <input

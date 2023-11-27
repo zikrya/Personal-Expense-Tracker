@@ -27,8 +27,10 @@ describe("survey screen", () => {
             const collegeInput = screen.getByTestId("college")
             const submitButton = screen.getByRole("button", {name: /Submit/i });
             const form = screen.getByTestId("survey")
+            const page = screen.getByTestId("survey-page")
 
             expect(firstNameInput).toBeInTheDocument();
+            expect(page).toBeInTheDocument();
             expect(lastNameInput).toBeInTheDocument();
             expect(collegeInput).toBeInTheDocument();
             expect(submitButton).toBeInTheDocument();
