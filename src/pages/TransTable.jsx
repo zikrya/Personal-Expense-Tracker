@@ -19,7 +19,6 @@ const TransTable = () => {
         }
       }
 
-    
     const [showTrashIcon, setShowTrashIcon] = useState(false)
 
     const [transactionList, setTransactionList] = useState([]);
@@ -28,7 +27,20 @@ const TransTable = () => {
 
     const [deleteID, setDeletID] = useState("")
 
+    const [monthlySpent, setMonthSpent] = useState("")
 
+    useEffect(() =>{
+        const y = new Date().getFullYear().toString(this)
+        const m = (new Date().getMonth() + 1).toString(this)
+        let sum = 0.0
+        transactionList.filter(transcation => {
+          if(transcation.date.split('-')[0] === y && transcation.date.split('-')[1] === m)
+          {
+              sum = sum + parseFloat(transcation.amount)
+          }
+        });
+        setMonthSpent(sum.toFixed(2))
+    },[transactionList])
 
     return (
         <><div className="px-8 pt-8 grid grid-cols-4 gap-5">
@@ -41,8 +53,8 @@ const TransTable = () => {
             </div>
             <div>
                 <a href="#" className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-darkblue dark:text-white">$ 300</h5>
-                    <p className="font-normal text-gray-700 dark:text-gray-400">Budget Spent</p>
+                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-darkblue dark:text-white">{`$${monthlySpent}`}</h5>
+                    <p className="font-normal text-gray-700 dark:text-gray-400">Monthly Total Spent</p>
                 </a>
             </div>
             <div>
