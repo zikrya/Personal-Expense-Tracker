@@ -2,8 +2,8 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { getDatabase, ref, set, get, child } from "firebase/database";
-import { getFirestore, orderBy} from "firebase/firestore";
-import { collection, addDoc,query,where,getDocs } from "firebase/firestore";
+import { getFirestore, orderBy,doc} from "firebase/firestore";
+import { collection, addDoc,query,where,getDocs, deleteDoc } from "firebase/firestore";
 
 
 // Your web app's Firebase configuration
@@ -73,6 +73,16 @@ export async function getTransactionFromDB(userID) {
   }
 
   return trans
+}
+
+export async function deleteTransactionFromDB(transactionID){
+  try{
+    
+    const DTransaction = doc(firestore,'User_TransactionDoc',transactionID)
+    await deleteDoc(DTransaction)
+  }catch(error){
+    console.error("Error deleting transaction: ", error);
+  }
 }
 
 export async function saveUserData(uid, data) {

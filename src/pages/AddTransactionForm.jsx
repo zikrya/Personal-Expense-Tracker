@@ -2,16 +2,11 @@ import { Fragment, useState,useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { addTransactionToDb } from '../utils/firebase-config';
 import { useAuth } from "../context/AuthContext";
-import { getTransactionFromDB } from '../utils/firebase-config';
-import { set } from 'firebase/database';
 
 
-
-export default function AddTransactionForm({setTransactionList}) {
+export default function AddTransactionForm({fetchTransactions}) {
 
     const {currentUser} = useAuth();
-
-    useEffect(() => {fetchTransactions()},[currentUser])
 
     const [open, setOpen] = useState(false)
 
@@ -21,19 +16,24 @@ export default function AddTransactionForm({setTransactionList}) {
 
 
     useEffect(() => {
-      const today = new Date().toISOString().split('T')[0]; // Get today's date in "YYYY-MM-DD" format
+      let today = new Date().toLocaleString().split(',')[0]; 
+      const [month,day,year] = today.split('/')
+      today = `${year}-${month}-${day}`
       setTransactionDate(today);
     }, []);
 
 
 
     const addTransactions = (newDescription,newAmount,transactionDate) => {
-        const today = new Date().toISOString().split('T')[0];
-        const currentTime = new Date().toISOString()
+        let today = new Date().toLocaleString().split(',')[0]; 
+        // format the time that can be sorted in firebase
+        const [month,day,year] = today.split('/')
+        today = `${year}-${month}-${day}`
+        const currentTime = new Date().toISOString().split('T')[1]
 
         if(transactionDate === today ){
           const newTransaction = {
-            date : currentTime, 
+            date : `${today}T${currentTime}`, 
             description : newDescription,
             amount: newAmount, 
             userID: currentUser?.uid
@@ -44,9 +44,8 @@ export default function AddTransactionForm({setTransactionList}) {
           alert("Never know tomorrow ")
         }
         else{
-          const otherDate = `${transactionDate}T${currentTime.split('T')[1]}`
           const newTransaction = {
-            date : otherDate, 
+            date : `${transactionDate}T${currentTime}`, 
             description : newDescription,
             amount: newAmount, 
             userID: currentUser?.uid
@@ -71,12 +70,6 @@ export default function AddTransactionForm({setTransactionList}) {
       }
     }
 
-    async function fetchTransactions() {
-      if(currentUser){
-        const data = await getTransactionFromDB(currentUser.uid);
-        setTransactionList(data);
-      }
-    }
 
     const listOfExpenses  = [
       'Food', 'Groceries', 'Dining Out', 'Snacks', 'Transportation','Textbooks ', 'Utilities',
@@ -134,15 +127,6 @@ export default function AddTransactionForm({setTransactionList}) {
                           <div className="w-1/3 pr-4 text-right text-gray-900">
                             <label htmlFor="description">Description</label>
                           </div>
-{/*                           <input
-                            type="text"
-                            name="description"
-                            id="description"
-                            value={newDescription}
-                            onChange={(e)=>setNewDescription(e.target.value)}
-                            className="w-2/3 rounded-md border-0 py-1.5 pl-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            placeholder="Description"
-                          /> */}
                         <input type="text" className="w-2/3 rounded-md border-0 py-1.5 pl-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" id="payment1" list="Description-list" value={newDescription} onChange={(e)=>setNewDescription(e.target.value)}/>
                         <datalist  id="Description-list">
                           {listOfExpenses.map((listOfExpenses, index) => (
