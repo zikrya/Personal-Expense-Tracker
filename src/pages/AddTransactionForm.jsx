@@ -41,7 +41,7 @@ export default function AddTransactionForm({fetchTransactions}) {
           addTransactionToDb(newTransaction) 
         }
         else if (today < transactionDate){
-          alert("Never know tomorrow ")
+          alert("That is in the future")
         }
         else{
           const newTransaction = {
@@ -61,12 +61,18 @@ export default function AddTransactionForm({fetchTransactions}) {
 
     const handleSubmit = () => {
       setOpen(false);
-      if(newAmount){
+      if(newAmount && newDescription.length < 50 && newDescription.length > 0 ){
         const absAmount = Math.abs(parseFloat(newAmount).toFixed(2))
         addTransactions(newDescription,absAmount,transactionDate)
+      }else if(newAmount && (newDescription.length > 50 || newDescription.length === 0)){
+        alert("fail to add new transaction, the description is too long or empty")
+        setNewDescription("")
+        setAmount("")
       }else
       {
-        alert("fail to add new transaction, you didn't enter the new amount correctly")
+        alert("fail to add new transaction, you didn't enter the amount correctly")
+        setNewDescription("")
+        setAmount("")
       }
     }
 
