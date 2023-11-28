@@ -21,6 +21,7 @@ const RegisterSurvey = () => {
     const [notificationPreferences, setNotificationPreferences] = useState('');
     const [notificationMethod, setNotificationMethod] = useState(false);
     const [hasCompletedSurvey, setHasCompletedSurvey] = useState(false);
+    const [phoneNumber, setPhoneNumber] = useState('');
 
     useEffect(() => {
         async function checkIfSurveyCompleted() {
@@ -72,6 +73,7 @@ const RegisterSurvey = () => {
             savingsGoal: savingsGoal,
             budgetCategories: budgetCategories,
             maximumBudget: maximumBudget,
+            phoneNumber: phoneNumber,
             notificationPreferences: notificationPreferences,
             notificationMethod: notificationMethod
         };
@@ -183,6 +185,16 @@ const RegisterSurvey = () => {
                     name="maximumBudget"
                     value={maximumBudget}
                     onChange={(e) => setMaximumBudget(e.target.value)}
+                    className="mt-1 p-2 w-full border rounded-md mb-4"
+                />
+                <br />
+                <label htmlFor="maximumBudget">Phone Number</label><br />
+                <input
+                    type="tel"
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
                     className="mt-1 p-2 w-full border rounded-md mb-4"
                 />
                 <br />
