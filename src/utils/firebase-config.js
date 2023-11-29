@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { getDatabase, ref, set, get, child } from "firebase/database";
 import { getFirestore, orderBy,doc} from "firebase/firestore";
-import { collection, addDoc,query,where,getDocs, deleteDoc } from "firebase/firestore";
+import { collection, addDoc,query,where,getDocs, deleteDoc,updateDoc } from "firebase/firestore";
 
 
 // Your web app's Firebase configuration
@@ -67,7 +67,6 @@ export async function getTransactionFromDB(userID) {
         const id = doc.id;
         trans.push({...data, id});
       });
-      //trans.sort((a, b) => (new Date(b.date) - new Date(a.date)))
   }catch(error){
     console.log(error)
   }
@@ -93,3 +92,40 @@ export async function saveUserData(uid, data) {
   }
 }
 
+export async function upDdateIncome(userID,income)
+{
+  const collectionRef = collection(firestore, 'surveys'); 
+  try{
+    const q = query(collectionRef, where('userId', '==', userID))
+    const docunmenet = await getDocs(q)
+    console.log(docunmenet.docs[0].id)
+    if(!docunmenet.empty){
+      const docID = docunmenet.docs[0].id
+      await updateDoc(doc(collectionRef, docID),{
+        monthlyIncome : income
+      })
+    }
+ }
+ catch(error){
+   console.log(error)
+ }
+}
+
+
+export async function getIncome(userID){
+  const collectionRef = collection(firestore, 'surveys'); 
+  let income = ""
+  try{
+    const q = query(collectionRef, where('userId', '==', userID))
+    const docunmenet = await getDocs(q)
+    if(!docunmenet.empty){
+      income = docunmenet.docs[0].data().monthlyIncome
+      return income
+    }
+ }
+ catch(error){
+   console.log(error)
+ }
+
+  return income
+}
