@@ -83,3 +83,27 @@ export async function saveUserData(uid, data) {
   }
 }
 
+ // Function to fetch survey data for a specific user
+ export async function fetchSurveyData(userId) {
+  const surveysRef = collection(firestore, 'surveys');
+  const userQuery = query(surveysRef, where('userId', '==', userId));
+
+  try {
+    const querySnapshot = await getDocs(userQuery);
+    const surveyData = {};
+
+    querySnapshot.forEach((doc) => {
+      surveyData[doc.id] = doc.data();
+    });
+
+    return surveyData;
+  } catch (error) {
+    console.error('Error fetching survey data: ', error);
+    throw error;
+  }
+}
+
+
+
+
+
