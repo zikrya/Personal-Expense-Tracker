@@ -1,35 +1,64 @@
 import React, { useState, useEffect } from 'react';
 import { firestore } from '../utils/firebase-config';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { useAuth } from "../context/AuthContext";
 
 const Profile = () => {
-  const [userData, setUserData] = useState({});
+    const [userData, setUserData] = useState({
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        college: '',
+        graduationDate: '',
+        email: '',
+    });
+  const [surveyDocId, setSurveyDocId] = useState(''); // State to store the document ID
   const { currentUser } = useAuth();
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (currentUser) {
-        const surveysCol = collection(firestore, "surveys");
-        const q = query(surveysCol, where("userId", "==", currentUser.uid));
-        try {
-          const querySnapshot = await getDocs(q);
-          const surveyData = querySnapshot.docs.map(doc => doc.data());
-          if (surveyData.length > 0) {
-            // Now including the email in the userData state along with the survey data
-            setUserData({
-              ...surveyData[0], // This is the survey data
-              email: currentUser.email // This is the email from Firebase Authentication
-            });
-          }
-        } catch (error) {
-          console.error("Error fetching user survey data: ", error);
+        if (currentUser) {
+            const surveysCol = collection(firestore, "surveys");
+            const q = query(surveysCol, where("userId", "==", currentUser.uid));
+            try {
+                const querySnapshot = await getDocs(q);
+                if (!querySnapshot.empty) {
+                    const docData = querySnapshot.docs[0].data();
+                    // Set the email from currentUser if it's not in the document data
+                    const userEmail = docData.email ? docData.email : currentUser.email;
+                    setUserData({ ...docData, email: userEmail });
+                    setSurveyDocId(querySnapshot.docs[0].id); // Store the document ID
+                } else {
+                    // Set only the email if there's no survey data
+                    setUserData(prevData => ({ ...prevData, email: currentUser.email }));
+                }
+            } catch (error) {
+                console.error("Error fetching user survey data: ", error);
+            }
         }
-      }
     };
 
     fetchUserData();
-  }, [currentUser]);
+}, [currentUser]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserData(prevData => ({ ...prevData, [name]: value }));
+};
+
+  const handleSave = async () => {
+    if (!surveyDocId) return; // Check if the document ID is available
+    const surveyDocRef = doc(firestore, "surveys", surveyDocId);
+
+    try {
+      await updateDoc(surveyDocRef, userData);
+      console.log("Survey data updated successfully.");
+      // Handle success scenario (e.g., navigate back or show a success message)
+    } catch (error) {
+      console.error("Error updating survey data: ", error);
+      // Handle error scenario (e.g., show an error message)
+    }
+  };
   return (
     // Code taken from Tailwind Component library: forms and data display
     <div>
@@ -48,9 +77,10 @@ const Profile = () => {
                             <div className="mt-2">
                                 <input
                                     type="text"
-                                    name="first-name"
+                                    name="firstName"
                                     id="first-name"
                                     value={userData.firstName || ''}
+                                    onChange={handleInputChange}
                                     autoComplete="given-name"
                                     className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
@@ -64,10 +94,11 @@ const Profile = () => {
                             <div className="mt-2">
                                 <input
                                     type="text"
-                                    name="last-name"
+                                    name="lastName"
                                     id="last-name"
                                     autoComplete="family-name"
                                     value={userData.lastName || ''}
+                                    onChange={handleInputChange}
                                     className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -95,12 +126,13 @@ const Profile = () => {
                             <div className="mt-2">
                                 <input
                                     type="tel"
-                                    name="phone-number"
+                                    name="phoneNumber"
                                     id="phone-number"
                                     autoComplete="phone-number"
-                                    value="347-232-5786"
+                                    value={userData.phoneNumber || ""}
+                                    onChange={handleInputChange}
                                     className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                disabled />
+                                 />
                             </div>
                         </div>
 
@@ -113,11 +145,12 @@ const Profile = () => {
                             <div className="mt-2">
                                 <input
                                     type="text"
-                                    name="street-address"
+                                    name="college"
                                     id="street-address"
                                     autoComplete="street-address"
                                     className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     value={userData.college || ''}
+                                    onChange={handleInputChange}
                                 />
                             </div>
                         </div>
@@ -128,9 +161,10 @@ const Profile = () => {
                             <div className="mt-2">
                                 <input
                                     type="tel"
-                                    name="graduation-date"
+                                    name="graduationDate"
                                     id="graduation-date"
                                     value={userData.graduationDate || ''}
+                                    onChange={handleInputChange}
                                     autoComplete="graduation-date"
                                     className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
@@ -234,7 +268,8 @@ const Profile = () => {
                         Cancel
                     </button>
                     <button
-                        type="submit"
+                        type="button"
+                        onClick={handleSave}
                         className="rounded-md bg-green px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-darkgreen focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                         Save

@@ -1,9 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { useProtectedRoute } from "../components/useProtectedRoute";
-import { useAuth } from "../context/AuthContext";
-import { useState, useEffect } from "react";
+import { useState,useEffect, useEffect } from "react";
 import AddTransactionForm from "./AddTransactionForm";
+import { useAuth } from "../context/AuthContext";
+import {TrashIcon} from '@heroicons/react/20/solid'
+import {getTransactionFromDB } from '../utils/firebase-config';
+import DeleteConfirm from "./DeleteConfirm";
 import { fetchSurveyData, firestore, getTransactionFromDB } from '../utils/firebase-config.js';
 import { collection, query, getDocs } from 'firebase/firestore';
 
@@ -12,77 +13,37 @@ const TransTable = () => {
     useProtectedRoute();
     const { currentUser } = useAuth();
 
-    /*     const handleLogout = async () => {
-            try {
-                await logout(navigate("/"));
-            } catch (err) {
-                console.error("Error logging out:", err);
-            }
-        }; */
+    useEffect(() => {fetchTransactions()},[currentUser])
+
+    async function fetchTransactions() {
+        if(currentUser){
+          const data = await getTransactionFromDB(currentUser.uid);
+          setTransactionList(data);
+        }
+      }
+
+    const [showTrashIcon, setShowTrashIcon] = useState(false)
 
     const [transactionList, setTransactionList] = useState([]);
-    // const [surveyData, setSurveyData] = useState({});
-    const [monthlyIncome, setMonthlyIncome] = useState('N/A');
-    const [surveyDataState, setSurveyDataState] = useState({});
-    const [savingsGoal, setSavingsGoal] = useState('N/A');
-    const [moneySaved, setMoneySaved] = useState('N/A');
-    const [totalSpent, setTotalSpent] = useState(0);
-    const [savingsPercentage, setSavingsPercentage] = useState(0);
-    const [moneyNeededToReachGoal, setMoneyNeededToReachGoal] = useState(0);
 
+    const [showConfirmation, setShowConfirmation] = useState(false)
 
-    useEffect(() => {
-        if (currentUser) {
-            const currentUserUid = currentUser.uid;
+    const [deleteID, setDeletID] = useState("")
 
-            getTransactionFromDB(currentUserUid)
-                .then((transactions) => {
-                    // Calculate the sum of all transaction amounts
-                    const total = transactions.reduce((sum, transaction) => sum + parseFloat(transaction.amount), 0);
-                    setTotalSpent(total);
-                    setTransactionList(transactions);
-                })
-                .catch((error) => {
-                    console.error('Error fetching transactions:', error);
-                });
+    const [monthlySpent, setMonthSpent] = useState("")
 
-
-            fetchSurveyData(currentUserUid)
-                .then((data) => {
-                    setSurveyDataState(data);
-                    const userDataKey = Object.keys(data)[0];
-                    const userSurveyData = data[userDataKey];
-
-                    if (userSurveyData) {
-
-                        console.log("USER SURVEY DATA:", userSurveyData);
-                        if (userSurveyData.monthlyIncome) {
-                            setMonthlyIncome(userSurveyData.monthlyIncome);
-                        }
-                        if (userSurveyData.savingsGoal) {
-                            setSavingsGoal(parseFloat(userSurveyData.savingsGoal));
-                        }
-                        if (userSurveyData.moneySaved) {
-                            setMoneySaved(parseFloat(userSurveyData.moneySaved));
-                        }
-
-                        if (userSurveyData.moneySaved && userSurveyData.savingsGoal) {
-                            const savingsPercent = (parseFloat(userSurveyData.moneySaved) / parseFloat(userSurveyData.savingsGoal)) * 100;
-                            const difference = parseFloat(userSurveyData.savingsGoal) - parseFloat(userSurveyData.moneySaved);
-                            setSavingsPercentage(savingsPercent);
-                            setMoneyNeededToReachGoal(difference);
-                          }
-              
-
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error fetching survey data:', error);
-                });
-        }
-    }, [currentUser]);
-
-
+    useEffect(() =>{
+        const y = new Date().getFullYear().toString(this)
+        const m = (new Date().getMonth() + 1).toString(this)
+        let sum = 0.0
+        transactionList.filter(transcation => {
+          if(transcation.date.split('-')[0] === y && transcation.date.split('-')[1] === m)
+          {
+              sum = sum + parseFloat(transcation.amount)
+          }
+        });
+        setMonthSpent(sum.toFixed(2))
+    },[transactionList])
 
     return (
         <><div className="px-8 pt-8 grid grid-cols-4 gap-5">
@@ -95,8 +56,8 @@ const TransTable = () => {
             </div>
             <div>
                 <a href="#" className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-darkblue dark:text-white">${totalSpent.toFixed(2)}</h5>
-                    <p className="font-normal text-gray-700 dark:text-gray-400">Budget Spent</p>
+                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-darkblue dark:text-white">{`$${monthlySpent}`}</h5>
+                    <p className="font-normal text-gray-700 dark:text-gray-400">Monthly Total Spent</p>
                 </a>
             </div>
             <div>
@@ -129,6 +90,14 @@ const TransTable = () => {
                                 <th className="border p-3 bg-gray-100 text-left">Date</th>
                                 <th className="border p-3 bg-gray-100 text-left">Category</th>
                                 <th className="border p-3 bg-gray-100 text-right">Amount</th>
+                                <th className="border p-3 bg-gray-100 text-right">
+
+                                {/* feel free to change trash icon color or style */}
+
+                                <button onClick={() => setShowTrashIcon(!showTrashIcon)} className="p-2  border-green-500 rounded-md">
+                                <TrashIcon  className="w-5 h-5 text-red-400 hover:text-blue-500 hover:bg-yellow-500" />
+                                </button>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -147,13 +116,27 @@ const TransTable = () => {
                                         <td className="border p-3 text-green font-semibold text-right">
                                             ${parseFloat(amount).toFixed(2)}
                                         </td>
-                                    </tr>
+                                        <td className="border p-3" style={{ width: '60px' }}>
+                                        {/* feel free to change trash icon color or style */}
+                                        {showTrashIcon &&
+                                        <button onClick={() => {setShowConfirmation(!showConfirmation); setDeletID(id);}} className="p-2  border-green-500 rounded-md">
+                                            <TrashIcon  className="w-5 h-5 text-red-400 hover:text-blue-500 hover:bg-yellow-500" />
+                                            {showConfirmation &&
+                                                <DeleteConfirm
+                                                setTransactionList = {setTransactionList}
+                                                id = {deleteID}
+                                                setShowConfirmation = {setShowConfirmation}
+                                            />}
+                                        </button>
+                                         }
+                                    </td>
+                                </tr>
                                 )
                             })}
                         </tbody>
                     </table>
                     <AddTransactionForm
-                        setTransactionList={setTransactionList}
+                        fetchTransactions={fetchTransactions}
                     />
                 </div>
             </div></>
