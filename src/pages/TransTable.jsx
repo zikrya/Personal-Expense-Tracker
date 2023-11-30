@@ -1,9 +1,8 @@
 import { useProtectedRoute } from "../components/useProtectedRoute";
-import { useState,useEffect, useEffect } from "react";
+import { useState, useEffect } from "react";
 import AddTransactionForm from "./AddTransactionForm";
 import { useAuth } from "../context/AuthContext";
 import {TrashIcon} from '@heroicons/react/20/solid'
-import {getTransactionFromDB } from '../utils/firebase-config';
 import DeleteConfirm from "./DeleteConfirm";
 import { fetchSurveyData, firestore, getTransactionFromDB } from '../utils/firebase-config.js';
 import { collection, query, getDocs } from 'firebase/firestore';
@@ -32,18 +31,65 @@ const TransTable = () => {
 
     const [monthlySpent, setMonthSpent] = useState("")
 
-    useEffect(() =>{
-        const y = new Date().getFullYear().toString(this)
-        const m = (new Date().getMonth() + 1).toString(this)
-        let sum = 0.0
-        transactionList.filter(transcation => {
-          if(transcation.date.split('-')[0] === y && transcation.date.split('-')[1] === m)
-          {
-              sum = sum + parseFloat(transcation.amount)
-          }
-        });
-        setMonthSpent(sum.toFixed(2))
-    },[transactionList])
+    const [monthlyIncome, setMonthlyIncome] = useState('N/A');
+    const [surveyDataState, setSurveyDataState] = useState({});
+    const [savingsGoal, setSavingsGoal] = useState('N/A');
+    const [moneySaved, setMoneySaved] = useState('N/A');
+    const [totalSpent, setTotalSpent] = useState(0);
+    const [savingsPercentage, setSavingsPercentage] = useState(0);
+    const [moneyNeededToReachGoal, setMoneyNeededToReachGoal] = useState(0);
+
+    useEffect(() => {
+        if (currentUser) {
+          const currentUserUid = currentUser.uid;
+    
+          // Fetch transactions and survey data in parallel
+          Promise.all([
+            getTransactionFromDB(currentUserUid),
+            fetchSurveyData(currentUserUid)
+          ])
+          .then(([transactions, surveyData]) => {
+            setTransactionList(transactions);
+            
+            // Calculate the sum of all transaction amounts for the current month
+            const currentYear = new Date().getFullYear().toString();
+            const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
+            const monthlySpent = transactions.reduce((sum, { date, amount }) => {
+              if (date.startsWith(`${currentYear}-${currentMonth}`)) {
+                return sum + parseFloat(amount);
+              }
+              return sum;
+            }, 0);
+            setMonthSpent(monthlySpent.toFixed(2));
+    
+            // Set survey data state
+            const userDataKey = Object.keys(surveyData)[0];
+            const userSurveyData = surveyData[userDataKey];
+            if (userSurveyData) {
+                console.log("USER SURVEY DATA:", userSurveyData);
+                if (userSurveyData.monthlyIncome) {
+                    setMonthlyIncome(userSurveyData.monthlyIncome);
+                }
+                if (userSurveyData.savingsGoal) {
+                    setSavingsGoal(parseFloat(userSurveyData.savingsGoal));
+                }
+                if (userSurveyData.moneySaved) {
+                    setMoneySaved(parseFloat(userSurveyData.moneySaved));
+                }
+
+                if (userSurveyData.moneySaved && userSurveyData.savingsGoal) {
+                    const savingsPercent = (parseFloat(userSurveyData.moneySaved) / parseFloat(userSurveyData.savingsGoal)) * 100;
+                    const difference = parseFloat(userSurveyData.savingsGoal) - parseFloat(userSurveyData.moneySaved);
+                    setSavingsPercentage(savingsPercent);
+                    setMoneyNeededToReachGoal(difference);
+                  }
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+        }
+      }, [currentUser]); // Dependencies array contains only currentUser    
 
     return (
         <><div className="px-8 pt-8 grid grid-cols-4 gap-5">
