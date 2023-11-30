@@ -111,7 +111,6 @@ export async function upDdateIncome(userID,income)
  }
 }
 
-
 export async function getIncome(userID){
   const collectionRef = collection(firestore, 'surveys'); 
   let income = ""
@@ -128,4 +127,80 @@ export async function getIncome(userID){
  }
 
   return income
+}
+
+export async function upDateSavingGoal(userID,goal)
+{
+  const collectionRef = collection(firestore, 'surveys'); 
+  try{
+    const q = query(collectionRef, where('userId', '==', userID))
+    const docunmenet = await getDocs(q)
+    console.log(docunmenet.docs[0].id)
+    if(!docunmenet.empty){
+      const docID = docunmenet.docs[0].id
+      await updateDoc(doc(collectionRef, docID),{
+        savingsGoal : goal
+      })
+    }
+ }
+ catch(error){
+   console.log(error)
+ }
+}
+
+export async function getSavingGoal(userID){
+  const collectionRef = collection(firestore, 'surveys'); 
+  let Sgoal = ""
+  try{
+    const q = query(collectionRef, where('userId', '==', userID))
+    const docunmenet = await getDocs(q)
+    if(!docunmenet.empty){
+      Sgoal = docunmenet.docs[0].data().savingsGoal
+      return Sgoal
+    }
+ }
+ catch(error){
+   console.log(error)
+ }
+
+  return Sgoal
+}
+
+
+export async function getBudget(userID){
+  const collectionRef = collection(firestore, 'surveys'); 
+  let Budget = ""
+  try{
+    const q = query(collectionRef, where('userId', '==', userID))
+    const docunmenet = await getDocs(q)
+    if(!docunmenet.empty){
+      Budget = docunmenet.docs[0].data().maximumBudget
+      return Budget
+    }
+ }
+ catch(error){
+   console.log(error)
+ }
+
+  return Budget
+}
+
+
+export async function upDateBudget(userID,budget)
+{
+  const collectionRef = collection(firestore, 'surveys'); 
+  try{
+    const q = query(collectionRef, where('userId', '==', userID))
+    const docunmenet = await getDocs(q)
+    console.log(docunmenet.docs[0].id)
+    if(!docunmenet.empty){
+      const docID = docunmenet.docs[0].id
+      await updateDoc(doc(collectionRef, docID),{
+        maximumBudget : budget
+      })
+    }
+ }
+ catch(error){
+   console.log(error)
+ }
 }

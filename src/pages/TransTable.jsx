@@ -3,9 +3,10 @@ import { useState,useEffect } from "react";
 import AddTransactionForm from "./AddTransactionForm";
 import { useAuth } from "../context/AuthContext";
 import {TrashIcon, PencilSquareIcon} from '@heroicons/react/20/solid'
-import {getTransactionFromDB,getIncome } from '../utils/firebase-config';
+import {getTransactionFromDB,getIncome,getSavingGoal,getBudget} from '../utils/firebase-config';
 import DeleteConfirm from "./DeleteConfirm";
 import UpdateIncome from "./UpdateIncome";
+import UpdateBudget from "./UpdateBudget";
 
 const TransTable = () => {
     useProtectedRoute();
@@ -57,6 +58,23 @@ const TransTable = () => {
     const [showUpdateIncome, setShowUpdateIncome] = useState(false)
 
 
+    const [monthlyBudget, setMonthlyBudget] = useState('')
+
+    useEffect(() => {getMonthlyBudget()},[currentUser])
+
+    async function getMonthlyBudget() {
+        if(currentUser){
+            const data = await getBudget(currentUser.uid);
+            setMonthlyBudget(data);
+          }
+    }
+
+    const [showUpdateBudge, setShowUpdateBudge] = useState(false)
+
+
+    const [savingGoal, setSavingGoal] = useState('')
+
+
     return (
         <><div className="px-8 pt-8 grid grid-cols-4 gap-5">
             <div>
@@ -80,10 +98,15 @@ const TransTable = () => {
                 </a>
             </div>
             <div>
-                <a href="#" className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-darkblue dark:text-white">$ 100</h5>
-                    <p className="font-normal text-gray-700 dark:text-gray-400">Budget Savings</p>
-                </a>
+                <span className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" onClick={() => setShowUpdateBudge(!showUpdateBudge)}>
+                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-darkblue dark:text-white">{`$${(monthlyBudget - monthlySpent).toFixed(2)}`} <PencilSquareIcon className="w-5 h-5 inline-block" /></h5>
+                    <p className="font-normal text-gray-700 dark:text-gray-400">Remaining Budget</p>
+                    {showUpdateBudge && <UpdateBudget
+                        showUpdateBudge = {showUpdateBudge}
+                        setShowUpdateBudge = {setShowUpdateBudge}
+                        setMonthlyBudget = {setMonthlyBudget}
+                    />}
+                </span>
             </div>
             <div>
                 <a href="#" className="h-36 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
