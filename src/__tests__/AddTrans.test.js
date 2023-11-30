@@ -9,7 +9,6 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
     unobserve: jest.fn(),
     disconnect: jest.fn(),
 }))
-const setOpen = jest.fn()
 let currentUser = {
     uid: "asdasdas"
 }
@@ -55,7 +54,6 @@ describe("addtrans page screen", () => {
             fireEvent.click(submit)
             expect(amountInput.value).toBe("")
             expect(descripInput.value).toBe("")
-            //expect(handleSubmit()).toStrictEqual({description: "Food", amount: "33"});
         })
     })
 
