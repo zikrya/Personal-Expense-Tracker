@@ -7,6 +7,7 @@ import {getTransactionFromDB,getIncome,getSavingGoal,getBudget} from '../utils/f
 import DeleteConfirm from "./DeleteConfirm";
 import UpdateIncome from "./UpdateIncome";
 import UpdateBudget from "./UpdateBudget";
+import UpdateSavingGoal from "./UpdateSavingGoal";
 
 const TransTable = () => {
     useProtectedRoute();
@@ -29,10 +30,8 @@ const TransTable = () => {
 
     const [deleteID, setDeletID] = useState("")
 
+    // total spending 
     const [monthlySpent, setMonthSpent] = useState("")
-
-    const [monthlyIncome, setMonthlyIncome] = useState("")
-
     useEffect(() =>{
         const y = new Date().getFullYear().toString(this)
         const m = (new Date().getMonth() + 1).toString(this)
@@ -46,6 +45,12 @@ const TransTable = () => {
         setMonthSpent(sum.toFixed(2))
     },[transactionList])
 
+    //Income
+    const [monthlyIncome, setMonthlyIncome] = useState("")
+    const [moneySave, setMoneySave] = useState()
+    const [moneySavedPercentage, setMoneySavedPercentage] = useState()
+    const [showUpdateIncome, setShowUpdateIncome] = useState(false)
+
     async function getMonthlyIncome() {
         if(currentUser){
             const data = await getIncome(currentUser.uid);
@@ -53,26 +58,71 @@ const TransTable = () => {
           }
     }
 
+    useEffect(() => {
+        setMoneySave((parseFloat(monthlyIncome) - parseFloat(monthlySpent)).toFixed(2))
+    },[currentUser,monthlySpent,monthlyIncome])
+
     useEffect(() => {getMonthlyIncome()},[currentUser])
 
-    const [showUpdateIncome, setShowUpdateIncome] = useState(false)
+    useEffect(() => {
+        if(parseFloat(moneySave).toFixed(2) >= 0){
+            const percentage = parseFloat(moneySave) / parseFloat(monthlyIncome) * 100
+            setMoneySavedPercentage(percentage.toFixed(2))
+        }else{
+            setMoneySavedPercentage(0)
+        }
+
+    })
 
 
+    //budget
     const [monthlyBudget, setMonthlyBudget] = useState('')
-
+    const [budgetPercentage, setBudgetPercentage] = useState("")
+    const [remianingBudget, setRemianingBudget] = useState()
+    const [showUpdateBudge, setShowUpdateBudge] = useState(false)
     useEffect(() => {getMonthlyBudget()},[currentUser])
-
     async function getMonthlyBudget() {
         if(currentUser){
             const data = await getBudget(currentUser.uid);
             setMonthlyBudget(data);
           }
     }
+    useEffect(()=>{
+        if(parseFloat(monthlySpent) > parseFloat(monthlyBudget)){
+            setBudgetPercentage("100")
+            setRemianingBudget('0')
+        }
+        else{
+            const percentage = parseFloat(monthlySpent)/parseFloat(monthlyBudget)
+            setRemianingBudget((parseFloat(monthlyBudget) - parseFloat(monthlySpent)).toFixed(2))
+            setBudgetPercentage((percentage*100).toFixed(2))
+        }
+    },[monthlySpent,monthlyBudget])
 
-    const [showUpdateBudge, setShowUpdateBudge] = useState(false)
-
-
+    //saving goal
     const [savingGoal, setSavingGoal] = useState('')
+    const [savingsPercentage, setSavingsPercentage] = useState("")
+    const [showUpdateGoal, setShowUpdateGoal] = useState(false)
+
+    useEffect(() => {getSaving()},[currentUser])
+
+    async function getSaving(){
+        if(currentUser){
+            const data = await getSavingGoal(currentUser.uid);
+            setSavingGoal(data)
+        }
+    }
+
+    useEffect(()=>{
+        if(parseFloat(moneySave) > parseFloat(savingGoal)){
+            setSavingsPercentage("100")
+        }
+        else{
+            const percentage = parseFloat(moneySave)/parseFloat(savingGoal)
+            setSavingsPercentage((percentage*100).toFixed(2))
+        }
+    },[savingGoal,moneySave])
+
 
 
     return (
@@ -81,8 +131,15 @@ const TransTable = () => {
                 {/* From Flowbite, data cards */}
                 <span className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
                     onClick={() => setShowUpdateIncome(!showUpdateIncome)}>
-                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-darkblue dark:text-white">$ {monthlyIncome} <PencilSquareIcon className="w-5 h-5 inline-block" /></h5>
-                    <p className="font-normal text-gray-700 dark:text-gray-400 ">Monthly Income </p>
+                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-darkblue dark:text-white">Income: ${monthlyIncome} <PencilSquareIcon className="w-5 h-5 inline-block" /></h5>
+                    {/* <h6 className="font-normal text-gray-700 dark:text-gray-400 ">Monthly Income </h6> */}
+                    <div className="flex justify-between mb-1">
+                        <span className="text-base font-normal text-gray-700 dark:text-gray-400">Remaining : ${moneySave}</span>
+                        <span className="text-sm font-medium text-darkblue dark:text-white">{moneySavedPercentage}%</span>
+                    </div>
+                    <div className="w-full bg-lightblue rounded-full h-2.5 dark:bg-gray-900">
+                        <div className="bg-darkblue h-2.5 rounded-full dark:bg-green" style={{ width: `${moneySavedPercentage}%` }}></div>
+                    </div>
                     {showUpdateIncome && 
                         <UpdateIncome
                             showUpdateIncome = {showUpdateIncome}
@@ -99,8 +156,15 @@ const TransTable = () => {
             </div>
             <div>
                 <span className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" onClick={() => setShowUpdateBudge(!showUpdateBudge)}>
-                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-darkblue dark:text-white">{`$${(monthlyBudget - monthlySpent).toFixed(2)}`} <PencilSquareIcon className="w-5 h-5 inline-block" /></h5>
-                    <p className="font-normal text-gray-700 dark:text-gray-400">Remaining Budget</p>
+                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-darkblue dark:text-white">{`$${remianingBudget}`} <PencilSquareIcon className="w-5 h-5 inline-block" /></h5>
+{/*                     <p className="font-normal text-gray-700 dark:text-gray-400">Remaining Budget</p> */}
+                    <div className="flex justify-between mb-1">
+                        <span className="text-base font-normal text-gray-700 dark:text-gray-400">Budget: ${monthlyBudget}</span>
+                        <span className="text-sm font-medium text-darkblue dark:text-white">budget used: {budgetPercentage}%</span>
+                    </div>
+                    <div className="w-full bg-lightblue rounded-full h-2.5 dark:bg-gray-900">
+                        <div className="bg-darkblue h-2.5 rounded-full dark:bg-green" style={{ width: `${budgetPercentage}%` }}></div>
+                    </div>
                     {showUpdateBudge && <UpdateBudget
                         showUpdateBudge = {showUpdateBudge}
                         setShowUpdateBudge = {setShowUpdateBudge}
@@ -109,19 +173,24 @@ const TransTable = () => {
                 </span>
             </div>
             <div>
-                <a href="#" className="h-36 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-darkblue dark:text-white">$ 400</h5>
+                <span  onClick ={() => setShowUpdateGoal(!showUpdateGoal) } className="h-36 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-darkblue dark:text-white">Goal ${savingGoal} <PencilSquareIcon className="w-5 h-5 inline-block" /></h5>
                     {/* Flowbite Progress Bar */}
                     <div className="flex justify-between mb-1">
-                        <span className="text-base font-normal text-gray-700 dark:text-gray-400">Total Savings</span>
-                        <span className="text-sm font-medium text-darkblue dark:text-white">80%</span>
+                        <span className="text-base font-normal text-gray-700 dark:text-gray-400">Actual Saving: ${parseFloat(moneySave)> 0? moneySave : 0}</span>
+                        <span className="text-sm font-medium text-darkblue dark:text-white">{`${savingsPercentage}%`}</span>
                     </div>
                     <div className="w-full bg-lightblue rounded-full h-2.5 dark:bg-gray-900">
-                        <div className="bg-darkblue h-2.5 rounded-full dark:bg-green w-4/5"></div>
+                        <div className="bg-darkblue h-2.5 rounded-full dark:bg-green" style={{ width: `${savingsPercentage}%` }}></div>
                     </div>
-                    <p className="mt-1 text-right italic font-normal text-gray-400 dark:text-gray-400">$100 to goal!</p>
+                    <p className="mt-1 text-right italic font-normal text-gray-400 dark:text-gray-400">{`${savingsPercentage}% reaches your goal`}</p>
+                    <UpdateSavingGoal 
+                        showUpdateGoal ={showUpdateGoal}
+                        setShowUpdateGoal = {setShowUpdateGoal}
+                        setSavingGoal ={setSavingGoal}
+                    />
 
-                </a>
+                </span>
             </div>
         </div><div className="px-8 py-0 w-full overflow-x-auto">
                 <div className="mb-4 text-2xl font-semibold text-darkblue">Recent Activity</div>

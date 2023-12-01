@@ -17,7 +17,9 @@ export default function AddTransactionForm({fetchTransactions}) {
 
     useEffect(() => {
       let today = new Date().toLocaleString().split(',')[0]; 
-      const [month,day,year] = today.split('/')
+      let [month,day,year] = today.split('/')
+      day = day.toString().padStart(2, '0')
+      month = month.toString().padStart(2, '0')
       today = `${year}-${month}-${day}`
       setTransactionDate(today);
     }, []);
@@ -27,7 +29,8 @@ export default function AddTransactionForm({fetchTransactions}) {
     const addTransactions = (newDescription,newAmount,transactionDate) => {
         let today = new Date().toLocaleString().split(',')[0]; 
         // format the time that can be sorted in firebase
-        const [month,day,year] = today.split('/')
+        let [month,day,year] = today.split('/')
+        day = day.toString().padStart(2, '0')
         today = `${year}-${month}-${day}`
         const currentTime = new Date().toISOString().split('T')[1]
 

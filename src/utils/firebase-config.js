@@ -98,7 +98,6 @@ export async function upDdateIncome(userID,income)
   try{
     const q = query(collectionRef, where('userId', '==', userID))
     const docunmenet = await getDocs(q)
-    console.log(docunmenet.docs[0].id)
     if(!docunmenet.empty){
       const docID = docunmenet.docs[0].id
       await updateDoc(doc(collectionRef, docID),{
@@ -192,7 +191,7 @@ export async function upDateBudget(userID,budget)
   try{
     const q = query(collectionRef, where('userId', '==', userID))
     const docunmenet = await getDocs(q)
-    console.log(docunmenet.docs[0].id)
+    //console.log(docunmenet.docs[0].id)
     if(!docunmenet.empty){
       const docID = docunmenet.docs[0].id
       await updateDoc(doc(collectionRef, docID),{
