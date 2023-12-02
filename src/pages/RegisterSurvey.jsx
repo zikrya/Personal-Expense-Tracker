@@ -8,8 +8,8 @@ const RegisterSurvey = () => {
     useProtectedRoute();
 
     const navigate = useNavigate();
-    const { currentUser } = useAuth();
-    const [firstName, setfirstName] = useState('');
+    const { currentUser, setIsSurveyCompleted } = useAuth();
+    const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [college, setCollege] = useState('');
     const [graduationDate, setGraduationDate] = useState('');
@@ -54,34 +54,41 @@ const RegisterSurvey = () => {
     };
 
     if (hasCompletedSurvey) {
-        <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-500">
-            <p className="text-white">You have already completed the survey. Thank you!</p>
-        </div>
+        return (
+            <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-500">
+                <p className="text-white">You have already completed the survey. Thank you!</p>
+            </div>
+        );
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (!firstName || !lastName || !college || !graduationDate || !monthlyIncome || !moneySaved || !savingsGoal || budgetCategories.length === 0 || !maximumBudget || !phoneNumber || !notificationPreferences || !notificationMethod) {
+            alert('Please complete all fields before submitting.');
+            return;
+        }
+
         const surveyData = {
             userId: currentUser.uid,
-            firstName: firstName,
-            lastName: lastName,
-            college: college,
-            graduationDate: graduationDate,
-            monthlyIncome: monthlyIncome,
-            moneySaved: moneySaved,
-            savingsGoal: savingsGoal,
-            budgetCategories: budgetCategories,
-            maximumBudget: maximumBudget,
-            phoneNumber: phoneNumber,
-            notificationPreferences: notificationPreferences,
-            notificationMethod: notificationMethod
+            firstName,
+            lastName,
+            college,
+            graduationDate,
+            monthlyIncome,
+            moneySaved,
+            savingsGoal,
+            budgetCategories,
+            maximumBudget,
+            phoneNumber,
+            notificationPreferences,
+            notificationMethod
         };
 
         try {
             const docId = await saveSurveyData(surveyData);
             console.log("Document written with ID: ", docId);
-
+            setIsSurveyCompleted(true);
             navigate('/transtable');
         } catch (error) {
             console.error("Error adding document: ", error);
@@ -94,10 +101,8 @@ const RegisterSurvey = () => {
                 <label htmlFor="fname">First Name</label><br />
                 <input
                     type="text"
-                    id="fname"
-                    name="fname"
                     value={firstName}
-                    onChange={(e) => setfirstName(e.target.value)}
+                    onChange={(e) => setFirstName(e.target.value)}
                     className="mt-1 p-2 w-full border rounded-md mb-4"
                 />
                 <br />
