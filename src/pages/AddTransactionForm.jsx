@@ -44,7 +44,10 @@ export default function AddTransactionForm({fetchTransactions}) {
           addTransactionToDb(newTransaction) 
         }
         else if (today < transactionDate){
-          alert("Never know tomorrow ")
+          alert("The transaction date you entered is in the future. Please update the date to be today's date or before today")
+        }
+        else if((parseFloat(today.split('-')[0]) - parseFloat(transactionDate.split('-')[0])) >= 2){
+          alert(`The transaction date you entered is too old. Please update the date to be today's date or within ${parseFloat(today.split('-')[0])}- ${parseFloat(today.split('-')[0]) - 1}`)
         }
         else{
           const newTransaction = {
@@ -64,12 +67,23 @@ export default function AddTransactionForm({fetchTransactions}) {
 
     const handleSubmit = () => {
       setOpen(false);
-      if(newAmount){
+      if(newAmount && newDescription.length < 50 && newDescription.length > 0 ){
         const absAmount = Math.abs(parseFloat(newAmount).toFixed(2))
         addTransactions(newDescription,absAmount,transactionDate)
-      }else
+      }else if(newDescription.length > 50){
+        alert("Failed to add a new transaction, the description you entered is too long")
+        setNewDescription("")
+        setAmount("")
+      }else if(newDescription.length <= 0){
+        alert("Failed to add a new transaction, the description you entered is empty")
+        setNewDescription("")
+        setAmount("")
+      }
+      else 
       {
-        alert("fail to add new transaction, you didn't enter the new amount correctly")
+        alert("Failed to add the new transaction, the amount you entered was incorrectly entered. E.g 123.45")
+        setNewDescription("")
+        setAmount("")
       }
     }
 
