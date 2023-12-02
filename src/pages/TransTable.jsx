@@ -32,6 +32,7 @@ const TransTable = () => {
 
     // total spending 
     const [monthlySpent, setMonthSpent] = useState("")
+    const [lastMonthSpent, setLastMonthSpent] = useState("")
     useEffect(() =>{
         const y = new Date().getFullYear().toString(this)
         const m = (new Date().getMonth() + 1).toString(this)
@@ -44,6 +45,23 @@ const TransTable = () => {
         });
         setMonthSpent(sum.toFixed(2))
     },[transactionList])
+
+    useEffect(() =>{
+        const y = new Date().getFullYear().toString(this)
+        let m = (new Date().getMonth()).toString(this)
+        let sum = 0.0
+        if(m === '0'){
+            m = (new Date().getMonth() + 1).toString(this)
+        }
+        transactionList.filter(transcation => {
+          if(transcation.date.split('-')[0] === y && transcation.date.split('-')[1] === m)
+          {
+              sum = sum + parseFloat(transcation.amount)
+          }
+        });
+        setLastMonthSpent(sum.toFixed(2))
+    },[transactionList,currentUser])
+    
 
     //Income
     const [monthlyIncome, setMonthlyIncome] = useState("")
@@ -117,6 +135,9 @@ const TransTable = () => {
         if(parseFloat(moneySave) > parseFloat(savingGoal)){
             setSavingsPercentage("100")
         }
+        else if(parseFloat(moneySave) < 0){
+            setSavingsPercentage("0")
+        }
         else{
             const percentage = parseFloat(moneySave)/parseFloat(savingGoal)
             setSavingsPercentage((percentage*100).toFixed(2))
@@ -152,6 +173,7 @@ const TransTable = () => {
                 <a href="#" className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-darkblue dark:text-white">{`$${monthlySpent}`}</h5>
                     <p className="font-normal text-gray-700 dark:text-gray-400">Monthly Spent</p>
+                    <p className="font-normal text-gray-700 dark:text-gray-400">Last Month: ${lastMonthSpent}</p>
                 </a>
             </div>
             <div>
@@ -183,7 +205,7 @@ const TransTable = () => {
                     <div className="w-full bg-lightblue rounded-full h-2.5 dark:bg-gray-900">
                         <div className="bg-darkblue h-2.5 rounded-full dark:bg-green" style={{ width: `${savingsPercentage}%` }}></div>
                     </div>
-                    <p className="mt-1 text-right italic font-normal text-gray-400 dark:text-gray-400">{`${savingsPercentage}% reaches your goal`}</p>
+                    <p className="mt-1 text-right italic font-normal text-gray-400 dark:text-gray-400">{`${savingsPercentage}% to goal`}</p>
                     <UpdateSavingGoal 
                         showUpdateGoal ={showUpdateGoal}
                         setShowUpdateGoal = {setShowUpdateGoal}
