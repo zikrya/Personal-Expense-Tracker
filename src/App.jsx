@@ -9,19 +9,16 @@ import TransTable from './pages/TransTable';
 import NavBar from './components/NavBar';
 import Profile from './pages/Profile';
 import RegisterSurvery from './pages/RegisterSurvey';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Notification from './components/ToastifyNotif';
+
 
 function App() {
-	const notify = () => toast("This is a toast notification !");
 
   return (
     <AuthContextProvider>
     <div>
-    <div>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={notify}>Notify !</button>
-        <ToastContainer autoClose={2000} />
-      </div>
+    <Notification/>
+
     <Router>
     <NavBar />
           <Routes>
