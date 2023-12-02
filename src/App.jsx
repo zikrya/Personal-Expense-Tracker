@@ -9,16 +9,12 @@ import TransTable from './pages/TransTable';
 import NavBar from './components/NavBar';
 import Profile from './pages/Profile';
 import RegisterSurvery from './pages/RegisterSurvey';
-import Notification from './components/ToastifyNotif';
-
 
 function App() {
 
   return (
     <AuthContextProvider>
     <div>
-    <Notification/>
-
     <Router>
     <NavBar />
           <Routes>
