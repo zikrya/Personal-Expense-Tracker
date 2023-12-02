@@ -64,6 +64,11 @@ const RegisterSurvey = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (!firstName || !lastName || !college || !graduationDate || !monthlyIncome || !moneySaved || !savingsGoal || budgetCategories.length === 0 || !maximumBudget || !phoneNumber || !notificationPreferences || !notificationMethod) {
+            alert('Please complete all fields before submitting.');
+            return;
+        }
+
         const surveyData = {
             userId: currentUser.uid,
             firstName,
@@ -83,7 +88,7 @@ const RegisterSurvey = () => {
         try {
             const docId = await saveSurveyData(surveyData);
             console.log("Document written with ID: ", docId);
-            setIsSurveyCompleted(true);  // Update the survey completion status in AuthContext
+            setIsSurveyCompleted(true);
             navigate('/transtable');
         } catch (error) {
             console.error("Error adding document: ", error);
