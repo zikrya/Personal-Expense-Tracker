@@ -89,7 +89,7 @@ const TransTable = () => {
             console.error('Error fetching data:', error);
           });
         }
-      }, [currentUser]); // Dependencies array contains only currentUser    
+      }, [currentUser, transactionList]); // Dependencies array contains only currentUser    
 
     return (
         <><div className="px-8 pt-8 grid grid-cols-4 gap-5">
