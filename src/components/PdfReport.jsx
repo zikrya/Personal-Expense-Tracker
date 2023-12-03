@@ -20,16 +20,13 @@ const PdfReport = ({ currentUser }) => {
   const generatePdf = () => {
     const doc = new jsPDF();
 
-    // Add your PDF generation logic here using the transactions state
-
-    // Example: Add a title
     doc.setFontSize(18);
     doc.setTextColor(255, 255, 255);
-    doc.setFillColor(76, 175, 80); // Example RGB values
+    doc.setFillColor(76, 175, 80);
     doc.rect(0, 0, 210, 20, 'F');
     doc.text('WiseWallet', 105, 14, null, null, 'center');
 
-    // Example: Add transactions table
+
     const transactionRows = transactions.map(t => [
       t.description,
       `$${parseFloat(t.amount).toFixed(2)}`,
@@ -51,7 +48,7 @@ const PdfReport = ({ currentUser }) => {
   return (
     <div>
 <button
-  className="w-full h-20 text-blue-600 hover:text-blue-800 font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+  className="w-full h-20 text-blue-600 hover:text-blue-700 font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
   onClick={generatePdf}
 >
   Generate Monthly Report
