@@ -1,28 +1,28 @@
 import React from 'react'
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import {upDdateIncome} from '../utils/firebase-config'
+import {upDateBudget} from '../utils/firebase-config'
 import { useAuth } from "../context/AuthContext";
 
-const UpdateIncome = ({showUpdateIncome,setShowUpdateIncome,setMonthlyIncome}) => {
+const UpdateBudget = ({showUpdateBudge,setShowUpdateBudge,setMonthlyBudget}) => {
 
     const {currentUser} = useAuth();
-    const [newIncome, setNewIncome] = useState("") 
+    const [newBudget, setNewBudget] = useState("") 
 
-    const UpdateI = (Income) => {
+    const updateNewBudget = (Budget) => {
         if(currentUser){
-            upDdateIncome(currentUser.uid,Income)
-            setMonthlyIncome(Income)
+            upDateBudget(currentUser.uid,Budget)
+            setMonthlyBudget(Budget)
         }else{
             alert("You seem to be experiencing connection problems, please log in again!")
         }
     }
 
     const handleSubmit =() =>{
-        setShowUpdateIncome(false)
-        if(newIncome && parseFloat(newIncome) < 1000000000){
-            const absAmount = Math.abs(parseFloat(newIncome).toFixed(2))
-            UpdateI(absAmount)
+        setShowUpdateBudge(false)
+        if(newBudget && parseFloat(newBudget) < 1000000000){
+            const absAmount = Math.abs(parseFloat(newBudget).toFixed(2))
+            updateNewBudget(absAmount)
         }else
         {
           alert("The amount you entered was inputted incorrectly, please enter the range between 0 - 1 billion")
@@ -31,8 +31,8 @@ const UpdateIncome = ({showUpdateIncome,setShowUpdateIncome,setMonthlyIncome}) =
     }
 
     return (
-        <Transition.Root show={showUpdateIncome} as={Fragment} >
-            <Dialog as="div" className="relative z-10" onClose={() => setShowUpdateIncome(!showUpdateIncome)} >
+        <Transition.Root show={showUpdateBudge} as={Fragment} >
+            <Dialog as="div" className="relative z-10" onClose={() => setShowUpdateBudge(!showUpdateBudge)} >
             <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
                 <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
             </Transition.Child>
@@ -44,18 +44,18 @@ const UpdateIncome = ({showUpdateIncome,setShowUpdateIncome,setMonthlyIncome}) =
                         <div className="sm:flex sm:items-start">
                             <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full sm:w-auto">
                                 <Dialog.Title as="h1" className="text-xl font-bold leading-10 text-green pb-2 ">
-                                    Update Income
+                                    Update Budget
                                 </Dialog.Title>
                                 <div className="flex items-center">
                                     <label htmlFor="income" className="w-1/3 pr-4 text-right text-gray-900">
-                                        Income
+                                        Amount
                                     </label>
                                     <input
                                         type="number"
                                         name="Income"
                                         id="Income"
-                                        value={newIncome}
-                                        onChange={(e)=>setNewIncome(e.target.value)}
+                                        value={newBudget}
+                                        onChange={(e)=>setNewBudget(e.target.value)}
                                         className="w-2/3 rounded-md border-0 py-1.5 pl-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         required
                                     />
@@ -69,7 +69,7 @@ const UpdateIncome = ({showUpdateIncome,setShowUpdateIncome,setMonthlyIncome}) =
                             Update 
                         </button>
                         <button type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                        onClick={() => setShowUpdateIncome(false)}>
+                        onClick={() => setShowUpdateBudge(false)}>
                             Cancel
                         </button>
                     </div>
@@ -82,4 +82,4 @@ const UpdateIncome = ({showUpdateIncome,setShowUpdateIncome,setMonthlyIncome}) =
       )
 }
 
-export default UpdateIncome
+export default UpdateBudget
