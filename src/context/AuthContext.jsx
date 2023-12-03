@@ -1,24 +1,22 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../utils/firebase-config";
 import { createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { getDatabase, ref, get } from "firebase/database";
+import { collection, query, where, getDocs, getFirestore, doc } from 'firebase/firestore'; // Import Firestore functions
 
 const checkSurveyCompletion = async (userId) => {
-    const checkSurveyCompletion = async (userId) => {
-        const database = getDatabase();
-        try {
-            const surveyRef = ref(database, `users/${userId}/hasCompletedSurvey`);
-            const snapshot = await get(surveyRef);
-            if (snapshot.exists()) {
-                return snapshot.val() === "true"; // Assuming the value is a string "true" when completed
-            } else {
-                return false; // Survey not completed if there's no data
-            }
-        } catch (error) {
-            console.error("Error checking survey completion: ", error);
-            return false; // Assume not completed in case of error
-        }
-    };
+    const db = getFirestore();
+    const collectionRef = collection(db, 'surveys'); 
+    try {
+        console.log("INSIDE TRY STATEMENT")
+
+        const q = query(collectionRef, where('userId', '==', userId))
+        const querySnapshot = await getDocs(q)
+        console.log("SURVEY COMPLETED BEFORE")
+        return !querySnapshot.empty;
+    } catch (error) {
+        console.error("Error checking survey completion: ", error);
+        return false; // Assume not completed in case of error
+    }
 };
 
 const AuthContext = createContext({
