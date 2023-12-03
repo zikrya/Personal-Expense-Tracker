@@ -24,7 +24,7 @@ const MockLoginScreen = () => {
 
 describe("addtrans page screen", () => {
     describe("Visible components on load", () => {
-        test("render addtrans button", async () => {
+        test("render addtrans", async () => {
             render(<MockLoginScreen/>);
 
             const addButton = screen.getByTestId("add-trans-button");
