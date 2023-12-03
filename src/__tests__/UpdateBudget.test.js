@@ -21,7 +21,7 @@ const MockLoginScreen = () => {
     );
 };
 
-describe("update box", () => {
+describe("updateBudget box", () => {
     describe("visible components on load", () => {
         test("render update budget", () => {
             render(<MockLoginScreen/>);
