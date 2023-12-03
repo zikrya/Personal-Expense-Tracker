@@ -1,111 +1,101 @@
-import React from 'react'
+import { useProtectedRoute } from "../components/useProtectedRoute";
+import React from 'react';
+import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ApexCharts from "apexcharts";
-
-
-    // const { currentUser, logout } = useAuth();
-    // const navigate = useNavigate();
-
-    // const handleLogout = async () => {
-    //     try {
-    //         await logout();
-    //         navigate("/");
-    //     } catch (err) {
-    //         console.error("Error logging out:", err);
-    //     }
-    // };}
-
-window.addEventListener("load", function() {
-        let options = {
-          chart: {
-            height: "100%",
-            width: "200%",
-            type: "line",
-            fontFamily: "Inter, sans-serif",
-            dropShadow: {
-              enabled: false,
-            },
-            toolbar: {
-              show: false,
-            },
-          },
-          tooltip: {
-            enabled: true,
-            x: {
-              show: false,
-            },
-          },
-          dataLabels: {
-            enabled: false,
-          },
-          stroke: {
-            width: 6,
-          },
-          grid: {
-            show: true,
-            strokeDashArray: 4,
-            padding: {
-              left: 2,
-              right: 2,
-              top: -26
-            },
-          },
-          series: [
-            {
-              name: "Planned Budget",
-              data: [6500, 6418, 6456, 6526, 6356, 6456],
-              color: "#D6EBFF",
-            },
-            {
-              name: "Actual Spent",
-              data: [6456, 6356, 6526, 6332, 6418, 6500],
-              color: "#D3F6DB",
-            },
-          ],
-          legend: {
-            show: false
-          },
-          stroke: {
-            curve: 'smooth'
-          },
-          xaxis: {
-            categories: ['01 Feb', '02 Feb', '03 Feb', '04 Feb', '05 Feb', '06 Feb', '07 Feb'],
-            labels: {
-              show: true,
-              style: {
-                fontFamily: "Inter, sans-serif",
-                cssclassName: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
-              }
-            },
-            axisBorder: {
-              show: false,
-            },
-            axisTicks: {
-              show: false,
-            },
-          },
-          yaxis: {
-            show: false,
-          },
-        }
-    
-        if (document.getElementById("line-chart") && typeof ApexCharts !== 'undefined') {
-          const chart = new ApexCharts(document.getElementById("line-chart"), options);
-          chart.render();
-        }
-       
-    }
-  
-    );
+import {getTransactionFromDB } from '../utils/firebase-config';
+import { useState,useEffect } from "react";
+import {getSurveyDB} from '../utils/firebase-config';
+//planned buget vs total spending 
+window.addEventListener("load", function() { });
 const LineChart = () => {
-    const navigate = useNavigate();
-    const colors = {
-        paleGreen: "#D3F6DB",
-        green: "#5B8260",
-        darkGreen: "#182825",
-        navy: "#1F2937",
-        lightBlue: "#D6EBFF"
-    };
+  useProtectedRoute();
+  const { currentUser} = useAuth();
+
+  useEffect(() => {fetchTransactions()},[currentUser])
+  useEffect(() => {fetchSurvey()},[currentUser])
+  async function fetchTransactions() {
+    if(currentUser){
+      const data = await getTransactionFromDB(currentUser.uid);
+      setTransactionList(data);
+    }
+  }
+  async function fetchSurvey() {
+    if(currentUser){
+      const surveyData = await getSurveyDB(currentUser.uid);
+      setSurvey(surveyData);
+    }
+  }
+
+  const [transactionList, setTransactionList] = useState([]);
+  const [survey, setSurvey] = useState([]);
+  const navigate = useNavigate();
+  //const dates = transactionList.map(transaction => transaction.date);
+const revTrans = transactionList.slice().reverse();
+const numbSurvey = Number(survey.maximumBudget);
+// const dates = revTrans.map(transaction => {
+//   return new Date(transaction.date);
+// });
+
+// const dates = revTrans.map(transaction => {
+//   const dateObj = new Date(transaction.date);
+//   const options = {year: 'numeric', month: 'long', day: 'numeric' };
+//   return dateObj.toLocaleDateString('en-US', options);
+// });
+
+const dates = revTrans.map(transaction => {
+  const dateObj = new Date(transaction.date);
+  dateObj.setDate(dateObj.getDate() + 1); // Adding one day to adjust
+
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return dateObj.toLocaleDateString('en-US', options);
+});
+
+
+const amount = revTrans.map(transaction => {
+ //console.log(transaction)
+  return transaction.amount;
+});
+
+//  const budget = survey.map(survey => {
+//   console.log(survey.maximumBudget);
+//   return parseInt(survey[0].maximumBudget);
+// });
+
+// function budget(survey) {
+//   return parseInt(survey.maximumBudget); // Return a default value if surveyData doesn't contain valid data
+// }
+
+// const budget = revTrans.map(survey => {
+const budget = revTrans.map(() => {
+  // Assuming survey contains data
+  console.log(numbSurvey);
+    // Retrieve the maximumBudget for each element in transactionList
+    return numbSurvey; 
+});
+
+
+const accumulatedByDate = transactionList.reduce((accumulator, transaction) => {
+  const { date, amount } = transaction;
+  // If the date doesn't exist in accumulator, create it and initialize with 0
+  accumulator[date] = (accumulator[date] || 0) + amount;
+  return accumulator;
+}, {});
+
+// Calculate accumulated amounts considering previous dates
+const accumulatedWithPrevious = Object.entries(accumulatedByDate).reduce(
+  (accumulator, [date, amount]) => {
+    const previousTotal = accumulator.length > 0 ? accumulator[accumulator.length - 1] : 0;
+    accumulator.push(previousTotal + amount);
+    return accumulator;
+  },
+  []
+);
+const keys = Object.keys(accumulatedWithPrevious);
+const lastKey = keys[keys.length-1];
+const lastValue = accumulatedWithPrevious[lastKey];
+
+
 
     const YourComponent = () => {
         const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -117,6 +107,98 @@ const LineChart = () => {
         const closeDropdown = () => {
           setIsDropdownOpen(false);
     }};
+    const options = {
+      chart: {
+        height: "100%",
+        width: "200%",
+        type: "line",
+        fontFamily: "Inter, sans-serif",
+        dropShadow: {
+          enabled: true,
+        },
+        toolbar: {
+          show: false,
+        },
+      },
+      tooltip: {
+        enabled: true,
+        x: {
+          show: false,
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        width: 6,
+      },
+      grid: {
+        show: true,
+        strokeDashArray: 4,
+        padding: {
+          left: 2,
+          right: 2,
+          top: -26
+        },
+      },
+      series: [
+        {
+          name: "Total Spent up to Date",
+          data: accumulatedWithPrevious,
+          color: "#D3F6DB",
+        },
+        {
+          name: "Monthly Budget",
+          //data: [400,400,400,400,400],
+          data: budget,
+          color: "#182825",
+        },
+        {
+          name: "Actual Spent on Date",
+          data: amount,
+          color: "#D6EBFF",
+        },
+      ],
+      legend: {
+        show: true
+      },
+      stroke: {
+        curve: 'smooth'
+      },
+      xaxis: {
+        categories: dates,
+       // categories:[1,2,3,4,5,6,7],
+        labels: {
+          show: true,
+          style: {
+            fontFamily: "Inter, sans-serif",
+            cssclassName: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+          }
+        },
+        axisBorder: {
+          show: false,
+        },
+        axisTicks: {
+          show: false,
+        },
+      },
+      yaxis: {
+        show: false,
+      },
+    }
+
+    if (document.getElementById("line-chart") && typeof ApexCharts !== 'undefined') {
+      const chart = new ApexCharts(document.getElementById("line-chart"), options);
+      chart.render();
+    }
+
+    const colors = {
+      paleGreen: "#D3F6DB",
+      green: "#5B8260",
+      darkGreen: "#182825",
+      navy: "#1F2937",
+      lightBlue: "#D6EBFF"
+  };
     return(
         <div className="max-w-max w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
   <div className="flex justify-between mb-1">
@@ -142,7 +224,7 @@ const LineChart = () => {
         <p className="text-gray-900 dark:text-white text-2xl leading-none font-bold">$400</p>
       </div>
       <div>
-        <h5 className="inline-flex items-center text-gray-500 dark:text-gray-400 leading-none font-normal mb-2">Actual Spent
+        <h5 className="inline-flex items-center text-gray-500 dark:text-gray-400 leading-none font-normal mb-2">Total Spent
         <svg data-popover-target="cpc-info" data-popover-placement="bottom" className="w-3 h-3 text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
           </svg>
@@ -159,7 +241,7 @@ const LineChart = () => {
               <div data-popper-arrow></div>
           </div>
         </h5>
-        <p className="text-gray-900 dark:text-white text-2xl leading-none font-bold">$100</p>
+        <p className="text-gray-900 dark:text-white text-2xl leading-none font-bold">${lastValue}</p>
       </div>
     </div>
     <div>

@@ -1,81 +1,135 @@
-import React from "react";
-import ApexCharts from "apexcharts";
 import { useProtectedRoute } from "../components/useProtectedRoute";
+import React from 'react';
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import ApexCharts from "apexcharts";
+import {getTransactionFromDB } from '../utils/firebase-config';
+import { useState,useEffect } from "react";
 
-window.addEventListener("load", function() {
-    const getChartOptions = () => {
-        return {
-          series: [52.8, 26.8, 20.4],
-          colors: ["#5B8260", "#1F2937", "#182825"],
-          chart: {
-            height: 420,
-            width: "100%",
-            type: "pie",
-          },
-          stroke: {
-            colors: ["white"],
-            lineCap: "",
-          },
-          plotOptions: {
-            pie: {
-              labels: {
-                show: true,
-              },
-              size: "100%",
-              dataLabels: {
-                offset: -25
-              }
-            },
-          },
-          labels: ["Rent", "Supplies", "Food"],
-          dataLabels: {
-            enabled: true,
-            style: {
-              fontFamily: "Inter, sans-serif",
-            },
-          },
-          legend: {
-            position: "bottom",
-            fontFamily: "Inter, sans-serif",
-          },
-          yaxis: {
-            labels: {
-              formatter: function (value) {
-                return value + "%"
-              },
-            },
-          },
-          xaxis: {
-            labels: {
-              formatter: function (value) {
-                return value  + "%"
-              },
-            },
-            axisTicks: {
-              show: false,
-            },
-            axisBorder: {
-              show: false,
-            },
-          },
-        }
-      }
-
-      if (document.getElementById("pie-chart") && typeof ApexCharts !== 'undefined') {
-        const chart = new ApexCharts(document.getElementById("pie-chart"), getChartOptions());
-        chart.render();
-      }
-  });
+window.addEventListener("load", function() {});
 
 const PieChart = () => {
-    
+  useProtectedRoute();
+  const { currentUser} = useAuth();
+
+  useEffect(() => {fetchTransactions()},[currentUser])
+  async function fetchTransactions() {
+    if(currentUser){
+      const data = await getTransactionFromDB(currentUser.uid);
+      setTransactionList(data);
+    }
+  }
+  const [transactionList, setTransactionList] = useState([]);
+  const navigate = useNavigate();
+
+  const categoryTotals = transactionList.reduce((totals, transaction) => {
+    const { description, amount } = transaction;
+    totals[description] = (totals[description] || 0) + amount;
+    return totals;
+  }, {});
+  
+  // Step 2: Calculate the total sum of all categories
+  const totalSum = Object.values(categoryTotals).reduce((sum, amount) => sum + amount, 0);
+  
+  // Step 3: Calculate percentages for each category
+  const categoryPercentages = Object.keys(categoryTotals).map(description => {
+    const percentage = (categoryTotals[description] / totalSum) * 100;
+    return { description, percentage };
+  });
+  
+  // Step 4: Sort categories based on percentages
+  categoryPercentages.sort((a, b) => b.percentage - a.percentage);
+  
+  // Step 5: Get the top 4 categories by percentage
+  const top4Categories = categoryPercentages.slice(0, 4);
+
+  const top4CategoryStrings = top4Categories.map((description, index) => {
+    return `${index + 1}: ${description.percentage.toFixed(2)}`;
+  });
+  const numbers = top4CategoryStrings.map((str) => {
+    // Split each string by ':' and take the second part, then convert it to a floating-point number
+    return parseFloat(str.split(': ')[1]);
+  });
+
+  const top4Category = top4Categories.map((description, index) => {
+    return `Category ${index + 1}: ${description.description} `;
+  });
+
+  const getChartOptions = () => {
+    return {
+      series: numbers,
+      colors: ["#D3F6DB","#5B8260", "#1F2937", "#D6EBFF"],
+      chart: {
+        height: 420,
+        width: "100%",
+        type: "pie",
+      },
+      stroke: {
+        colors: ["white"],
+        lineCap: "",
+      },
+      plotOptions: {
+        pie: {
+          labels: {
+            show: true,
+          },
+          size: "100%",
+          dataLabels: {
+            offset: -25
+          }
+        },
+      },
+      labels: top4Category,
+      dataLabels: {
+        enabled: true,
+        style: {
+          fontFamily: "Inter, sans-serif",
+        },
+      },
+      legend: {
+        position: "bottom",
+        fontFamily: "Inter, sans-serif",
+      },
+      yaxis: {
+        labels: {
+          formatter: function (value) {
+            return value + "%"
+          },
+        },
+      },
+      xaxis: {
+        labels: {
+          formatter: function (value) {
+            return value  + "%"
+          },
+        },
+        axisTicks: {
+          show: false,
+        },
+        axisBorder: {
+          show: false,
+        },
+      },
+    }
+  }
+
+  if (document.getElementById("pie-chart") && typeof ApexCharts !== 'undefined') {
+    const chart = new ApexCharts(document.getElementById("pie-chart"), getChartOptions());
+    chart.render();
+  }
+  const colors = {
+    paleGreen: "#D3F6DB",
+    green: "#5B8260",
+    darkGreen: "#182825",
+    navy: "#1F2937",
+    lightBlue: "#D6EBFF"
+};
     return ( 
         <div className="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
             <div className="flex justify-between items-start w-full">
                 <div className="flex-col items-center">
                     <div className="flex items-center mb-1">
-                        <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white mr-1">Category Breakdown</h5>
+                        <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white mr-1">Top 4 Category Breakdown</h5>
                         
                         <div data-popover id="chart-info" role="tooltip" className="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
                             <div className="p-3 space-y-2">

@@ -1,16 +1,48 @@
-import React from 'react'
+import { useProtectedRoute } from "../components/useProtectedRoute";
+import React from 'react';
+import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ApexCharts from "apexcharts";
+import {getTransactionFromDB } from '../utils/firebase-config';
+import { useState,useEffect } from "react";
 
-window.addEventListener("load", function () {
-  let options = {
+window.addEventListener("load", function () {});
+const AreaChart = () => {
+  useProtectedRoute();
+  const { currentUser} = useAuth();
+
+  useEffect(() => {fetchTransactions()},[currentUser])
+  async function fetchTransactions() {
+    if(currentUser){
+      const data = await getTransactionFromDB(currentUser.uid);
+      setTransactionList(data);
+    }
+  }
+  const [transactionList, setTransactionList] = useState([]);
+  const navigate = useNavigate();
+  //const dates = transactionList.map(transaction => transaction.date);
+const revTrans = transactionList.slice().reverse();
+  // Assuming transactionList contains objects with a 'date' property as strings in a certain format
+const dates = revTrans.map(transaction => {
+  // Convert the date string to a JavaScript Date object
+ 
+  return new Date(transaction.date);
+});
+
+const amount = transactionList.map(transaction => {
+  // Convert the date string to a JavaScript Date object
+ console.log(transaction)
+  return transaction.amount;
+});
+
+  const options = {
     chart: {
       height: "100%",
       width: "100%",
       type: "area",
       fontFamily: "Inter, sans-serif",
       dropShadow: {
-        enabled: false,
+        enabled: true,
       },
       toolbar: {
         show: false,
@@ -49,13 +81,15 @@ window.addEventListener("load", function () {
     series: [
       {
         name: "Amount Saved",
-        data: [6500, 6418, 6456, 6526, 6356, 6456],
+        //data: [6500, 6418, 6456, 6526, 6356, 6456],
+        data: amount,
         color: "#D6EBFF",
       },
     ],
     xaxis: {
-      categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February'],
-      labels: {
+    // categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February'],
+     categories: dates,
+     labels: {
         show: false,
       },
       axisBorder: {
@@ -74,10 +108,6 @@ window.addEventListener("load", function () {
     const chart = new ApexCharts(document.getElementById("area-chart"), options);
     chart.render();
   }
-}
-);
-const AreaChart = () => {
-  const navigate = useNavigate();
   const colors = {
     paleGreen: "#D3F6DB",
     green: "#5B8260",
@@ -154,5 +184,9 @@ const AreaChart = () => {
       </div>
     </div>
   )
+//})}
 }
+
+
+
 export default AreaChart

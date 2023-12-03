@@ -93,3 +93,20 @@ export async function saveUserData(uid, data) {
   }
 }
 
+export async function getSurveyDB(userID) {
+  const collectionRef = collection(firestore, 'surveys'); 
+  let trans = [];
+  try{
+     const q = query(collectionRef, where('userID', '==', userID));
+     const querySnapshot = await getDocs(q);
+     querySnapshot.forEach((doc) => {
+        const data = doc.data()
+        const id = doc.id;
+        trans.push({...data, id});
+      });
+  }catch(error){
+    console.log(error)
+  }
+
+  return trans
+}
