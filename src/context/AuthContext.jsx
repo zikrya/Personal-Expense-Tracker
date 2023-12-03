@@ -19,7 +19,7 @@ const checkSurveyCompletion = async (userId) => {
     }
 };
 
-const AuthContext = createContext({
+export const AuthContext = createContext({
     currentUser: null,
     isSurveyCompleted: false,
     register: () => Promise,

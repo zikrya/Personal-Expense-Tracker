@@ -96,11 +96,14 @@ const RegisterSurvey = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-lightblue pt-10 pb-10">
-            <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
+        <div className="flex justify-center items-center min-h-screen bg-lightblue pt-10 pb-10" data-testid= "survey-page">
+            <form data-testid= "survey" onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
                 <label htmlFor="fname">First Name</label><br />
                 <input
                     type="text"
+                    id="fname"
+                    name="fname"
+                    data-testid= "fname"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     className="mt-1 p-2 w-full border rounded-md mb-4"
@@ -110,7 +113,8 @@ const RegisterSurvey = () => {
                 <input
                     type="text"
                     id="fname"
-                    name="fname"
+                    data-testid= "lname"
+                    name="lname"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     className="mt-1 p-2 w-full border rounded-md mb-4"
@@ -120,6 +124,7 @@ const RegisterSurvey = () => {
                 <input
                     type="text"
                     id="college"
+                    data-testid= "college"
                     name="college"
                     value={college}
                     onChange={(e) => setCollege(e.target.value)}
@@ -130,6 +135,7 @@ const RegisterSurvey = () => {
                 <input
                     type="date"
                     id="graduationDate"
+                    data-testid= "graduationDate"
                     name="graduationDate"
                     value={graduationDate}
                     onChange={(e) => setGraduationDate(e.target.value)}
@@ -140,6 +146,7 @@ const RegisterSurvey = () => {
                 <input
                     type="number"
                     id="monthlyIncome"
+                    data-testid= "monthlyIncome"
                     name="monthlyIncome"
                     value={monthlyIncome}
                     onChange={(e) => setMonthlyIncome(e.target.value)}
@@ -150,6 +157,7 @@ const RegisterSurvey = () => {
                 <input
                     type="number"
                     id="moneySaved"
+                    data-testid= "moneySaved"
                     name="moneySaved"
                     value={moneySaved}
                     onChange={(e) => setMoneySaved(e.target.value)}
@@ -160,6 +168,7 @@ const RegisterSurvey = () => {
                 <input
                     type="number"
                     id="savingsGoal"
+                    data-testid= "savingsGoal"
                     name="savingsGoal"
                     value={savingsGoal}
                     onChange={(e) => setSavingsGoal(e.target.value)}
@@ -172,6 +181,7 @@ const RegisterSurvey = () => {
                         <label key={category} className="inline-flex items-center mt-3">
                             <input
                                 type="checkbox"
+                                data-testid={category}
                                 value={category}
                                 checked={budgetCategories.includes(category)}
                                 onChange={(e) => handleCheckboxChange(e, setBudgetCategories, category)}
@@ -187,6 +197,7 @@ const RegisterSurvey = () => {
                 <input
                     type="number"
                     id="maximumBudget"
+                    data-testid="maximumBudget"
                     name="maximumBudget"
                     value={maximumBudget}
                     onChange={(e) => setMaximumBudget(e.target.value)}
@@ -204,7 +215,7 @@ const RegisterSurvey = () => {
                 />
                 <br />
                 <label>Notification Preferences</label><br />
-                <select id="notifications" name="notifications" onChange={(e) => setNotificationPreferences(e.target.value)} className="mt-1 p-2 w-full border rounded-md mb-4">
+                <select id="notifications" data-testid="notifications" name="notifications" onChange={(e) => setNotificationPreferences(e.target.value)} className="mt-1 p-2 w-full border rounded-md mb-4">
                     <option value="">--Please choose an option--</option>
                     <option value="Daily">Daily</option>
                     <option value="Weekly">Weekly</option>
@@ -217,6 +228,7 @@ const RegisterSurvey = () => {
                         <label>Notification Method</label><br />
                         <select
                             id="notificationMethod"
+                            data-testid="notificationMethod"
                             name="notificationMethod"
                             value={notificationMethod}
                             onChange={(e) => setNotificationMethod(e.target.value === "None" ? false : e.target.value)}
