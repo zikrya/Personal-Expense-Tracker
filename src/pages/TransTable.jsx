@@ -148,6 +148,10 @@ const TransTable = () => {
     useEffect(() => {
         if (parseFloat(moneySave) > parseFloat(savingGoal)) {
             setSavingsPercentage("100")
+            // toast 
+            toast("Congratulations! You have met your savings goal.", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
         }
         else if (parseFloat(moneySave) < 0) {
             setSavingsPercentage("0")
