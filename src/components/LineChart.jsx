@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import ApexCharts from "apexcharts";
 import {getTransactionFromDB,getBudget } from '../utils/firebase-config';
 import { useState,useEffect } from "react";
-//planned budget vs total spending 
+//planned budget vs total spending accumulated by each date 
 window.addEventListener("load", function() { });
 const LineChart = () => {
   //useProtectedRoute();
@@ -26,19 +26,19 @@ const LineChart = () => {
 const revTrans = transactionList.slice().reverse();
 const dates = revTrans.map(transaction => {
   const dateObj = new Date(transaction.date);
-  dateObj.setDate(dateObj.getDate() + 1); // Adding one day to adjust
+  dateObj.setDate(dateObj.getDate()); // Adding one day to adjust
 
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   return dateObj.toLocaleDateString('en-US', options);
 });
 
 
-const amount = revTrans.map(transaction => {
+const amount = transactionList.map(transaction => {
  //console.log(transaction)
   return transaction.amount;
 });
 
-//monthly Budget
+//to return monthly Budget --> single value! 
 const [monthlyBudget, setMonthlyBudget] = useState('')
 useEffect(() => {getMonthlyBudget()},[currentUser])
 async function getMonthlyBudget() {
@@ -47,12 +47,12 @@ async function getMonthlyBudget() {
         setMonthlyBudget(data);
       }
 }
-// const budget = revTrans.map(survey => {
+//map over the transactions and place the monthly budget 
 const budget = revTrans.map(() => {
     return monthlyBudget;
 });
 
-
+// show amount and date 
 const accumulatedByDate = transactionList.reduce((accumulator, transaction) => {
   const { date, amount } = transaction;
   // If the date doesn't exist in accumulator, create it and initialize with 0
@@ -69,19 +69,10 @@ const accumulatedWithPrevious = Object.entries(accumulatedByDate).reduce(
   },
   []
 );
+//find last accumualtion = total spending
 const keys = Object.keys(accumulatedWithPrevious);
 const lastKey = keys[keys.length-1];
 const lastValue = accumulatedWithPrevious[lastKey];
-
-//amount saved 
-const amountSaved = Object.entries(accumulatedWithPrevious).reduce(
-  (accumulator, [date, amount]) => {
-    const previousTotal = accumulator.length > 0 ? accumulator[accumulator.length - 1] : 0;
-    accumulator.push(previousTotal + amount);
-    return accumulator - monthlyBudget;
-  },
-  []
-);
 
     const YourComponent = () => {
         const [isDropdownOpen, setIsDropdownOpen] = useState(false);

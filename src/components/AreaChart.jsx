@@ -1,9 +1,9 @@
-//import { useProtectedRoute } from "../components/useProtectedRoute";
+import { useProtectedRoute } from "../components/useProtectedRoute";
 import React from 'react';
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ApexCharts from "apexcharts";
-import {getTransactionFromDB,getBudget } from '../utils/firebase-config';
+import {getTransactionFromDB,getBudget, getSavingGoal } from '../utils/firebase-config';
 import { useState,useEffect } from "react";
 
 window.addEventListener("load", function () {});
@@ -23,19 +23,14 @@ const AreaChart = () => {
 
 
 //   //monthly Budget
-// const [monthlyBudget, setMonthlyBudget] = useState('')
-// useEffect(() => {getMonthlyBudget()},[currentUser])
-// async function getMonthlyBudget() {
-//     if(currentUser){
-//         const data = await getBudget(currentUser.uid);
-//         setMonthlyBudget(data);
-//       }
-// }
-// // const budget = revTrans.map(survey => {
-// const budget = revTrans.map(() => {
-//     return monthlyBudget;
-// });
-  //const dates = transactionList.map(transaction => transaction.date);
+const [monthlyBudget, setMonthlyBudget] = useState('')
+useEffect(() => {getMonthlyBudget()},[currentUser])
+async function getMonthlyBudget() {
+    if(currentUser){
+        const data = await getBudget(currentUser.uid);
+        setMonthlyBudget(data);
+      }
+ }
 const revTrans = transactionList.slice().reverse();
   // Assuming transactionList contains objects with a 'date' property as strings in a certain format
 const dates = revTrans.map(transaction => {
@@ -50,35 +45,54 @@ const amount = transactionList.map(transaction => {
   return transaction.amount;
 });
 
-// const accumulatedByDate = transactionList.reduce((accumulator, transaction) => {
-//   const { date, amount } = transaction;
-//   // If the date doesn't exist in accumulator, create it and initialize with 0
-//   accumulator[date] = (accumulator[date] || 0) + amount;
-//   return accumulator;
-// }, {});
+const accumulatedByDate = transactionList.reduce((accumulator, transaction) => {
+  const { date, amount } = transaction;
+  // If the date doesn't exist in accumulator, create it and initialize with 0
+  accumulator[date] = (accumulator[date] || 0) + amount;
+  return accumulator;
+}, {});
 
-// // Calculate accumulated amounts considering previous dates
-// const accumulatedWithPrevious = Object.entries(accumulatedByDate).reduce(
-//   (accumulator, [date, amount]) => {
-//     const previousTotal = accumulator.length > 0 ? accumulator[accumulator.length - 1] : 0;
-//     accumulator.push(previousTotal + amount);
-//     return accumulator;
-//   },
-//   []
-// );
-// const keys = Object.keys(accumulatedWithPrevious);
-// const lastKey = keys[keys.length-1];
-// const lastValue = accumulatedWithPrevious[lastKey];
+// Calculate accumulated amounts considering previous dates
+const accumulatedWithPrevious = Object.entries(accumulatedByDate).reduce(
+  (accumulator, [date, amount]) => {
+    const previousTotal = accumulator.length > 0 ? accumulator[accumulator.length - 1] : 0;
+    accumulator.push(previousTotal + amount);
+    return accumulator;
+  },
+  []
+);
+const keys = Object.keys(accumulatedWithPrevious);
+const lastKey = keys[keys.length-1];
+const lastValue = accumulatedWithPrevious[lastKey];
 
-// //amount saved 
-// const amountSaved = Object.entries(accumulatedWithPrevious).reduce(
-//   (accumulator, [date, amount]) => {
-//     const previousTotal = accumulator.length > 0 ? accumulator[accumulator.length - 1] : 0;
-//     accumulator.push((previousTotal + amount)-monthlyBudget);
-//     return accumulator;
-//   },
-//   []
-// );
+//amount saved = monthlyBudget-amountSpent
+const amountSaved = Object.entries(accumulatedWithPrevious).reduce(
+  (accumulator, [date, amount]) => {
+    accumulator.push(monthlyBudget-amount);
+    return accumulator ;
+  },
+  []
+);
+
+const savingsKeys = Object.keys(amountSaved);
+const lastSavingsKey = savingsKeys[savingsKeys.length-1];
+const lastSavingsValue = amountSaved[lastSavingsKey];
+
+//savings goal
+const [savingGoal, setSavingGoal] = useState('')
+useEffect(() => {getSaving()},[currentUser])
+
+async function getSaving(){
+    if(currentUser){
+        const data = await getSavingGoal(currentUser.uid);
+        setSavingGoal(data)
+    }
+}
+//calculate percentage towards savings goal vs current saved
+const percentageSaved = (((lastSavingsValue - savingGoal) / savingGoal)* 100).toFixed(2);
+ //const percentageSaved= savingGoal;
+
+console.log(amountSaved);
 
   const options = {
     chart: {
@@ -127,7 +141,7 @@ const amount = transactionList.map(transaction => {
       {
         name: "Amount Saved",
         //data: [6500, 6418, 6456, 6526, 6356, 6456],
-        data: amount,
+        data: amountSaved,
         color: "#D6EBFF",
       },
     ],
@@ -164,12 +178,12 @@ const amount = transactionList.map(transaction => {
     <div className="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
       <div className="flex justify-between">
         <div>
-          <h5 className="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">$500</h5>
+          <h5 className="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">${lastSavingsValue}</h5>
           <p className="text-base font-normal text-gray-500 dark:text-gray-400">Amount Saved</p>
         </div>
         <div
           className="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-          12%
+          {percentageSaved}%
           <svg className="w-3 h-3 ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
           </svg>

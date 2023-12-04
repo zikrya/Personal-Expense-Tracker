@@ -21,7 +21,7 @@ const PieChart = () => {
   }
   const [transactionList, setTransactionList] = useState([]);
   const navigate = useNavigate();
-
+//finding totals from each description
   const categoryTotals = transactionList.reduce((totals, transaction) => {
     const { description, amount } = transaction;
     totals[description] = (totals[description] || 0) + amount;
@@ -50,9 +50,9 @@ const PieChart = () => {
     // Split each string by ':' and take the second part, then convert it to a floating-point number
     return parseFloat(str.split(': ')[1]);
   });
-
+//displaying top4 categories 
   const top4Category = top4Categories.map((description, index) => {
-    return `Category ${index + 1}: ${description.description} `;
+    return `${index + 1}: ${description.description} `;
   });
 
   const getChartOptions = () => {
