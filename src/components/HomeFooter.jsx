@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const HomeFooter = () => {
   return (
-    <footer className="bg-[#D6EBFF]">
+    <footer className="bg-[#D6EBFF]" data-testid="footer">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="py-16 text-center">
             <span className="mx-auto h-10 w-auto font-medium text-darkblue">Wise Wallet</span>
