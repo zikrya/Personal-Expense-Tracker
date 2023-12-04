@@ -1,29 +1,23 @@
 import React, { useRef } from 'react';
 import emailjs from '@emailjs/browser';
 
-
-
 const Subscribe = () => {
 
-  const form = useRef();
+  const form = useRef(); // keeping mutable value
 
-  const templateParams = {
+  const templateParams = { // these parameters are outlined in the template
     recipient: 'your.wisewallet@gmail.com',
     to_name: 'Test Account',
     message: 'This is a test email sent using EmailJS!'
   };
 
-  const sendEmail = (e) => {
+  const sendEmail = (e) => { // send email trigger
     e.preventDefault();
-    emailjs.send('service_vcya2vm', 'template_57i8kep', templateParams, 'xZBCwlq2NxOnENizZ')
-      .then((response) => {
-        console.log('SUCCESS!', response.status, response.text);
+    emailjs.send('service_vcya2vm', 'template_57i8kep', templateParams, 'xZBCwlq2NxOnENizZ') // 'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form.current, 'YOUR_PUBLIC_KEY'
+      .then(() => {
         alert("Success. Message sent!")
-
-      }, (err) => {
-        console.log('FAILED...', err);
+      }, () => {
         alert("Failure. Message did not send!")
-
       });
   };
 
