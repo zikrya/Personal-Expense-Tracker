@@ -2,6 +2,8 @@ import { Fragment, useState,useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { addTransactionToDb } from '../utils/firebase-config';
 import { useAuth } from "../context/AuthContext";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function AddTransactionForm({fetchTransactions}) {
@@ -44,10 +46,14 @@ export default function AddTransactionForm({fetchTransactions}) {
           addTransactionToDb(newTransaction) 
         }
         else if (today < transactionDate){
-          alert("The transaction date you entered is in the future. Please update the date to be today's date or before today")
+          toast.error("The transaction date you entered is in the future. Please update the date to be today's date or before today.",{
+            position: toast.POSITION.BOTTOM_RIGHT,
+        })
         }
         else if((parseFloat(today.split('-')[0]) - parseFloat(transactionDate.split('-')[0])) >= 2){
-          alert(`The transaction date you entered is too old. Please update the date to be today's date or within ${parseFloat(today.split('-')[0])}- ${parseFloat(today.split('-')[0]) - 1}`)
+          toast.error(`The transaction date you entered is too old. Please update the date to be today's date or within ${parseFloat(today.split('-')[0])}- ${parseFloat(today.split('-')[0]) - 1}.`,{
+            position: toast.POSITION.BOTTOM_RIGHT,
+        })
         }
         else{
           const newTransaction = {
@@ -71,17 +77,23 @@ export default function AddTransactionForm({fetchTransactions}) {
         const absAmount = Math.abs(parseFloat(newAmount).toFixed(2))
         addTransactions(newDescription,absAmount,transactionDate)
       }else if(newDescription.length > 50){
-        alert("Failed to add a new transaction, the description you entered is too long")
+        toast.error("Failed to add a new transaction, the description you entered is too long.", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+      })
         setNewDescription("")
         setAmount("")
       }else if(newDescription.length <= 0){
-        alert("Failed to add a new transaction, the description you entered is empty")
+        toast.error("Failed to add a new transaction, the description you entered is empty.", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+      })
         setNewDescription("")
         setAmount("")
       }
       else 
       {
-        alert("Failed to add the new transaction, the amount you entered was incorrectly entered. E.g 123.45")
+        toast.error("Failed to add the new transaction, the amount you entered was incorrectly entered. E.g 123.45.", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+      })
         setNewDescription("")
         setAmount("")
       }
