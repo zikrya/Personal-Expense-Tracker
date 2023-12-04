@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import { getTransactionFromDB } from '../utils/firebase-config';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const PdfReport = ({ currentUser }) => {
   const [transactions, setTransactions] = useState([]);
@@ -43,15 +45,18 @@ const PdfReport = ({ currentUser }) => {
 
     // Save the PDF
     doc.save(`report-${currentUser.uid}.pdf`);
+    toast.info("Your monthly transactions report has been downloaded to your device.", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+  });
   };
 
   return (
     <div>
 <button
-  className="w-full h-20 text-blue-600 hover:text-blue-700 font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+className="w-70 h-20 bg-green hover:bg-darkgreen text-white font-bold py-2 px-5 rounded mt-3"
   onClick={generatePdf}
 >
-  Generate Monthly Report
+  Monthly Report ↓
 </button>
 
     </div>

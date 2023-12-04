@@ -49,7 +49,7 @@ const HomeIntro = () => {
                         className="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-darkgreen bg-green transition duration-300 ease-in-out"
                        
                     >
-                        Sign Out
+                        Log Out
                     </button>
                 ) : (
                     <button
