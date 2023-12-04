@@ -8,12 +8,13 @@ let currentUser = {
     uid: "asdasdas"
 }
 const mockSet = jest.fn()
+const setTransactionList = jest.fn()
 const MockLoginScreen = () => {
     return (
         <AuthContext.Provider value = {{currentUser}}>
         <Router>
             <DeleteConfirm 
-            setTransactionList = {jest.fn()}
+            setTransactionList = {setTransactionList}
             id = {1}
             setShowConfirmation = {mockSet}
             />
@@ -38,6 +39,7 @@ describe("addtrans page screen", () => {
             expect(console.log).toHaveBeenCalledWith('Transaction successfully deleted!');
             fireEvent.click(cancelButton);
             expect(mockSet).toHaveBeenCalledWith(false);
+            expect(setTransactionList).toHaveBeenCalled()
         })
     })
 
