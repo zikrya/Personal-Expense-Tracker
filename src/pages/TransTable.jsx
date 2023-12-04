@@ -9,6 +9,8 @@ import UpdateIncome from "./UpdateIncome";
 import UpdateBudget from "./UpdateBudget";
 import UpdateSavingGoal from "./UpdateSavingGoal";
 import Contact from "../components/ContactUs";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const TransTable = () => {
     useProtectedRoute();
@@ -111,8 +113,21 @@ const TransTable = () => {
         }
         else {
             const percentage = parseFloat(monthlySpent) / parseFloat(monthlyBudget)
+            const toastifyPercent = (percentage * 100).toFixed(2)
             setRemianingBudget((parseFloat(monthlyBudget) - parseFloat(monthlySpent)).toFixed(2))
             setBudgetPercentage((percentage * 100).toFixed(2))
+            if(toastifyPercent > 80.00) {
+                let today = new Date().toLocaleString().split(',')[0]; 
+                // format the time that can be sorted in firebase
+                let [month,day,year] = today.split('/')
+                day = day.toString().padStart(2, '0')
+                today = `${year}-${month}-${day}`
+                if('2023-12-04' === today ){ // if today is the desired notification day
+                    toast.warning("You are close to spending your budget.", {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                    });
+                }
+            }
         }
     }, [monthlySpent, monthlyBudget])
 
@@ -133,6 +148,10 @@ const TransTable = () => {
     useEffect(() => {
         if (parseFloat(moneySave) > parseFloat(savingGoal)) {
             setSavingsPercentage("100")
+            // toast 
+            toast("Congratulations! You have met your savings goal.", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
         }
         else if (parseFloat(moneySave) < 0) {
             setSavingsPercentage("0")
@@ -184,7 +203,7 @@ const TransTable = () => {
                         {/*                     <p className="font-normal text-gray-700 dark:text-gray-400">Remaining Budget</p> */}
                         <div className="flex justify-between mb-1">
                             <span className="text-base font-normal text-gray-700 dark:text-gray-400">Budget: ${monthlyBudget}</span>
-                            <span className="text-sm font-medium text-darkblue dark:text-white">budget used: {budgetPercentage}%</span>
+                            <span className="text-sm font-medium text-darkblue dark:text-white">Budget used: {budgetPercentage}%</span>
                         </div>
                         <div className="w-full bg-lightblue rounded-full h-2.5 dark:bg-gray-900">
                             <div className="bg-darkblue h-2.5 rounded-full dark:bg-green" style={{ width: `${budgetPercentage}%` }}></div>
