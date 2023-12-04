@@ -1,4 +1,3 @@
-/* istanbul ignore file */
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../utils/firebase-config"; // only import auth
 import { createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "firebase/auth";
