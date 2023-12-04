@@ -50,7 +50,7 @@ const RegisterSurvey = () => {
     if (isSurveyCompleted) {
         // If the survey is completed, display a message
         return (
-            <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-500">
+            <div className="flex justify-center items-center min-h-screen">
                 <p className="text-white">You have already completed the survey. Thank you!</p>
             </div>
         );
@@ -90,7 +90,7 @@ const RegisterSurvey = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-lightblue pt-10 pb-10" data-testid= "survey-page">
+        <div className="flex justify-center items-center min-h-screen pt-10 pb-10" data-testid= "survey-page">
             <form data-testid= "survey" onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
                 <label htmlFor="fname">First Name</label><br />
                 <input
