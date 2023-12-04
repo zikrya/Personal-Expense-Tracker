@@ -48,10 +48,10 @@ const PdfReport = ({ currentUser }) => {
   return (
     <div>
 <button
-  className="w-full h-20 text-blue-600 hover:text-blue-700 font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+className="w-70 h-20 bg-green hover:bg-darkgreen text-white font-bold py-2 px-5 rounded mt-3"
   onClick={generatePdf}
 >
-  Generate Monthly Report
+  Monthly Report
 </button>
 
     </div>
