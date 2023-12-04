@@ -254,7 +254,7 @@ const TransTable = () => {
                                         {/* feel free to change trash icon color or style */}
 
                                         <button onClick={() => setShowTrashIcon(!showTrashIcon)} className="p-2  border-green-500 rounded-md">
-                                            <TrashIcon className="w-5 h-5 text-red-400 hover:text-blue-500 hover:bg-yellow-500" />
+                                            <TrashIcon data-testid= "trash-icon-toggle" className="w-5 h-5 text-red-400 hover:text-blue-500 hover:bg-yellow-500" />
                                         </button>
                                     </th>
                                 </tr>
