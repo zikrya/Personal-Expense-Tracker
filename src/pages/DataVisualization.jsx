@@ -1,4 +1,4 @@
-import { useProtectedRoute } from "../components/useProtectedRoute";
+//import { useProtectedRoute } from "../components/useProtectedRoute";
 import { useState,useEffect } from "react";
 import PieChart from "../components/PieChart";
 import LineChart from "../components/LineChart";
@@ -9,7 +9,7 @@ import {getSurveyDB} from '../utils/firebase-config';
 
 
 const DataVis = () => {
-    useProtectedRoute();
+    //useProtectedRoute();
     const { currentUser} = useAuth();
     
     useEffect(() => {fetchTransactions()},[currentUser])

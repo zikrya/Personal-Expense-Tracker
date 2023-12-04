@@ -1,4 +1,4 @@
-import { useProtectedRoute } from "../components/useProtectedRoute";
+//import { useProtectedRoute } from "../components/useProtectedRoute";
 import React from 'react';
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,7 @@ import { useState,useEffect } from "react";
 
 window.addEventListener("load", function () {});
 const AreaChart = () => {
-  useProtectedRoute();
+  //useProtectedRoute();
   const { currentUser} = useAuth();
 
   useEffect(() => {fetchTransactions()},[currentUser])
