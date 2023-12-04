@@ -3,6 +3,8 @@ import { firestore } from '../utils/firebase-config';
 import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { useAuth } from "../context/AuthContext";
 import Contact from '../components/ContactUs';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Profile = () => {
     const [userData, setUserData] = useState({
@@ -53,11 +55,16 @@ const Profile = () => {
 
         try {
             await updateDoc(surveyDocRef, userData);
-            location.reload(true);
-            console.log("Survey data updated successfully.");
+            //location.reload(true);
+            toast.success("Your changes have been saved!", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
             // Handle success scenario (e.g., navigate back or show a success message)
         } catch (error) {
             console.error("Error updating survey data: ", error);
+            toast.error("Your changes were not saved. Please try again.", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
             // Handle error scenario (e.g., show an error message)
         }
     };
@@ -181,7 +188,8 @@ const Profile = () => {
 
                         </div>
                     </div>
-
+                    {/* for a later implementation if time was allotted */}
+{/* 
                     <div className="border-b border-gray-900/10 py-10">
                         <h2 className="text-xl font-semibold leading-7 text-gray-900">Notifications</h2>
                         <p className="mt-1 text-sm leading-6 text-gray-600">
@@ -228,8 +236,8 @@ const Profile = () => {
                                     </div>
 
                                 </div>
-                            </fieldset>
-                            <fieldset>
+                            </fieldset> */}
+                            {/* <fieldset>
                                 <legend className="text-sm font-semibold leading-6 text-gray-900">Push Notifications</legend>
                                 <p className="mt-1 text-sm leading-6 text-gray-600">These are delivered via SMS to your mobile phone.</p>
                                 <div className="mt-6 space-y-6">
@@ -270,9 +278,9 @@ const Profile = () => {
                                         </label>
                                     </div>
                                 </div>
-                            </fieldset>
-                        </div>
-                    </div>
+                            </fieldset> */}
+                        {/* </div>
+                    </div> */}
 
 
 
