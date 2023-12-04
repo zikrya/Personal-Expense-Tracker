@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { firestore } from '../utils/firebase-config';
 import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { useAuth } from "../context/AuthContext";
@@ -68,7 +68,7 @@ const Profile = () => {
     return (
         // Code taken from Tailwind Component library: forms and data display
         <div>
-            <form data-testid= "profile-form">
+            <form data-testid="profile-form">
                 <div className="md:px-60 pt-10 sm:px-20">
 
                     <div className="border-b border-gray-900/10 pb-12">
@@ -85,8 +85,8 @@ const Profile = () => {
                                         type="text"
                                         name="firstName"
                                         id="first-name"
-                                        data-testid= "profile-fn"
-                                    value={userData.firstName || ''}
+                                        data-testid="profile-fn"
+                                        value={userData.firstName || ''}
                                         onChange={handleInputChange}
                                         autoComplete="given-name"
                                         className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -103,8 +103,8 @@ const Profile = () => {
                                         type="text"
                                         name="lastName"
                                         id="last-name"
-                                        data-testid= "profile-ln"
-                                    autoComplete="family-name"
+                                        data-testid="profile-ln"
+                                        autoComplete="family-name"
                                         value={userData.lastName || ''}
                                         onChange={handleInputChange}
                                         className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -120,8 +120,8 @@ const Profile = () => {
                                         type="email"
                                         name="email"
                                         id="email"
-                                        data-testid= "profile-email"
-                                    autoComplete="email"
+                                        data-testid="profile-email"
+                                        autoComplete="email"
                                         value={userData.email || ''}
                                         className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         disabled />
@@ -137,8 +137,8 @@ const Profile = () => {
                                         type="tel"
                                         name="phoneNumber"
                                         id="phone-number"
-                                        data-testid= "profile-phone"
-                                    autoComplete="phone-number"
+                                        data-testid="profile-phone"
+                                        autoComplete="phone-number"
                                         value={userData.phoneNumber || ""}
                                         onChange={handleInputChange}
                                         className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -157,8 +157,8 @@ const Profile = () => {
                                         type="text"
                                         name="college"
                                         id="street-address"
-                                        data-testid= "profile-college"
-                                    autoComplete="street-address"
+                                        data-testid="profile-college"
+                                        autoComplete="street-address"
                                         className="p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         value={userData.college || ''}
                                         onChange={handleInputChange}
@@ -173,7 +173,7 @@ const Profile = () => {
                                     <input
                                         type="tel"
                                         name="graduation-date"
-                                    data-testid= "profile-graduate"
+                                        data-testid="profile-graduate"
                                         id="graduation-date"
                                         value={userData.graduationDate || ''}
                                         onChange={handleInputChange}
@@ -200,8 +200,8 @@ const Profile = () => {
                                         <div className="flex h-6 items-center">
                                             <input checked
                                                 id="comments"
-                                                data-testid= "profile-budget-noti"
-                                            name="comments"
+                                                data-testid="profile-budget-noti"
+                                                name="comments"
                                                 type="checkbox"
                                                 className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                             />
@@ -219,8 +219,8 @@ const Profile = () => {
                                                 id="candidates"
                                                 name="candidates"
                                                 type="checkbox"
-                                                data-testid= "profile-reminder"
-                                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                                data-testid="profile-reminder"
+                                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                             />
                                         </div>
                                         <div className="text-sm leading-6">
@@ -241,8 +241,8 @@ const Profile = () => {
                                         <input checked
                                             id="push-everything"
                                             name="push-notifications"
-                                            data-testid= "profile-push-everything"
-                                        type="radio"
+                                            data-testid="profile-push-everything"
+                                            type="radio"
                                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                         />
                                         <label htmlFor="push-everything" className="block text-sm font-medium leading-6 text-gray-900">
@@ -252,8 +252,8 @@ const Profile = () => {
                                     <div className="flex items-center gap-x-3">
                                         <input
                                             id="push-email"
-                                            data-testid= "profile-push-email"
-                                        name="push-notifications"
+                                            data-testid="profile-push-email"
+                                            name="push-notifications"
                                             type="radio"
                                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                         />
@@ -264,8 +264,8 @@ const Profile = () => {
                                     <div className="flex items-center gap-x-3">
                                         <input
                                             id="push-nothing"
-                                            data-testid= "profile-push-nothing"
-                                        name="push-notifications"
+                                            data-testid="profile-push-nothing"
+                                            name="push-notifications"
                                             type="radio"
                                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                         />
