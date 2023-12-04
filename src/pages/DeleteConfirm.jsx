@@ -1,13 +1,17 @@
 import React from 'react'
 import { deleteTransactionFromDB } from '../utils/firebase-config';
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DeleteConfirm = ({setTransactionList,id,setShowConfirmation}) => {
 
   const handleDelete = (id) =>{
         deleteTransactionFromDB(id)
         console.log('Transaction successfully deleted!');
+        toast.success("Transaction successfully deleted!", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+      });
         setTransactionList(prevList => 
           prevList.filter(transaction => transaction.id !== id)
         )
