@@ -18,8 +18,8 @@ const RegisterSurvey = () => {
     const [savingsGoal, setSavingsGoal] = useState('');
     const [budgetCategories, setBudgetCategories] = useState([]);
     const [maximumBudget, setMaximumBudget] = useState('');
-    const [notificationPreferences, setNotificationPreferences] = useState('');
-    const [notificationMethod, setNotificationMethod] = useState(false);
+    // const [notificationPreferences, setNotificationPreferences] = useState('');
+    // const [notificationMethod, setNotificationMethod] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
 
     const handleCheckboxChange = (e, setterFunction, value) => {
@@ -39,7 +39,7 @@ const RegisterSurvey = () => {
     if (isSurveyCompleted) {
         // If the survey is completed, display a message
         return (
-            <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-500">
+            <div className="flex justify-center items-center min-h-screen">
                 <p className="text-white">You have already completed the survey. Thank you!</p>
             </div>
         );
@@ -48,7 +48,7 @@ const RegisterSurvey = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!firstName || !lastName || !college || !graduationDate || !monthlyIncome || !moneySaved || !savingsGoal || budgetCategories.length === 0 || !maximumBudget || !phoneNumber || !notificationPreferences || !notificationMethod) {
+        if (!firstName || !lastName || !college || !graduationDate || !monthlyIncome || !moneySaved || !savingsGoal || budgetCategories.length === 0 || !maximumBudget || !phoneNumber) {
             alert('Please complete all fields before submitting.');
             return;
         }
@@ -64,9 +64,7 @@ const RegisterSurvey = () => {
             savingsGoal,
             budgetCategories,
             maximumBudget,
-            phoneNumber,
-            notificationPreferences,
-            notificationMethod
+            phoneNumber
         };
 
         try {
@@ -81,7 +79,7 @@ const RegisterSurvey = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-lightblue pt-10 pb-10" data-testid= "survey-page">
+        <div className="flex justify-center items-center min-h-screen pt-10 pb-10" data-testid= "survey-page">
             <form data-testid= "survey" onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
                 <label htmlFor="fname">First Name</label><br />
                 <input
@@ -199,10 +197,11 @@ const RegisterSurvey = () => {
                     className="mt-1 p-2 w-full border rounded-md mb-4"
                 />
                 <br />
-                <label>Notification Preferences</label><br />
-                <select id="notifications" data-testid="survey-notifications" name="notifications" value={notificationPreferences} onChange={(e) => setNotificationPreferences(e.target.value)} className="mt-1 p-2 w-full border rounded-md mb-4">
-                    <option value="" data-testid="survey-default">--Please choose an option--</option>
-                    <option value="Daily" data-testid="survey-daily">Daily</option>
+
+                {/* <label>Notification Preferences</label><br />
+                <select id="notifications" data-testid="notifications" name="notifications" onChange={(e) => setNotificationPreferences(e.target.value)} className="mt-1 p-2 w-full border rounded-md mb-4">
+                    <option value="">--Please choose an option--</option>
+                    <option value="Daily">Daily</option>
                     <option value="Weekly">Weekly</option>
                     <option value="Monthly">Monthly</option>
                     <option value="Never">Never</option>
@@ -227,7 +226,7 @@ const RegisterSurvey = () => {
                         </select>
                         <br />
                     </>
-                )}
+                )} */}
 
 
                 <br />

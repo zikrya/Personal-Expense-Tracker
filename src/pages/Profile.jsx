@@ -175,7 +175,7 @@ const Profile = () => {
                                 </label>
                                 <div className="mt-2">
                                     <input
-                                        type="tel"
+                                        type="date"
                                         name="graduation-date"
                                         data-testid="profile-graduate"
                                         id="graduation-date"
