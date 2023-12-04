@@ -56,7 +56,7 @@ const AreaChart = () => {
   const accumulatedWithPrevious = Object.entries(accumulatedByDate).reduce(
     (accumulator, [date, amount]) => {
       const previousTotal = accumulator.length > 0 ? accumulator[accumulator.length - 1] : 0;
-      accumulator.push(previousTotal + amount);
+      accumulator.push(parseFloat(previousTotal + amount).toFixed(2));
       return accumulator;
     },
     []
@@ -93,7 +93,7 @@ const AreaChart = () => {
   //const percentageSaved= savingGoal;
 
   console.log(amountSaved);
-
+  
   const options = {
     chart: {
       height: "100%",

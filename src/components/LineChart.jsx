@@ -6,7 +6,7 @@ import ApexCharts from "apexcharts";
 import { getTransactionFromDB, getBudget } from '../utils/firebase-config';
 import { useState, useEffect } from "react";
 //planned budget vs total spending accumulated by each date 
-// window.addEventListener("load", function () { });
+ window.addEventListener("load", function () { });
 const LineChart = () => {
   //useProtectedRoute();
   const { currentUser } = useAuth();
@@ -64,7 +64,7 @@ const LineChart = () => {
   const accumulatedWithPrevious = Object.entries(accumulatedByDate).reduce(
     (accumulator, [date, amount]) => {
       const previousTotal = accumulator.length > 0 ? accumulator[accumulator.length - 1] : 0;
-      accumulator.push(previousTotal + amount);
+      accumulator.push(parseFloat(previousTotal + amount).toFixed(2));
       return accumulator;
     },
     []
