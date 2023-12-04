@@ -29,7 +29,7 @@ const DataVis = () => {
                 <div><AreaChart /></div>
                 <div><PieChart /></div>
             </div> */}
-            <p className="font-bold text-xl tracking-tight text-darkgreen ml-16 sm:text-2xl md:text-3xl">Data Visuals</p>
+            <p className="font-bold text-xl tracking-tight text-darkgreen ml-16 sm:text-2xl md:text-3xl">Your Data Visual Insights</p>
 
             <div className="mt-6 flex flex-row ml-16">
                 <div className="flex-1 basis-1/3 mr-14 h-4/5">

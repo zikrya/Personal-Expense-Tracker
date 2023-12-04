@@ -193,18 +193,20 @@ const AreaChart = () => {
           <div
             className="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
             {percentageSaved}%
-            <svg className="w-3 h-3 ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
+            {/* <svg className="w-3 h-3 ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
               <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
-            </svg>
+            </svg> */}
+            {/* <svg className="w-3 h-3 ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
+              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1v12m0 0l-4-4m4 4 4-4" />
+            </svg> */}
           </div>
-
         </div>
       </div>
       <div id="area-chart"></div>
       <div className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
         <div className="flex justify-between items-center pt-5">
           {/* if this last 7 days doesn't work, remove it Noel */}
-          <button
+          {/* <button
             id="dropdownDefaultButton"
             data-dropdown-toggle="lastDaysdropdown"
             data-dropdown-placement="bottom"
@@ -214,7 +216,7 @@ const AreaChart = () => {
             <svg className="w-2.5 m-2.5 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
               <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
             </svg>
-          </button>
+          </button> */}
           <div id="lastDaysdropdown" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
               <li>
