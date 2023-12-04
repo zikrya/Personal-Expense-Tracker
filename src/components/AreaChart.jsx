@@ -265,13 +265,13 @@ const AreaChart = () => {
             </ul>
           </div>
 
-          <button
+          {/* <button
             onClick={() => navigate("/TransTable")}
             className="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700 transition duration-300 ease-in-out"
             style={{ backgroundColor: colors.green, color: colors.mint }}
           >
             View Full Report
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
