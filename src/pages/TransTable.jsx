@@ -8,7 +8,7 @@ import DeleteConfirm from "./DeleteConfirm";
 import UpdateIncome from "./UpdateIncome";
 import UpdateBudget from "./UpdateBudget";
 import UpdateSavingGoal from "./UpdateSavingGoal";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const TransTable = () => {
@@ -287,7 +287,6 @@ const TransTable = () => {
                         fetchTransactions ={fetchTransactions}
                     />
                 </div>
-                <ToastContainer autoClose={3000} />
             </div></>
     );
 }

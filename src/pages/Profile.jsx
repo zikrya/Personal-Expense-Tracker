@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { firestore } from '../utils/firebase-config';
 import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { useAuth } from "../context/AuthContext";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Profile = () => {
@@ -54,13 +54,16 @@ const Profile = () => {
 
         try {
             await updateDoc(surveyDocRef, userData);
-            console.log("Survey data updated successfully.");
-            toast("Your changes have been saved!");
+            toast.success("Your changes have been saved!", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
             // Handle success scenario (e.g., navigate back or show a success message)
         } catch (error) {
             console.error("Error updating survey data: ", error);
             // Handle error scenario (e.g., show an error message)
-            toast("Your changes were not saved. Please try again.");
+            toast.error("Your changes were not saved. Please try again.", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
         }
     };
     // const notify = () => toast("Your changes have been saved!");
@@ -233,7 +236,7 @@ const Profile = () => {
 
                                 </div>
                             </fieldset>
-                            <fieldset>
+                            {/* <fieldset>
                                 <legend className="text-sm font-semibold leading-6 text-gray-900">Push Notifications</legend>
                                 <p className="mt-1 text-sm leading-6 text-gray-600">These are delivered via SMS to your mobile phone.</p>
                                 <div className="mt-6 space-y-6">
@@ -274,7 +277,7 @@ const Profile = () => {
                                         </label>
                                     </div>
                                 </div>
-                            </fieldset>
+                            </fieldset> */}
                         </div>
                     </div>
 
@@ -292,7 +295,6 @@ const Profile = () => {
                         >
                             Save
                         </button>
-                        <ToastContainer autoClose={2000} />
                     </div>
 
                 </div>
