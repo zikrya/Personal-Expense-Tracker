@@ -3,6 +3,8 @@ import { firestore } from '../utils/firebase-config';
 import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { useAuth } from "../context/AuthContext";
 import Contact from '../components/ContactUs';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Profile = () => {
     const [userData, setUserData] = useState({
@@ -54,10 +56,15 @@ const Profile = () => {
         try {
             await updateDoc(surveyDocRef, userData);
             location.reload(true);
-            console.log("Survey data updated successfully.");
+            // toast.success("Your changes have been saved!", {
+            //     position: toast.POSITION.BOTTOM_RIGHT,
+            // }, 5000);
             // Handle success scenario (e.g., navigate back or show a success message)
         } catch (error) {
             console.error("Error updating survey data: ", error);
+            toast.error("Your changes were not saved. Please try again.", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
             // Handle error scenario (e.g., show an error message)
         }
     };
