@@ -24,7 +24,7 @@ const features = [
       image: addImage,
     },
     {
-      title: 'Monthly reports and insights',
+      title: 'Monthly Reports and Insights',
       description:
         'The application will generate a report and visual graphs for users with a clear view of their spending.',
       image: addImage,
