@@ -15,7 +15,7 @@ function App() {
 
   return (
     <AuthContextProvider>
-    <div>
+    <div data-testid="app">
     <Router>
     <NavBar />
           <Routes>
