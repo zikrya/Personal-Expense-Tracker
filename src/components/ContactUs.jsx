@@ -1,5 +1,7 @@
 import { useRef } from 'react';
 import emailjs from '@emailjs/browser';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // contact us form taken from EmailJS website
 const Contact = () => {
@@ -10,10 +12,15 @@ const Contact = () => {
     e.preventDefault();
     emailjs.sendForm('service_vcya2vm', 'template_57i8kep', form.current, 'xZBCwlq2NxOnENizZ') // 'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form.current, 'YOUR_PUBLIC_KEY'
       .then(() => {
-        alert("Success. Message sent!") // will replace this with toastify soon
+        // alert("Success. Message sent!") // will replace this with toastify soon
+        toast.success("Your email has been sent. We will respond to you shortly.", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
         form.current.reset(); // empty input after user successfully submits
       }, () => {
-        alert("Failure. Message did not send!") // will replace this with toastify soon
+        toast.error("Your email did not send. Please try again.", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
       });
   };
 
@@ -62,7 +69,7 @@ const Contact = () => {
             type="submit"
             value="Send"
             className="min-w-full mt-8 p-3 block w-full rounded-md bg-green border-0 hover:bg-darkgreen py-1.5 text-mint shadow-sm ring-1 ring-inset ring-green placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-            Send 
+            Send
           </button></div>
       </div>
 
