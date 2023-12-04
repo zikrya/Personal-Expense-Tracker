@@ -214,7 +214,7 @@ const TransTable = () => {
 
                 </span>
             </div>
-        </div><div className="px-8 py-0 w-full overflow-x-auto">
+        </div><div className="min-h-screen px-8 py-0 w-full overflow-x-auto">
                 <div className="mb-4 text-2xl font-semibold text-darkblue">Recent Activity</div>
                 <div className="grid grid-cols-4 gap-5">
                     <table className="w-full col-span-3 border-collapse table-auto bg-white rounded-lg shadow">
