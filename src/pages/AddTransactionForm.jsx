@@ -17,7 +17,9 @@ export default function AddTransactionForm({fetchTransactions}) {
 
     useEffect(() => {
       let today = new Date().toLocaleString().split(',')[0]; 
-      const [month,day,year] = today.split('/')
+      let [month,day,year] = today.split('/')
+      day = day.toString().padStart(2, '0')
+      month = month.toString().padStart(2, '0')
       today = `${year}-${month}-${day}`
       setTransactionDate(today);
     }, []);
@@ -27,7 +29,8 @@ export default function AddTransactionForm({fetchTransactions}) {
     const addTransactions = (newDescription,newAmount,transactionDate) => {
         let today = new Date().toLocaleString().split(',')[0]; 
         // format the time that can be sorted in firebase
-        const [month,day,year] = today.split('/')
+        let [month,day,year] = today.split('/')
+        day = day.toString().padStart(2, '0')
         today = `${year}-${month}-${day}`
         const currentTime = new Date().toISOString().split('T')[1]
 
@@ -41,7 +44,10 @@ export default function AddTransactionForm({fetchTransactions}) {
           addTransactionToDb(newTransaction) 
         }
         else if (today < transactionDate){
-          alert("Never know tomorrow ")
+          alert("The transaction date you entered is in the future. Please update the date to be today's date or before today")
+        }
+        else if((parseFloat(today.split('-')[0]) - parseFloat(transactionDate.split('-')[0])) >= 2){
+          alert(`The transaction date you entered is too old. Please update the date to be today's date or within ${parseFloat(today.split('-')[0])}- ${parseFloat(today.split('-')[0]) - 1}`)
         }
         else{
           const newTransaction = {
@@ -61,12 +67,23 @@ export default function AddTransactionForm({fetchTransactions}) {
 
     const handleSubmit = () => {
       setOpen(false);
-      if(newAmount){
+      if(newAmount && newDescription.length < 50 && newDescription.length > 0 ){
         const absAmount = Math.abs(parseFloat(newAmount).toFixed(2))
         addTransactions(newDescription,absAmount,transactionDate)
-      }else
+      }else if(newDescription.length > 50){
+        alert("Failed to add a new transaction, the description you entered is too long")
+        setNewDescription("")
+        setAmount("")
+      }else if(newDescription.length <= 0){
+        alert("Failed to add a new transaction, the description you entered is empty")
+        setNewDescription("")
+        setAmount("")
+      }
+      else 
       {
-        alert("fail to add new transaction, you didn't enter the new amount correctly")
+        alert("Failed to add the new transaction, the amount you entered was incorrectly entered. E.g 123.45")
+        setNewDescription("")
+        setAmount("")
       }
     }
 
@@ -80,7 +97,7 @@ export default function AddTransactionForm({fetchTransactions}) {
 
     return (
       <>
-      <button className="w-100 h-20 bg-green hover:bg-darkgreen text-white font-bold py-2 px-4 rounded" onClick={()=> setOpen(!open)}>
+      <button data-testid="add-trans-button" className="w-100 h-20 bg-green hover:bg-darkgreen text-white font-bold py-2 px-4 rounded" onClick={()=> setOpen(!open)}>
       New Transaction
       </button>
 
@@ -119,6 +136,7 @@ export default function AddTransactionForm({fetchTransactions}) {
                         <form >
                           <input
                             type="date"
+                            data-testid="add-trans-date"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-1 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             value={transactionDate}
                             onChange ={(e) => setTransactionDate(e.target.value)}
@@ -127,8 +145,8 @@ export default function AddTransactionForm({fetchTransactions}) {
                           <div className="w-1/3 pr-4 text-right text-gray-900">
                             <label htmlFor="description">Description</label>
                           </div>
-                        <input type="text" className="w-2/3 rounded-md border-0 py-1.5 pl-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" id="payment1" list="Description-list" value={newDescription} onChange={(e)=>setNewDescription(e.target.value)}/>
-                        <datalist  id="Description-list">
+                        <input data-testid="add-trans-descrip" type="text" className="w-2/3 rounded-md border-0 py-1.5 pl-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" id="payment1" list="Description-list" value={newDescription} onChange={(e)=>setNewDescription(e.target.value)}/>
+                        <datalist  id="Description-list" data-testid="add-trans-descrip-list">
                           {listOfExpenses.map((listOfExpenses, index) => (
                                   <option key={index} value={listOfExpenses} />
                           ))}
@@ -139,6 +157,7 @@ export default function AddTransactionForm({fetchTransactions}) {
                             <label htmlFor="amount">Amount </label>
                           </div>
                           <input
+                            data-testid="add-trans-amount"
                             type="number"
                             name="amount"
                             id="amount"
@@ -156,6 +175,7 @@ export default function AddTransactionForm({fetchTransactions}) {
                   <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                       type="button"
+                      data-testid="add-trans-submit"
                       className="inline-flex w-full justify-center rounded-md bg-green px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-darkgreen hover:text-white sm:ml-3 sm:w-auto"
                       onClick={handleSubmit}
                     >

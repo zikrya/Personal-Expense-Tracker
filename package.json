@@ -21,6 +21,7 @@
     "@heroicons/react": "^2.0.18",
     "email-js": "^2.0.2",
     "firebase": "^10.4.0",
+    "puppeteer": "^21.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.16.0",

@@ -50,6 +50,7 @@ const HomeGuide = () => {
   return (
     <section
     id="features"
+    data-testid="features"
     aria-label="Features for running your books"
     className="relative overflow-hidden bg-[#182825] pb-28 pt-20 sm:py-32">
     {/*container*/}
