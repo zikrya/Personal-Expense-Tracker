@@ -8,6 +8,8 @@ import DeleteConfirm from "./DeleteConfirm";
 import UpdateIncome from "./UpdateIncome";
 import UpdateBudget from "./UpdateBudget";
 import UpdateSavingGoal from "./UpdateSavingGoal";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const TransTable = () => {
     useProtectedRoute();
@@ -112,8 +114,21 @@ const TransTable = () => {
         }
         else{
             const percentage = parseFloat(monthlySpent)/parseFloat(monthlyBudget)
+            const toastifyPercent = (percentage * 100).toFixed(2)
             setRemianingBudget((parseFloat(monthlyBudget) - parseFloat(monthlySpent)).toFixed(2))
             setBudgetPercentage((percentage*100).toFixed(2))
+            if(toastifyPercent > 80.00) {
+                let today = new Date().toLocaleString().split(',')[0]; 
+                // format the time that can be sorted in firebase
+                let [month,day,year] = today.split('/')
+                day = day.toString().padStart(2, '0')
+                today = `${year}-${month}-${day}`
+                if('2023-12-04' === today ){ // if today is the desired notification day
+                    toast.warning("You are close to spending your budget.", {
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                    });
+                }
+            }
         }
     },[monthlySpent,monthlyBudget])
 
@@ -272,6 +287,7 @@ const TransTable = () => {
                         fetchTransactions ={fetchTransactions}
                     />
                 </div>
+                <ToastContainer autoClose={3000} />
             </div></>
     );
 }
