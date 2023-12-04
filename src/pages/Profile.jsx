@@ -55,10 +55,10 @@ const Profile = () => {
 
         try {
             await updateDoc(surveyDocRef, userData);
-            location.reload(true);
-            // toast.success("Your changes have been saved!", {
-            //     position: toast.POSITION.BOTTOM_RIGHT,
-            // }, 5000);
+            //location.reload(true);
+            toast.success("Your changes have been saved!", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
             // Handle success scenario (e.g., navigate back or show a success message)
         } catch (error) {
             console.error("Error updating survey data: ", error);
