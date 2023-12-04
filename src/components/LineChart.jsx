@@ -64,8 +64,8 @@ const LineChart = () => {
   const accumulatedWithPrevious = Object.entries(accumulatedByDate).reduce(
     (accumulator, [date, amount]) => {
       const previousTotal = accumulator.length > 0 ? accumulator[accumulator.length - 1] : 0;
-     //accumulator.push(parseFloat(previousTotal + amount).toFixed(2));
-      accumulator.push((previousTotal + amount));
+     accumulator.push(parseInt((previousTotal + amount)));
+      //accumulator.push((previousTotal + amount));
       return accumulator;
     },
     []

@@ -69,7 +69,7 @@ const AreaChart = () => {
   //amount saved = monthlyBudget-amountSpent
   const amountSaved = Object.entries(accumulatedWithPrevious).reduce(
     (accumulator, [date, amount]) => {
-      accumulator.push(monthlyBudget - amount);
+      accumulator.push(parseInt(monthlyBudget - amount));
       return accumulator;
     },
     []
