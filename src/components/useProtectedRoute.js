@@ -8,12 +8,22 @@ export const useProtectedRoute = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (!loading && !currentUser) {
+    // Avoid navigation if data is still loading
+    if (loading) return;
+
+    // Conditions to avoid unnecessary navigation
+    const onLoginPage = location.pathname === '/login';
+    const onSurveyPage = location.pathname === '/register-survey';
+    const onDashboardPage = location.pathname === '/transtable';
+
+    if (!currentUser && !onLoginPage) {
       navigate('/login', { replace: true, state: { from: location } });
-    }
-    else if (!loading && currentUser && !isSurveyCompleted) {
+    } else if (currentUser && !isSurveyCompleted && !onSurveyPage) {
       navigate('/register-survey', { replace: true, state: { from: location } });
+    } else if (currentUser && isSurveyCompleted && !onDashboardPage) {
+      navigate('/transtable', { replace: true, state: { from: location } });
     }
-  }, [loading, currentUser, isSurveyCompleted, navigate, location]);
+  }, [currentUser, loading, isSurveyCompleted, navigate, location]);
 };
+
 

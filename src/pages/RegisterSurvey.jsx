@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useProtectedRoute } from '../components/useProtectedRoute';
-import { saveSurveyData, getUserName } from '../utils/firebase-config';
+import { saveSurveyData } from '../utils/firebase-config';
 import { useAuth } from "../context/AuthContext";
 
 const RegisterSurvey = () => {
     useProtectedRoute();
 
     const navigate = useNavigate();
-    const { currentUser, setIsSurveyCompleted } = useAuth();
+    const { currentUser, isSurveyCompleted, setIsSurveyCompleted } = useAuth();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [college, setCollege] = useState('');
@@ -20,19 +20,7 @@ const RegisterSurvey = () => {
     const [maximumBudget, setMaximumBudget] = useState('');
     const [notificationPreferences, setNotificationPreferences] = useState('');
     const [notificationMethod, setNotificationMethod] = useState(false);
-    const [hasCompletedSurvey, setHasCompletedSurvey] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
-
-    useEffect(() => {
-        async function checkIfSurveyCompleted() {
-            if (currentUser) {
-                const completedSurvey = await getUserName(currentUser.uid);
-                setHasCompletedSurvey(!!completedSurvey);
-            }
-        }
-
-        checkIfSurveyCompleted();
-    }, [currentUser]);
 
     const handleMultiSelectChange = (e, setterFunction) => {
         const options = e.target.options;
@@ -53,7 +41,14 @@ const RegisterSurvey = () => {
         }
     };
 
-    if (hasCompletedSurvey) {
+    if (!currentUser) {
+        // If there is no current user, return early or redirect to login
+        navigate('/login');
+        return null;
+    }
+
+    if (isSurveyCompleted) {
+        // If the survey is completed, display a message
         return (
             <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-500">
                 <p className="text-white">You have already completed the survey. Thank you!</p>
@@ -88,8 +83,9 @@ const RegisterSurvey = () => {
         try {
             const docId = await saveSurveyData(surveyData);
             console.log("Document written with ID: ", docId);
-            setIsSurveyCompleted(true);
-            navigate('/transtable');
+            // Update the survey completion status in the context
+            setIsSurveyCompleted(true); // You should pass true directly if the survey is completed
+            navigate('/transtable'); // Redirect after successful submission
         } catch (error) {
             console.error("Error adding document: ", error);
         }
