@@ -8,6 +8,7 @@ import TransTable from './pages/TransTable';
 // import DashboardCards from './pages/DashboardCards';
 import NavBar from './components/NavBar';
 import Profile from './pages/Profile';
+import ForgetPassword from './pages/ForgetPassword';
 import RegisterSurvery from './pages/RegisterSurvey';
 
 function App() {
@@ -20,9 +21,10 @@ function App() {
           <Routes>
           <Route exact path="/" element={<Home/>} />
           <Route exact path="/login" element={<Login/>} />
+          <Route exact path="/forget-password" element={<ForgetPassword/>} />
           <Route exact path="/register" element={<Register/>} />
-          <Route exact path="/transtable" element={<TransTable/>} /> 
-          <Route exact path="/profile" element={<Profile/>} /> 
+          <Route exact path="/transtable" element={<TransTable/>} />
+          <Route exact path="/profile" element={<Profile/>} />
           {/* <Route exact path="/dashboard-card" element={<DashboardCards/>} /> */}
           {/* the above line is redundant but we may utilize later for component-based building. Do not delete files associated. */}
           <Route exact path="/register-survey" element={<RegisterSurvery/>} />
