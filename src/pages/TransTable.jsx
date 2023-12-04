@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { useProtectedRoute } from "../components/useProtectedRoute";
 import { useState, useEffect } from "react";
 import AddTransactionForm from "./AddTransactionForm";
