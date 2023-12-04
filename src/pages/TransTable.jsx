@@ -203,7 +203,7 @@ const TransTable = () => {
                         {/*                     <p className="font-normal text-gray-700 dark:text-gray-400">Remaining Budget</p> */}
                         <div className="flex justify-between mb-1">
                             <span className="text-base font-normal text-gray-700 dark:text-gray-400">Budget: ${monthlyBudget}</span>
-                            <span className="text-sm font-medium text-darkblue dark:text-white">budget used: {budgetPercentage}%</span>
+                            <span className="text-sm font-medium text-darkblue dark:text-white">Budget used: {budgetPercentage}%</span>
                         </div>
                         <div className="w-full bg-lightblue rounded-full h-2.5 dark:bg-gray-900">
                             <div className="bg-darkblue h-2.5 rounded-full dark:bg-green" style={{ width: `${budgetPercentage}%` }}></div>
