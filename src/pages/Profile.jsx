@@ -188,7 +188,8 @@ const Profile = () => {
 
                         </div>
                     </div>
-
+                    {/* for a later implementation if time was allotted */}
+{/* 
                     <div className="border-b border-gray-900/10 py-10">
                         <h2 className="text-xl font-semibold leading-7 text-gray-900">Notifications</h2>
                         <p className="mt-1 text-sm leading-6 text-gray-600">
@@ -235,8 +236,8 @@ const Profile = () => {
                                     </div>
 
                                 </div>
-                            </fieldset>
-                            <fieldset>
+                            </fieldset> */}
+                            {/* <fieldset>
                                 <legend className="text-sm font-semibold leading-6 text-gray-900">Push Notifications</legend>
                                 <p className="mt-1 text-sm leading-6 text-gray-600">These are delivered via SMS to your mobile phone.</p>
                                 <div className="mt-6 space-y-6">
@@ -277,9 +278,9 @@ const Profile = () => {
                                         </label>
                                     </div>
                                 </div>
-                            </fieldset>
-                        </div>
-                    </div>
+                            </fieldset> */}
+                        {/* </div>
+                    </div> */}
 
 
 
