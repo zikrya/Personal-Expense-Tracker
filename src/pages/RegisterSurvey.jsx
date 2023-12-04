@@ -18,8 +18,8 @@ const RegisterSurvey = () => {
     const [savingsGoal, setSavingsGoal] = useState('');
     const [budgetCategories, setBudgetCategories] = useState([]);
     const [maximumBudget, setMaximumBudget] = useState('');
-    const [notificationPreferences, setNotificationPreferences] = useState('');
-    const [notificationMethod, setNotificationMethod] = useState(false);
+    // const [notificationPreferences, setNotificationPreferences] = useState('');
+    // const [notificationMethod, setNotificationMethod] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
 
     const handleMultiSelectChange = (e, setterFunction) => {
@@ -59,7 +59,7 @@ const RegisterSurvey = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!firstName || !lastName || !college || !graduationDate || !monthlyIncome || !moneySaved || !savingsGoal || budgetCategories.length === 0 || !maximumBudget || !phoneNumber || !notificationPreferences || !notificationMethod) {
+        if (!firstName || !lastName || !college || !graduationDate || !monthlyIncome || !moneySaved || !savingsGoal || budgetCategories.length === 0 || !maximumBudget || !phoneNumber) {
             alert('Please complete all fields before submitting.');
             return;
         }
@@ -75,9 +75,7 @@ const RegisterSurvey = () => {
             savingsGoal,
             budgetCategories,
             maximumBudget,
-            phoneNumber,
-            notificationPreferences,
-            notificationMethod
+            phoneNumber
         };
 
         try {
@@ -210,7 +208,7 @@ const RegisterSurvey = () => {
                     className="mt-1 p-2 w-full border rounded-md mb-4"
                 />
                 <br />
-                <label>Notification Preferences</label><br />
+                {/* <label>Notification Preferences</label><br />
                 <select id="notifications" data-testid="notifications" name="notifications" onChange={(e) => setNotificationPreferences(e.target.value)} className="mt-1 p-2 w-full border rounded-md mb-4">
                     <option value="">--Please choose an option--</option>
                     <option value="Daily">Daily</option>
@@ -238,7 +236,7 @@ const RegisterSurvey = () => {
                         </select>
                         <br />
                     </>
-                )}
+                )} */}
 
 
                 <br />
