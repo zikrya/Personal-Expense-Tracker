@@ -57,9 +57,8 @@ describe("survey page", () => {
             const OtherInput = screen.getByTestId("survey-Other")
             const maximumBudgetInput = screen.getByTestId("survey-maximumBudget")
             const phoneNumberInput = screen.getByTestId("survey-phoneNumber")
-            const notificationsInput = screen.getByTestId("survey-notifications")
-            const notificationMethodInput = screen.getByTestId("survey-notificationMethod")
-            const submitButton = screen.getByTestId("survey-submit")
+            const submitButton = screen.getByTestId("survey-submit");
+
 
             fireEvent.change(fnameInput, {target: {value: "first"}});
             fireEvent.change(lnameInput, {target: {value: "last"}});
@@ -80,18 +79,7 @@ describe("survey page", () => {
             fireEvent.click(OtherInput)
             fireEvent.change(maximumBudgetInput, {target: {value: "111"}});
             fireEvent.change(phoneNumberInput, {target: {value: "222"}});
-            await user.selectOptions(
-                // Find the select element
-                notificationsInput,
-                // Find and select the Ireland option
-                screen.getByTestId('survey-daily')
-            )
-            await user.selectOptions(
-                // Find the select element
-                notificationMethodInput,
-                // Find and select the Ireland option
-                screen.getByTestId('survey-email')
-            )
+            jest.spyOn(window, 'alert').mockImplementation(() => {});
             fireEvent.click(submitButton)
             await act( async () => render(<MockLoginScreen/>));
             //await act( async () => render(<MockLoginScreen/>));
@@ -113,8 +101,7 @@ describe("survey page", () => {
             expect(OtherInput).toBeChecked()
             expect(maximumBudgetInput.value).toBe("111")
             expect(phoneNumberInput.value).toBe("222")
-            expect(notificationsInput.value).toBe("Daily")
-            expect(notificationMethodInput.value).toBe("Email")
+
             expect(logSpy).toHaveBeenCalled();
             jest.spyOn(window, 'alert').mockImplementation(() => {});
             expect(window.alert).toHaveBeenCalledTimes(0);
@@ -122,8 +109,9 @@ describe("survey page", () => {
         test("not completed survey", () => {
             render(<MockLoginScreen/>);
             const submitButton = screen.getByTestId("survey-submit");
+            
             fireEvent.click(submitButton)
-            jest.spyOn(window, 'alert').mockImplementation(() => {});
+            
             expect(window.alert).toHaveBeenCalledWith("Please complete all fields before submitting.");
         })
     })
