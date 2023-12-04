@@ -289,7 +289,7 @@ const Profile = () => {
 
                 </div>
             </form>
-            <footer className="bg-slate-300" data-testid="footer">
+            <footer className="bg-slate-300 pb-10" data-testid="footer">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="pt-16 text-center">
                         <span className="mx-auto h-10 w-auto font-medium text-darkblue">Contact Wise Wallet</span>

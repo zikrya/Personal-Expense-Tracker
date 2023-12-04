@@ -12,6 +12,7 @@ const HomeFooter = () => {
                 <div className="my-1 flex justify-center gap-x-6">
                     <a className="inline-block rounded-lg px-2 py-1 text-sm text-slate-700 hover:bg-green hover:text-mint" href="#intro">Intro</a>
                     <a className="inline-block rounded-lg px-2 py-1 text-sm text-slate-700 hover:bg-green hover:text-mint" href="#features">Features</a>
+                    <a className="inline-block rounded-lg px-2 py-1 text-sm text-slate-700 hover:bg-green hover:text-mint" href="#contact">Contact Us ↓</a>
                 </div>
             </nav>
             

@@ -18,7 +18,7 @@ const Contact = () => {
   };
 
   return (
-    <form className="mx-36 pb-10" ref={form} onSubmit={sendEmail}>
+    <form id="contact" className="mx-36 pb-10" ref={form} onSubmit={sendEmail}>
       <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-9">
         <div className="sm:col-span-2">
           <label className="block text-sm font-medium leading-6 text-gray-900">
