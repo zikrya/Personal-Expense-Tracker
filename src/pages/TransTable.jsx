@@ -8,6 +8,7 @@ import DeleteConfirm from "./DeleteConfirm";
 import UpdateIncome from "./UpdateIncome";
 import UpdateBudget from "./UpdateBudget";
 import UpdateSavingGoal from "./UpdateSavingGoal";
+import Contact from "../components/ContactUs";
 
 const TransTable = () => {
     useProtectedRoute();
@@ -283,7 +284,20 @@ const TransTable = () => {
 
 
                 </div>
-            </div></>
+            </div>
+            <footer className="mt-10 bg-slate-300" data-testid="footer">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="pt-16 text-center">
+                        <span className="mx-auto h-10 w-auto font-medium text-darkblue">Contact Wise Wallet</span>
+                        <div className="my-1 flex justify-center gap-x-6">
+                        </div>
+                    </div>
+                    <Contact />
+                    <div className="flex flex-col items-center border-t border-slate-400/10 py-10 sm:flex-row-reverse sm:justify-between">
+                    </div>
+                </div>
+            </footer>
+        </>
     );
 }
 

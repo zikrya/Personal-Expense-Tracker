@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useProtectedRoute } from '../components/useProtectedRoute';
-import { saveSurveyData, getUserName } from '../utils/firebase-config';
+import { saveSurveyData } from '../utils/firebase-config';
 import { useAuth } from "../context/AuthContext";
 
 const RegisterSurvey = () => {
     useProtectedRoute();
 
     const navigate = useNavigate();
-    const { currentUser, setIsSurveyCompleted } = useAuth();
+    const { currentUser, isSurveyCompleted, setIsSurveyCompleted } = useAuth();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [college, setCollege] = useState('');
@@ -20,19 +20,7 @@ const RegisterSurvey = () => {
     const [maximumBudget, setMaximumBudget] = useState('');
     const [notificationPreferences, setNotificationPreferences] = useState('');
     const [notificationMethod, setNotificationMethod] = useState(false);
-    const [hasCompletedSurvey, setHasCompletedSurvey] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
-
-    useEffect(() => {
-        async function checkIfSurveyCompleted() {
-            if (currentUser) {
-                const completedSurvey = await getUserName(currentUser.uid);
-                setHasCompletedSurvey(!!completedSurvey);
-            }
-        }
-
-        checkIfSurveyCompleted();
-    }, [currentUser]);
 
     const handleMultiSelectChange = (e, setterFunction) => {
         const options = e.target.options;
@@ -53,7 +41,14 @@ const RegisterSurvey = () => {
         }
     };
 
-    if (hasCompletedSurvey) {
+    if (!currentUser) {
+        // If there is no current user, return early or redirect to login
+        navigate('/login');
+        return null;
+    }
+
+    if (isSurveyCompleted) {
+        // If the survey is completed, display a message
         return (
             <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-500">
                 <p className="text-white">You have already completed the survey. Thank you!</p>
@@ -88,19 +83,23 @@ const RegisterSurvey = () => {
         try {
             const docId = await saveSurveyData(surveyData);
             console.log("Document written with ID: ", docId);
-            setIsSurveyCompleted(true);
-            navigate('/transtable');
+            // Update the survey completion status in the context
+            setIsSurveyCompleted(true); // You should pass true directly if the survey is completed
+            navigate('/transtable'); // Redirect after successful submission
         } catch (error) {
             console.error("Error adding document: ", error);
         }
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-lightblue pt-10 pb-10">
-            <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
+        <div className="flex justify-center items-center min-h-screen bg-lightblue pt-10 pb-10" data-testid= "survey-page">
+            <form data-testid= "survey" onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
                 <label htmlFor="fname">First Name</label><br />
                 <input
                     type="text"
+                    id="fname"
+                    name="fname"
+                    data-testid= "fname"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     className="mt-1 p-2 w-full border rounded-md mb-4"
@@ -110,7 +109,8 @@ const RegisterSurvey = () => {
                 <input
                     type="text"
                     id="fname"
-                    name="fname"
+                    data-testid= "lname"
+                    name="lname"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     className="mt-1 p-2 w-full border rounded-md mb-4"
@@ -120,6 +120,7 @@ const RegisterSurvey = () => {
                 <input
                     type="text"
                     id="college"
+                    data-testid= "college"
                     name="college"
                     value={college}
                     onChange={(e) => setCollege(e.target.value)}
@@ -130,6 +131,7 @@ const RegisterSurvey = () => {
                 <input
                     type="date"
                     id="graduationDate"
+                    data-testid= "graduationDate"
                     name="graduationDate"
                     value={graduationDate}
                     onChange={(e) => setGraduationDate(e.target.value)}
@@ -140,6 +142,7 @@ const RegisterSurvey = () => {
                 <input
                     type="number"
                     id="monthlyIncome"
+                    data-testid= "monthlyIncome"
                     name="monthlyIncome"
                     value={monthlyIncome}
                     onChange={(e) => setMonthlyIncome(e.target.value)}
@@ -150,6 +153,7 @@ const RegisterSurvey = () => {
                 <input
                     type="number"
                     id="moneySaved"
+                    data-testid= "moneySaved"
                     name="moneySaved"
                     value={moneySaved}
                     onChange={(e) => setMoneySaved(e.target.value)}
@@ -160,6 +164,7 @@ const RegisterSurvey = () => {
                 <input
                     type="number"
                     id="savingsGoal"
+                    data-testid= "savingsGoal"
                     name="savingsGoal"
                     value={savingsGoal}
                     onChange={(e) => setSavingsGoal(e.target.value)}
@@ -172,6 +177,7 @@ const RegisterSurvey = () => {
                         <label key={category} className="inline-flex items-center mt-3">
                             <input
                                 type="checkbox"
+                                data-testid={category}
                                 value={category}
                                 checked={budgetCategories.includes(category)}
                                 onChange={(e) => handleCheckboxChange(e, setBudgetCategories, category)}
@@ -187,6 +193,7 @@ const RegisterSurvey = () => {
                 <input
                     type="number"
                     id="maximumBudget"
+                    data-testid="maximumBudget"
                     name="maximumBudget"
                     value={maximumBudget}
                     onChange={(e) => setMaximumBudget(e.target.value)}
@@ -204,7 +211,7 @@ const RegisterSurvey = () => {
                 />
                 <br />
                 <label>Notification Preferences</label><br />
-                <select id="notifications" name="notifications" onChange={(e) => setNotificationPreferences(e.target.value)} className="mt-1 p-2 w-full border rounded-md mb-4">
+                <select id="notifications" data-testid="notifications" name="notifications" onChange={(e) => setNotificationPreferences(e.target.value)} className="mt-1 p-2 w-full border rounded-md mb-4">
                     <option value="">--Please choose an option--</option>
                     <option value="Daily">Daily</option>
                     <option value="Weekly">Weekly</option>
@@ -217,6 +224,7 @@ const RegisterSurvey = () => {
                         <label>Notification Method</label><br />
                         <select
                             id="notificationMethod"
+                            data-testid="notificationMethod"
                             name="notificationMethod"
                             value={notificationMethod}
                             onChange={(e) => setNotificationMethod(e.target.value === "None" ? false : e.target.value)}

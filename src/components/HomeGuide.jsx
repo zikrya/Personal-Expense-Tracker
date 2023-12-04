@@ -24,7 +24,7 @@ const features = [
       image: addImage,
     },
     {
-      title: 'Monthly reports and insights',
+      title: 'Monthly Reports and Insights',
       description:
         'The application will generate a report and visual graphs for users with a clear view of their spending.',
       image: addImage,
@@ -50,6 +50,7 @@ const HomeGuide = () => {
   return (
     <section
     id="features"
+    data-testid="features"
     aria-label="Features for running your books"
     className="relative overflow-hidden bg-[#182825] pb-28 pt-20 sm:py-32">
     {/*container*/}
