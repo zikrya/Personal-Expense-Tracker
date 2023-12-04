@@ -28,8 +28,12 @@ export const firestore = getFirestore(app);
 } */
 
 export async function getUserName(uid) {
-  const snapshot = await get(child(ref(database), `users/${uid}/name`));
-  return snapshot.val();
+  console.log(uid)
+  const collectionRef = collection(firestore, 'users');
+  const q = query(collectionRef, where('userId', '==', uid))
+  const docunmenet = await getDocs(q)
+  console.log(docunmenet.docs[0].data().hasCompletedSurvey)
+  return docunmenet.docs[0].data().hasCompletedSurvey
 }
 export async function saveSurveyData(data) {
   try {
@@ -57,7 +61,7 @@ export async function addTransactionToDb(data){
 
 
 export async function getTransactionFromDB(userID) {
-  const collectionRef = collection(firestore, 'User_TransactionDoc'); 
+  const collectionRef = collection(firestore, 'User_TransactionDoc');
   let trans = [];
   try{
      const q = query(collectionRef, where('userID', '==', userID),orderBy('date','desc'));
@@ -76,7 +80,7 @@ export async function getTransactionFromDB(userID) {
 
 export async function deleteTransactionFromDB(transactionID){
   try{
-    
+
     const DTransaction = doc(firestore,'User_TransactionDoc',transactionID)
     await deleteDoc(DTransaction)
   }catch(error){
@@ -94,7 +98,7 @@ export async function saveUserData(uid, data) {
 
 export async function upDdateIncome(userID,income)
 {
-  const collectionRef = collection(firestore, 'surveys'); 
+  const collectionRef = collection(firestore, 'surveys');
   try{
     const q = query(collectionRef, where('userId', '==', userID))
     const docunmenet = await getDocs(q)
@@ -111,7 +115,7 @@ export async function upDdateIncome(userID,income)
 }
 
 export async function getIncome(userID){
-  const collectionRef = collection(firestore, 'surveys'); 
+  const collectionRef = collection(firestore, 'surveys');
   let income = ""
   try{
     const q = query(collectionRef, where('userId', '==', userID))
@@ -130,7 +134,7 @@ export async function getIncome(userID){
 
 export async function upDateSavingGoal(userID,goal)
 {
-  const collectionRef = collection(firestore, 'surveys'); 
+  const collectionRef = collection(firestore, 'surveys');
   try{
     const q = query(collectionRef, where('userId', '==', userID))
     const docunmenet = await getDocs(q)
@@ -148,7 +152,7 @@ export async function upDateSavingGoal(userID,goal)
 }
 
 export async function getSavingGoal(userID){
-  const collectionRef = collection(firestore, 'surveys'); 
+  const collectionRef = collection(firestore, 'surveys');
   let Sgoal = ""
   try{
     const q = query(collectionRef, where('userId', '==', userID))
@@ -167,7 +171,7 @@ export async function getSavingGoal(userID){
 
 
 export async function getBudget(userID){
-  const collectionRef = collection(firestore, 'surveys'); 
+  const collectionRef = collection(firestore, 'surveys');
   let Budget = ""
   try{
     const q = query(collectionRef, where('userId', '==', userID))
@@ -187,7 +191,7 @@ export async function getBudget(userID){
 
 export async function upDateBudget(userID,budget)
 {
-  const collectionRef = collection(firestore, 'surveys'); 
+  const collectionRef = collection(firestore, 'surveys');
   try{
     const q = query(collectionRef, where('userId', '==', userID))
     const docunmenet = await getDocs(q)
