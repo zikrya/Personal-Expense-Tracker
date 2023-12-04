@@ -56,7 +56,8 @@ const AreaChart = () => {
   const accumulatedWithPrevious = Object.entries(accumulatedByDate).reduce(
     (accumulator, [date, amount]) => {
       const previousTotal = accumulator.length > 0 ? accumulator[accumulator.length - 1] : 0;
-      accumulator.push(parseFloat(previousTotal + amount).toFixed(2));
+      //accumulator.push(parseFloat(previousTotal + amount).toFixed(2));
+      accumulator.push(previousTotal + amount);
       return accumulator;
     },
     []
@@ -76,7 +77,8 @@ const AreaChart = () => {
 
   const savingsKeys = Object.keys(amountSaved);
   const lastSavingsKey = savingsKeys[savingsKeys.length - 1];
-  const lastSavingsValue = amountSaved[lastSavingsKey];
+  //const lastSavingsValue = amountSaved[lastSavingsKey];
+  const lastSavingsValue =(parseFloat(amountSaved[lastSavingsKey]).toFixed(2));
 
   //savings goal
   const [savingGoal, setSavingGoal] = useState('')

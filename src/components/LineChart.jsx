@@ -64,7 +64,8 @@ const LineChart = () => {
   const accumulatedWithPrevious = Object.entries(accumulatedByDate).reduce(
     (accumulator, [date, amount]) => {
       const previousTotal = accumulator.length > 0 ? accumulator[accumulator.length - 1] : 0;
-      accumulator.push(parseFloat(previousTotal + amount).toFixed(2));
+     //accumulator.push(parseFloat(previousTotal + amount).toFixed(2));
+      accumulator.push((previousTotal + amount));
       return accumulator;
     },
     []
@@ -72,7 +73,7 @@ const LineChart = () => {
   //find last accumualtion = total spending
   const keys = Object.keys(accumulatedWithPrevious);
   const lastKey = keys[keys.length - 1];
-  const lastValue = accumulatedWithPrevious[lastKey];
+  const lastValue = (parseFloat(accumulatedWithPrevious[lastKey]).toFixed(2));
 
   const YourComponent = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
