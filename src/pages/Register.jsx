@@ -32,7 +32,7 @@ const Register = () => {
                 .then(() => {
                     alert("Your account has been created!")
                 }, () => {
-                    alert("Your account could not be created")
+                    alert("Your account could not be created.")
                 });
 
             navigate("/register-survey"); // Navigate to the home page or desired page after successful registration
