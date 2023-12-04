@@ -151,7 +151,7 @@ export default function AddTransactionForm({fetchTransactions}) {
                           <input
                             type="date"
                             data-testid="add-trans-date"
-                            className="pl-3 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-1 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            className="pl-3.5 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-1 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             value={transactionDate}
                             onChange ={(e) => setTransactionDate(e.target.value)}
                           />
@@ -177,7 +177,7 @@ export default function AddTransactionForm({fetchTransactions}) {
                             id="amount"
                             value={newAmount}
                             onChange={(e)=>setAmount(e.target.value)}
-                            className="mt-2 w-2/3 rounded-md border-0 py-1.5 pl-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            className="mt-3 w-2/3 rounded-md border-0 py-1.5 pl-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             placeholder="20.00"
                             required
                           />
