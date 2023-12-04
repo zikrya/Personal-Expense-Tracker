@@ -34,17 +34,6 @@ const RegisterSurvey = () => {
         checkIfSurveyCompleted();
     }, [currentUser]);
 
-    const handleMultiSelectChange = (e, setterFunction) => {
-        const options = e.target.options;
-        const selectedOptions = [];
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].selected) {
-                selectedOptions.push(options[i].value);
-            }
-        }
-        setterFunction(selectedOptions);
-    };
-
     const handleCheckboxChange = (e, setterFunction, value) => {
         if (e.target.checked) {
             setterFunction(prev => [...prev, value]);
@@ -103,7 +92,7 @@ const RegisterSurvey = () => {
                     type="text"
                     id="fname"
                     name="fname"
-                    data-testid= "fname"
+                    data-testid= "survey-fname"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     className="mt-1 p-2 w-full border rounded-md mb-4"
@@ -113,7 +102,7 @@ const RegisterSurvey = () => {
                 <input
                     type="text"
                     id="fname"
-                    data-testid= "lname"
+                    data-testid= "survey-lname"
                     name="lname"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
@@ -124,7 +113,7 @@ const RegisterSurvey = () => {
                 <input
                     type="text"
                     id="college"
-                    data-testid= "college"
+                    data-testid= "survey-college"
                     name="college"
                     value={college}
                     onChange={(e) => setCollege(e.target.value)}
@@ -135,7 +124,7 @@ const RegisterSurvey = () => {
                 <input
                     type="date"
                     id="graduationDate"
-                    data-testid= "graduationDate"
+                    data-testid= "survey-graduationDate"
                     name="graduationDate"
                     value={graduationDate}
                     onChange={(e) => setGraduationDate(e.target.value)}
@@ -146,7 +135,7 @@ const RegisterSurvey = () => {
                 <input
                     type="number"
                     id="monthlyIncome"
-                    data-testid= "monthlyIncome"
+                    data-testid= "survey-monthlyIncome"
                     name="monthlyIncome"
                     value={monthlyIncome}
                     onChange={(e) => setMonthlyIncome(e.target.value)}
@@ -157,7 +146,7 @@ const RegisterSurvey = () => {
                 <input
                     type="number"
                     id="moneySaved"
-                    data-testid= "moneySaved"
+                    data-testid= "survey-moneySaved"
                     name="moneySaved"
                     value={moneySaved}
                     onChange={(e) => setMoneySaved(e.target.value)}
@@ -168,7 +157,7 @@ const RegisterSurvey = () => {
                 <input
                     type="number"
                     id="savingsGoal"
-                    data-testid= "savingsGoal"
+                    data-testid= "survey-savingsGoal"
                     name="savingsGoal"
                     value={savingsGoal}
                     onChange={(e) => setSavingsGoal(e.target.value)}
@@ -181,7 +170,7 @@ const RegisterSurvey = () => {
                         <label key={category} className="inline-flex items-center mt-3">
                             <input
                                 type="checkbox"
-                                data-testid={category}
+                                data-testid={"survey-"+category}
                                 value={category}
                                 checked={budgetCategories.includes(category)}
                                 onChange={(e) => handleCheckboxChange(e, setBudgetCategories, category)}
@@ -197,7 +186,7 @@ const RegisterSurvey = () => {
                 <input
                     type="number"
                     id="maximumBudget"
-                    data-testid="maximumBudget"
+                    data-testid="survey-maximumBudget"
                     name="maximumBudget"
                     value={maximumBudget}
                     onChange={(e) => setMaximumBudget(e.target.value)}
@@ -208,6 +197,7 @@ const RegisterSurvey = () => {
                 <input
                     type="tel"
                     id="phoneNumber"
+                    data-testid="survey-phoneNumber"
                     name="phoneNumber"
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
@@ -215,9 +205,9 @@ const RegisterSurvey = () => {
                 />
                 <br />
                 <label>Notification Preferences</label><br />
-                <select id="notifications" data-testid="notifications" name="notifications" onChange={(e) => setNotificationPreferences(e.target.value)} className="mt-1 p-2 w-full border rounded-md mb-4">
-                    <option value="">--Please choose an option--</option>
-                    <option value="Daily">Daily</option>
+                <select id="notifications" value={notificationPreferences} data-testid="survey-notifications" name="notifications" onChange={(e) => setNotificationPreferences(e.target.value)} className="mt-1 p-2 w-full border rounded-md mb-4">
+                    <option value="" data-testid="survey-default">--Please choose an option--</option>
+                    <option value="Daily" data-testid="survey-daily">Daily</option>
                     <option value="Weekly">Weekly</option>
                     <option value="Monthly">Monthly</option>
                     <option value="Never">Never</option>
@@ -228,14 +218,14 @@ const RegisterSurvey = () => {
                         <label>Notification Method</label><br />
                         <select
                             id="notificationMethod"
-                            data-testid="notificationMethod"
+                            data-testid="survey-notificationMethod"
                             name="notificationMethod"
                             value={notificationMethod}
                             onChange={(e) => setNotificationMethod(e.target.value === "None" ? false : e.target.value)}
                             className="mt-1 p-2 w-full border rounded-md mb-4"
                         >
                             <option value="">--Please choose an option--</option>
-                            <option value="Email">Email</option>
+                            <option value="Email" data-testid="survey-email">Email</option>
                             <option value="Phone">Phone</option>
                             <option value="Both">Both</option>
                             <option value="None">None</option>
@@ -246,7 +236,7 @@ const RegisterSurvey = () => {
 
 
                 <br />
-                <button type="submit" className="bg-green text-white px-4 py-2 rounded-md mt-4">Submit</button>
+                <button type="submit" data-testid="survey-submit" className="bg-green text-white px-4 py-2 rounded-md mt-4">Submit</button>
             </form>
         </div>
     );
