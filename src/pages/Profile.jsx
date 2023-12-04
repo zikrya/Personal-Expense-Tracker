@@ -53,6 +53,7 @@ const Profile = () => {
 
         try {
             await updateDoc(surveyDocRef, userData);
+            location.reload(true);
             console.log("Survey data updated successfully.");
             // Handle success scenario (e.g., navigate back or show a success message)
         } catch (error) {
@@ -264,7 +265,7 @@ const Profile = () => {
                                             type="radio"
                                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                         />
-                                        <label htmlFor="push-nothing" className="block text-sm font-medium leading-6 text-gray-900">
+                                        <label htmlFor="push-nothing"  className="block text-sm font-medium leading-6 text-gray-900">
                                             No push notifications
                                         </label>
                                     </div>
@@ -280,8 +281,9 @@ const Profile = () => {
                             Cancel
                         </button>
                         <button
-                            type="submit"
+                            type="button"
                             className="rounded-md bg-green px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-darkgreen focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            onClick={handleSave}
                         >
                             Save
                         </button>
