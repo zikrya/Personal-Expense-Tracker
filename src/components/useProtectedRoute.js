@@ -7,12 +7,16 @@ export const useProtectedRoute = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+
   useEffect(() => {
     if (!loading && !currentUser) {
       navigate('/login', { replace: true, state: { from: location } });
     }
-    else if (!loading && currentUser && !isSurveyCompleted) {
+    else if (currentUser && !isSurveyCompleted) {
       navigate('/register-survey', { replace: true, state: { from: location } });
+    }
+    else{
+      navigate('/transtable', { replace: true, state: { from: location } });
     }
   }, [loading, currentUser, isSurveyCompleted, navigate, location]);
 };
