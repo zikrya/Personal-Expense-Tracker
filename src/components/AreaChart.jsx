@@ -3,7 +3,7 @@ import React from 'react';
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ApexCharts from "apexcharts";
-import {getTransactionFromDB } from '../utils/firebase-config';
+import {getTransactionFromDB,getBudget } from '../utils/firebase-config';
 import { useState,useEffect } from "react";
 
 window.addEventListener("load", function () {});
@@ -20,6 +20,21 @@ const AreaChart = () => {
   }
   const [transactionList, setTransactionList] = useState([]);
   const navigate = useNavigate();
+
+
+//   //monthly Budget
+// const [monthlyBudget, setMonthlyBudget] = useState('')
+// useEffect(() => {getMonthlyBudget()},[currentUser])
+// async function getMonthlyBudget() {
+//     if(currentUser){
+//         const data = await getBudget(currentUser.uid);
+//         setMonthlyBudget(data);
+//       }
+// }
+// // const budget = revTrans.map(survey => {
+// const budget = revTrans.map(() => {
+//     return monthlyBudget;
+// });
   //const dates = transactionList.map(transaction => transaction.date);
 const revTrans = transactionList.slice().reverse();
   // Assuming transactionList contains objects with a 'date' property as strings in a certain format
@@ -34,6 +49,36 @@ const amount = transactionList.map(transaction => {
  console.log(transaction)
   return transaction.amount;
 });
+
+// const accumulatedByDate = transactionList.reduce((accumulator, transaction) => {
+//   const { date, amount } = transaction;
+//   // If the date doesn't exist in accumulator, create it and initialize with 0
+//   accumulator[date] = (accumulator[date] || 0) + amount;
+//   return accumulator;
+// }, {});
+
+// // Calculate accumulated amounts considering previous dates
+// const accumulatedWithPrevious = Object.entries(accumulatedByDate).reduce(
+//   (accumulator, [date, amount]) => {
+//     const previousTotal = accumulator.length > 0 ? accumulator[accumulator.length - 1] : 0;
+//     accumulator.push(previousTotal + amount);
+//     return accumulator;
+//   },
+//   []
+// );
+// const keys = Object.keys(accumulatedWithPrevious);
+// const lastKey = keys[keys.length-1];
+// const lastValue = accumulatedWithPrevious[lastKey];
+
+// //amount saved 
+// const amountSaved = Object.entries(accumulatedWithPrevious).reduce(
+//   (accumulator, [date, amount]) => {
+//     const previousTotal = accumulator.length > 0 ? accumulator[accumulator.length - 1] : 0;
+//     accumulator.push((previousTotal + amount)-monthlyBudget);
+//     return accumulator;
+//   },
+//   []
+// );
 
   const options = {
     chart: {

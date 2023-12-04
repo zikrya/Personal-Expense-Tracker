@@ -95,7 +95,7 @@ function MobileNavigation() {
               className="absolute inset-x-0 top-full mt-4 flex origin-top flex-col rounded-2xl bg-white p-4 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5"
             >
               <MobileNavLink to="/transtable">Dashboard</MobileNavLink>
-              <MobileNavLink to="/transtable">Data</MobileNavLink>
+              <MobileNavLink to="/data">Data</MobileNavLink>
               <MobileNavLink to="/profile">Profile</MobileNavLink>
               <hr className="m-2 border-slate-300/40" />
               <button className="block w-full p-2" data-testid="logout-m" onClick={handleLogout}>Log out</button>
@@ -140,7 +140,7 @@ const NavBar = () => {
               (
               <div className="hidden md:flex md:gap-x-6">
                 <NavLink to="/transtable" data-testid="dashboard">Dashboard</NavLink>
-                <NavLink to="/data">Data</NavLink>
+                <NavLink to="/data"data-testid="data">Data</NavLink>
                 <NavLink to="/profile" data-testid="profile">Profile</NavLink>
                 <button onClick={handleLogout} data-testid="logout">Log out</button>
               </div>

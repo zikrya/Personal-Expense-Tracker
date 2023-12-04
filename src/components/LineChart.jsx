@@ -3,46 +3,27 @@ import React from 'react';
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ApexCharts from "apexcharts";
-import {getTransactionFromDB } from '../utils/firebase-config';
+import {getTransactionFromDB,getBudget } from '../utils/firebase-config';
 import { useState,useEffect } from "react";
-import {getSurveyDB} from '../utils/firebase-config';
-//planned buget vs total spending 
+//planned budget vs total spending 
 window.addEventListener("load", function() { });
 const LineChart = () => {
   useProtectedRoute();
   const { currentUser} = useAuth();
 
   useEffect(() => {fetchTransactions()},[currentUser])
-  useEffect(() => {fetchSurvey()},[currentUser])
   async function fetchTransactions() {
     if(currentUser){
       const data = await getTransactionFromDB(currentUser.uid);
       setTransactionList(data);
     }
   }
-  async function fetchSurvey() {
-    if(currentUser){
-      const surveyData = await getSurveyDB(currentUser.uid);
-      setSurvey(surveyData);
-    }
-  }
 
   const [transactionList, setTransactionList] = useState([]);
-  const [survey, setSurvey] = useState([]);
   const navigate = useNavigate();
-  //const dates = transactionList.map(transaction => transaction.date);
+
+//reverse so the dates are in chronological order
 const revTrans = transactionList.slice().reverse();
-const numbSurvey = Number(survey.maximumBudget);
-// const dates = revTrans.map(transaction => {
-//   return new Date(transaction.date);
-// });
-
-// const dates = revTrans.map(transaction => {
-//   const dateObj = new Date(transaction.date);
-//   const options = {year: 'numeric', month: 'long', day: 'numeric' };
-//   return dateObj.toLocaleDateString('en-US', options);
-// });
-
 const dates = revTrans.map(transaction => {
   const dateObj = new Date(transaction.date);
   dateObj.setDate(dateObj.getDate() + 1); // Adding one day to adjust
@@ -57,21 +38,18 @@ const amount = revTrans.map(transaction => {
   return transaction.amount;
 });
 
-//  const budget = survey.map(survey => {
-//   console.log(survey.maximumBudget);
-//   return parseInt(survey[0].maximumBudget);
-// });
-
-// function budget(survey) {
-//   return parseInt(survey.maximumBudget); // Return a default value if surveyData doesn't contain valid data
-// }
-
+//monthly Budget
+const [monthlyBudget, setMonthlyBudget] = useState('')
+useEffect(() => {getMonthlyBudget()},[currentUser])
+async function getMonthlyBudget() {
+    if(currentUser){
+        const data = await getBudget(currentUser.uid);
+        setMonthlyBudget(data);
+      }
+}
 // const budget = revTrans.map(survey => {
 const budget = revTrans.map(() => {
-  // Assuming survey contains data
-  console.log(numbSurvey);
-    // Retrieve the maximumBudget for each element in transactionList
-    return numbSurvey; 
+    return monthlyBudget;
 });
 
 
@@ -95,7 +73,15 @@ const keys = Object.keys(accumulatedWithPrevious);
 const lastKey = keys[keys.length-1];
 const lastValue = accumulatedWithPrevious[lastKey];
 
-
+//amount saved 
+const amountSaved = Object.entries(accumulatedWithPrevious).reduce(
+  (accumulator, [date, amount]) => {
+    const previousTotal = accumulator.length > 0 ? accumulator[accumulator.length - 1] : 0;
+    accumulator.push(previousTotal + amount);
+    return accumulator - monthlyBudget;
+  },
+  []
+);
 
     const YourComponent = () => {
         const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -221,7 +207,7 @@ const lastValue = accumulatedWithPrevious[lastKey];
               <div data-popper-arrow></div>
           </div>
         </h5>
-        <p className="text-gray-900 dark:text-white text-2xl leading-none font-bold">$400</p>
+        <p className="text-gray-900 dark:text-white text-2xl leading-none font-bold">${monthlyBudget}</p>
       </div>
       <div>
         <h5 className="inline-flex items-center text-gray-500 dark:text-gray-400 leading-none font-normal mb-2">Total Spent
