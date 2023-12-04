@@ -182,8 +182,15 @@ const PieChart = () => {
 
             <div className="py-6" id="pie-chart"></div>
 
-            <div className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
+            <div className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between mb-4">
             </div>
+            <button
+            onClick={() => navigate("/TransTable")}
+            className="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700 transition duration-300 ease-in-out"
+            style={{ backgroundColor: colors.green, color: colors.mint }}
+          >
+            View Full Report
+          </button>
         </div>
     )
 }

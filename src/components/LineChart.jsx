@@ -178,7 +178,7 @@ const LineChart = () => {
   return (
     <div className="max-w-max w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
       <div className="flex justify-between mb-1">
-        <div className="grid gap-4 grid-cols-2">
+        <div className="grid gap-4 grid-cols-2 mb-6">
           <div>
             <h5 className="inline-flex items-center text-gray-500 dark:text-gray-400 leading-none font-normal mb-2">Planned Budget
               <svg data-popover-target="clicks-info" data-popover-placement="bottom" className="w-3 h-3 text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -251,10 +251,10 @@ const LineChart = () => {
       <div id="line-chart"></div>
       <div className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between mt-2.5">
         <div className="pt-5">
-          <button
+        <button
             onClick={() => navigate("/TransTable")}
             className="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700 transition duration-300 ease-in-out"
-            style={{ backgroundColor: colors.green, color: colors.lightBlue }}
+            style={{ backgroundColor: colors.green, color: colors.mint }}
           >
             View Full Report
           </button>

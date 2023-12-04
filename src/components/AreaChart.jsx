@@ -3,17 +3,17 @@ import React from 'react';
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ApexCharts from "apexcharts";
-import {getTransactionFromDB,getBudget, getSavingGoal } from '../utils/firebase-config';
-import { useState,useEffect } from "react";
+import { getTransactionFromDB, getBudget, getSavingGoal } from '../utils/firebase-config';
+import { useState, useEffect } from "react";
 
-window.addEventListener("load", function () {});
+window.addEventListener("load", function () { });
 const AreaChart = () => {
   //useProtectedRoute();
-  const { currentUser} = useAuth();
+  const { currentUser } = useAuth();
 
-  useEffect(() => {fetchTransactions()},[currentUser])
+  useEffect(() => { fetchTransactions() }, [currentUser])
   async function fetchTransactions() {
-    if(currentUser){
+    if (currentUser) {
       const data = await getTransactionFromDB(currentUser.uid);
       setTransactionList(data);
     }
@@ -22,77 +22,77 @@ const AreaChart = () => {
   const navigate = useNavigate();
 
 
-//   //monthly Budget
-const [monthlyBudget, setMonthlyBudget] = useState('')
-useEffect(() => {getMonthlyBudget()},[currentUser])
-async function getMonthlyBudget() {
-    if(currentUser){
-        const data = await getBudget(currentUser.uid);
-        setMonthlyBudget(data);
-      }
- }
-const revTrans = transactionList.slice().reverse();
-  // Assuming transactionList contains objects with a 'date' property as strings in a certain format
-const dates = revTrans.map(transaction => {
-  // Convert the date string to a JavaScript Date object
- 
-  return new Date(transaction.date);
-});
-
-const amount = transactionList.map(transaction => {
-  // Convert the date string to a JavaScript Date object
- console.log(transaction)
-  return transaction.amount;
-});
-
-const accumulatedByDate = transactionList.reduce((accumulator, transaction) => {
-  const { date, amount } = transaction;
-  // If the date doesn't exist in accumulator, create it and initialize with 0
-  accumulator[date] = (accumulator[date] || 0) + amount;
-  return accumulator;
-}, {});
-
-// Calculate accumulated amounts considering previous dates
-const accumulatedWithPrevious = Object.entries(accumulatedByDate).reduce(
-  (accumulator, [date, amount]) => {
-    const previousTotal = accumulator.length > 0 ? accumulator[accumulator.length - 1] : 0;
-    accumulator.push(previousTotal + amount);
-    return accumulator;
-  },
-  []
-);
-const keys = Object.keys(accumulatedWithPrevious);
-const lastKey = keys[keys.length-1];
-const lastValue = accumulatedWithPrevious[lastKey];
-
-//amount saved = monthlyBudget-amountSpent
-const amountSaved = Object.entries(accumulatedWithPrevious).reduce(
-  (accumulator, [date, amount]) => {
-    accumulator.push(monthlyBudget-amount);
-    return accumulator ;
-  },
-  []
-);
-
-const savingsKeys = Object.keys(amountSaved);
-const lastSavingsKey = savingsKeys[savingsKeys.length-1];
-const lastSavingsValue = amountSaved[lastSavingsKey];
-
-//savings goal
-const [savingGoal, setSavingGoal] = useState('')
-useEffect(() => {getSaving()},[currentUser])
-
-async function getSaving(){
-    if(currentUser){
-        const data = await getSavingGoal(currentUser.uid);
-        setSavingGoal(data)
+  //   //monthly Budget
+  const [monthlyBudget, setMonthlyBudget] = useState('')
+  useEffect(() => { getMonthlyBudget() }, [currentUser])
+  async function getMonthlyBudget() {
+    if (currentUser) {
+      const data = await getBudget(currentUser.uid);
+      setMonthlyBudget(data);
     }
-}
-//calculate percentage towards savings goal vs current saved
-const percentageSaved = (((lastSavingsValue - savingGoal) / savingGoal)* 100).toFixed(2);
- //const percentageSaved= savingGoal;
+  }
+  const revTrans = transactionList.slice().reverse();
+  // Assuming transactionList contains objects with a 'date' property as strings in a certain format
+  const dates = revTrans.map(transaction => {
+    // Convert the date string to a JavaScript Date object
 
-console.log(amountSaved);
+    return new Date(transaction.date);
+  });
+
+  const amount = transactionList.map(transaction => {
+    // Convert the date string to a JavaScript Date object
+    console.log(transaction)
+    return transaction.amount;
+  });
+
+  const accumulatedByDate = transactionList.reduce((accumulator, transaction) => {
+    const { date, amount } = transaction;
+    // If the date doesn't exist in accumulator, create it and initialize with 0
+    accumulator[date] = (accumulator[date] || 0) + amount;
+    return accumulator;
+  }, {});
+
+  // Calculate accumulated amounts considering previous dates
+  const accumulatedWithPrevious = Object.entries(accumulatedByDate).reduce(
+    (accumulator, [date, amount]) => {
+      const previousTotal = accumulator.length > 0 ? accumulator[accumulator.length - 1] : 0;
+      accumulator.push(previousTotal + amount);
+      return accumulator;
+    },
+    []
+  );
+  const keys = Object.keys(accumulatedWithPrevious);
+  const lastKey = keys[keys.length - 1];
+  const lastValue = accumulatedWithPrevious[lastKey];
+
+  //amount saved = monthlyBudget-amountSpent
+  const amountSaved = Object.entries(accumulatedWithPrevious).reduce(
+    (accumulator, [date, amount]) => {
+      accumulator.push(monthlyBudget - amount);
+      return accumulator;
+    },
+    []
+  );
+
+  const savingsKeys = Object.keys(amountSaved);
+  const lastSavingsKey = savingsKeys[savingsKeys.length - 1];
+  const lastSavingsValue = amountSaved[lastSavingsKey];
+
+  //savings goal
+  const [savingGoal, setSavingGoal] = useState('')
+  useEffect(() => { getSaving() }, [currentUser])
+
+  async function getSaving() {
+    if (currentUser) {
+      const data = await getSavingGoal(currentUser.uid);
+      setSavingGoal(data)
+    }
+  }
+  //calculate percentage towards savings goal vs current saved
+  const percentageSaved = (((lastSavingsValue - savingGoal) / savingGoal) * 100).toFixed(2);
+  //const percentageSaved= savingGoal;
+
+  console.log(amountSaved);
 
   const options = {
     chart: {
@@ -146,9 +146,9 @@ console.log(amountSaved);
       },
     ],
     xaxis: {
-    // categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February'],
-     categories: dates,
-     labels: {
+      // categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February'],
+      categories: dates,
+      labels: {
         show: false,
       },
       axisBorder: {
@@ -177,33 +177,33 @@ console.log(amountSaved);
   return (
     <div className="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
       <div className="flex justify-between">
-      <div className="grid gap-4 grid-cols-2">
-        <div>
-        <p className="text-base font-normal text-gray-500 dark:text-gray-400">Current Savings</p>
-          <h5 className="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">${lastSavingsValue}</h5>
-          {/* <p className="text-base font-normal text-gray-500 dark:text-gray-400">Amount Saved</p> */}
+        <div className="grid gap-4 grid-cols-2">
+          <div>
+            <p className="text-base font-normal text-gray-500 dark:text-gray-400">Current Savings</p>
+            <h5 className="leading-none text-2xl font-bold text-gray-900 dark:text-white pb-2">${lastSavingsValue}</h5>
+            {/* <p className="text-base font-normal text-gray-500 dark:text-gray-400">Amount Saved</p> */}
+          </div>
+
+          <div className="ml-2">
+            <p className="text-base font-normal text-gray-500 dark:text-gray-400">Savings Goal</p>
+            <h5 className="leading-none text-2xl font-bold text-gray-900 dark:text-white pb-2">${savingGoal}</h5>
+            {/* <p className="text-base font-normal text-gray-500 dark:text-gray-400">Savings Goal</p> */}
+          </div>
+
+          <div
+            className="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
+            {percentageSaved}%
+            <svg className="w-3 h-3 ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
+              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
+            </svg>
+          </div>
+
         </div>
-        
-        <div>
-        <p className="text-base font-normal text-gray-500 dark:text-gray-400">Savings Goal</p>
-          <h5 className="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">${savingGoal}</h5>
-          {/* <p className="text-base font-normal text-gray-500 dark:text-gray-400">Savings Goal</p> */}
-        </div>
-        
-        <div
-          className="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-          {percentageSaved}%
-          <svg className="w-3 h-3 ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
-            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
-          </svg>
-        </div>
-      
-      </div>
       </div>
       <div id="area-chart"></div>
       <div className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
         <div className="flex justify-between items-center pt-5">
-
+          {/* if this last 7 days doesn't work, remove it Noel */}
           <button
             id="dropdownDefaultButton"
             data-dropdown-toggle="lastDaysdropdown"
@@ -238,7 +238,7 @@ console.log(amountSaved);
           <button
             onClick={() => navigate("/TransTable")}
             className="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700 transition duration-300 ease-in-out"
-            style={{ backgroundColor: colors.green, color: colors.lightBlue }}
+            style={{ backgroundColor: colors.green, color: colors.mint }}
           >
             View Full Report
           </button>
@@ -246,7 +246,7 @@ console.log(amountSaved);
       </div>
     </div>
   )
-//})}
+  //})}
 }
 
 
