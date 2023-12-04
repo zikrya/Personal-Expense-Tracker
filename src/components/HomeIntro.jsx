@@ -46,8 +46,8 @@ const HomeIntro = () => {
                     <button
                         onClick={handleLogout}
                         data-testid="home-logout"
-                        className="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700 transition duration-300 ease-in-out"
-                        style={{ backgroundColor: colors.green, color: colors.lightBlue }}
+                        className="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-darkgreen bg-green transition duration-300 ease-in-out"
+                       
                     >
                         Sign Out
                     </button>
@@ -55,8 +55,7 @@ const HomeIntro = () => {
                     <button
                         onClick={() => navigate("/register")}
                         data-testid="home-join"
-                        className="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700 transition duration-300 ease-in-out"
-                        style={{ backgroundColor: colors.green, color: colors.lightBlue }}
+                        className="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-darkgreen bg-green transition duration-300 ease-in-out"
                     >
                         Join Now
                     </button>

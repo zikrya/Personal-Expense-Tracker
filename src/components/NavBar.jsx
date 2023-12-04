@@ -85,9 +85,9 @@ function MobileNavigation() {
               as="div"
               className="absolute inset-x-0 top-full mt-4 flex origin-top flex-col rounded-2xl bg-white p-4 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5"
             >
-              <MobileNavLink to="/register" testid="signup-m" >Sign up</MobileNavLink>
+              <MobileNavLink to="/register" testid="signup-m" >Sign Up</MobileNavLink>
               <hr className="m-2 border-slate-300/40" />
-              <MobileNavLink to="/login" testid="signin-m">Sign in</MobileNavLink>
+              <MobileNavLink to="/login" testid="signin-m">Sign In</MobileNavLink>
             </Popover.Panel>)
               :
             (<Popover.Panel
@@ -134,15 +134,15 @@ const NavBar = () => {
           <div className="flex items-center gap-x-5 md:gap-x-8">
               {!currentUser ? (
               <div className="hidden md:flex md:gap-x-6">
-                <NavLink to="/login" data-testid="signin">Sign in</NavLink>
-                <NavLink to="/register" data-testid="signup">Sign up</NavLink>
+                <NavLink to="/login" data-testid="signin">Sign In</NavLink>
+                <NavLink to="/register" data-testid="signup">Sign Up</NavLink>
               </div>) :
               (
               <div className="hidden md:flex md:gap-x-6">
                 <NavLink to="/transtable" data-testid="dashboard">Dashboard</NavLink>
                 <NavLink to="/data"data-testid="data">Data</NavLink>
                 <NavLink to="/profile" data-testid="profile">Profile</NavLink>
-                <button onClick={handleLogout} data-testid="logout">Log out</button>
+                <button onClick={handleLogout} data-testid="logout">Log Out</button>
               </div>
               )}
               <div className="-mr-1 md:hidden" data-testid="mobilNavigation">

@@ -2,6 +2,9 @@ import { Fragment, useState,useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { addTransactionToDb } from '../utils/firebase-config';
 import { useAuth } from "../context/AuthContext";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import PdfReport from "../components/PdfReport";
 
 
 export default function AddTransactionForm({fetchTransactions}) {
@@ -12,11 +15,11 @@ export default function AddTransactionForm({fetchTransactions}) {
 
     const [newDescription,setNewDescription] = useState('')
     const [newAmount, setAmount] = useState("")
-    const [transactionDate, setTransactionDate] = useState("") 
+    const [transactionDate, setTransactionDate] = useState("")
 
 
     useEffect(() => {
-      let today = new Date().toLocaleString().split(',')[0]; 
+      let today = new Date().toLocaleString().split(',')[0];
       let [month,day,year] = today.split('/')
       day = day.toString().padStart(2, '0')
       month = month.toString().padStart(2, '0')
@@ -27,7 +30,7 @@ export default function AddTransactionForm({fetchTransactions}) {
 
 
     const addTransactions = (newDescription,newAmount,transactionDate) => {
-        let today = new Date().toLocaleString().split(',')[0]; 
+        let today = new Date().toLocaleString().split(',')[0];
         // format the time that can be sorted in firebase
         let [month,day,year] = today.split('/')
         day = day.toString().padStart(2, '0')
@@ -36,27 +39,30 @@ export default function AddTransactionForm({fetchTransactions}) {
 
         if(transactionDate === today ){
           const newTransaction = {
-            date : `${today}T${currentTime}`, 
+            date : `${today}T${currentTime}`,
             description : newDescription,
-            amount: newAmount, 
+            amount: newAmount,
             userID: currentUser?.uid
           }
-          addTransactionToDb(newTransaction) 
+          addTransactionToDb(newTransaction)
         }
         else if (today < transactionDate){
-          alert("The transaction date you entered is in the future. Please update the date to be today's date or before today")
-        }
+          toast.error("The transaction date you entered is in the future. Please update the date to be today's date or before today.",{
+            position: toast.POSITION.BOTTOM_RIGHT,
+        })        }
         else if((parseFloat(today.split('-')[0]) - parseFloat(transactionDate.split('-')[0])) >= 2){
-          alert(`The transaction date you entered is too old. Please update the date to be today's date or within ${parseFloat(today.split('-')[0])}- ${parseFloat(today.split('-')[0]) - 1}`)
+          toast.error(`The transaction date you entered is too old. Please update the date to be today's date or within ${parseFloat(today.split('-')[0])}- ${parseFloat(today.split('-')[0]) - 1}.`,{
+            position: toast.POSITION.BOTTOM_RIGHT,
+        })
         }
         else{
           const newTransaction = {
-            date : `${transactionDate}T${currentTime}`, 
+            date : `${transactionDate}T${currentTime}`,
             description : newDescription,
-            amount: newAmount, 
+            amount: newAmount,
             userID: currentUser?.uid
           }
-          addTransactionToDb(newTransaction) 
+          addTransactionToDb(newTransaction)
         }
 
         fetchTransactions()
@@ -71,17 +77,23 @@ export default function AddTransactionForm({fetchTransactions}) {
         const absAmount = Math.abs(parseFloat(newAmount).toFixed(2))
         addTransactions(newDescription,absAmount,transactionDate)
       }else if(newDescription.length > 50){
-        alert("Failed to add a new transaction, the description you entered is too long")
+        toast.error("Failed to add a new transaction, the description you entered is too long.", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+      })
         setNewDescription("")
         setAmount("")
       }else if(newDescription.length <= 0){
-        alert("Failed to add a new transaction, the description you entered is empty")
+        toast.error("Failed to add a new transaction, the description you entered is empty.", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+      })
         setNewDescription("")
         setAmount("")
       }
-      else 
+      else
       {
-        alert("Failed to add the new transaction, the amount you entered was incorrectly entered. E.g 123.45")
+        toast.error("Failed to add the new transaction, the amount you entered was incorrectly entered. E.g 123.45.", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+      })
         setNewDescription("")
         setAmount("")
       }
@@ -97,9 +109,11 @@ export default function AddTransactionForm({fetchTransactions}) {
 
     return (
       <>
+
       <button data-testid="add-trans-button" className="w-100 h-20 bg-green hover:bg-darkgreen text-white font-bold py-2 px-4 rounded" onClick={()=> setOpen(!open)}>
       New Transaction
       </button>
+
 
       <Transition.Root show={open} as={Fragment} >
         <Dialog as="div" className="relative z-10"  onClose={setOpen}>
@@ -114,8 +128,8 @@ export default function AddTransactionForm({fetchTransactions}) {
           >
             <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
           </Transition.Child>
-  
-          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+
+          <div className="fixed inset-0 z-10 w-screen overflow-y-auto dialog-container">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
               <Transition.Child
                 as={Fragment}
@@ -195,6 +209,7 @@ export default function AddTransactionForm({fetchTransactions}) {
           </div>
         </Dialog>
       </Transition.Root>
+      {currentUser && <PdfReport currentUser={currentUser} />}
       </>
     )
 }

@@ -10,6 +10,8 @@ import NavBar from './components/NavBar';
 import Profile from './pages/Profile';
 import ForgetPassword from './pages/ForgetPassword';
 import RegisterSurvery from './pages/RegisterSurvey';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import DataVis from './pages/DataVisualization';
 
 function App() {
@@ -31,6 +33,7 @@ function App() {
           {/* the above line is redundant but we may utilize later for component-based building. Do not delete files associated. */}
           <Route exact path="/register-survey" element={<RegisterSurvery/>} />
           </Routes>
+          <ToastContainer autoClose={4000} />
     </Router>
     </div>
     </AuthContextProvider>
