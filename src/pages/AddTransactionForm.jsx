@@ -4,6 +4,7 @@ import { addTransactionToDb } from '../utils/firebase-config';
 import { useAuth } from "../context/AuthContext";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PdfReport from "../components/PdfReport";
 
 
 export default function AddTransactionForm({fetchTransactions}) {
@@ -14,11 +15,11 @@ export default function AddTransactionForm({fetchTransactions}) {
 
     const [newDescription,setNewDescription] = useState('')
     const [newAmount, setAmount] = useState("")
-    const [transactionDate, setTransactionDate] = useState("") 
+    const [transactionDate, setTransactionDate] = useState("")
 
 
     useEffect(() => {
-      let today = new Date().toLocaleString().split(',')[0]; 
+      let today = new Date().toLocaleString().split(',')[0];
       let [month,day,year] = today.split('/')
       day = day.toString().padStart(2, '0')
       month = month.toString().padStart(2, '0')
@@ -29,7 +30,7 @@ export default function AddTransactionForm({fetchTransactions}) {
 
 
     const addTransactions = (newDescription,newAmount,transactionDate) => {
-        let today = new Date().toLocaleString().split(',')[0]; 
+        let today = new Date().toLocaleString().split(',')[0];
         // format the time that can be sorted in firebase
         let [month,day,year] = today.split('/')
         day = day.toString().padStart(2, '0')
@@ -38,12 +39,12 @@ export default function AddTransactionForm({fetchTransactions}) {
 
         if(transactionDate === today ){
           const newTransaction = {
-            date : `${today}T${currentTime}`, 
+            date : `${today}T${currentTime}`,
             description : newDescription,
-            amount: newAmount, 
+            amount: newAmount,
             userID: currentUser?.uid
           }
-          addTransactionToDb(newTransaction) 
+          addTransactionToDb(newTransaction)
         }
         else if (today < transactionDate){
           toast.error("The transaction date you entered is in the future. Please update the date to be today's date or before today.",{
@@ -56,12 +57,12 @@ export default function AddTransactionForm({fetchTransactions}) {
         }
         else{
           const newTransaction = {
-            date : `${transactionDate}T${currentTime}`, 
+            date : `${transactionDate}T${currentTime}`,
             description : newDescription,
-            amount: newAmount, 
+            amount: newAmount,
             userID: currentUser?.uid
           }
-          addTransactionToDb(newTransaction) 
+          addTransactionToDb(newTransaction)
         }
 
         fetchTransactions()
@@ -88,7 +89,7 @@ export default function AddTransactionForm({fetchTransactions}) {
         setNewDescription("")
         setAmount("")
       }
-      else 
+      else
       {
         toast.error("Failed to add the new transaction, the amount you entered was incorrectly entered. E.g 123.45.", {
           position: toast.POSITION.BOTTOM_RIGHT,
@@ -108,9 +109,11 @@ export default function AddTransactionForm({fetchTransactions}) {
 
     return (
       <>
+
       <button data-testid="add-trans-button" className="w-100 h-20 bg-green hover:bg-darkgreen text-white font-bold py-2 px-4 rounded" onClick={()=> setOpen(!open)}>
       New Transaction
       </button>
+
 
       <Transition.Root show={open} as={Fragment} >
         <Dialog as="div" className="relative z-10"  onClose={setOpen}>
@@ -125,7 +128,7 @@ export default function AddTransactionForm({fetchTransactions}) {
           >
             <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
           </Transition.Child>
-  
+
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto dialog-container">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
               <Transition.Child
@@ -206,6 +209,7 @@ export default function AddTransactionForm({fetchTransactions}) {
           </div>
         </Dialog>
       </Transition.Root>
+      {currentUser && <PdfReport currentUser={currentUser} />}
       </>
     )
 }
