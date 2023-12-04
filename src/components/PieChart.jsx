@@ -183,16 +183,6 @@ const PieChart = () => {
             <div className="py-6" id="pie-chart"></div>
 
             <div className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
-                <div className="flex justify-between items-center pt-5">
-                    <a
-                        href="#"
-                        className="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-#182825 hover:text-slate-900 dark:hover:text-slate-900  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 px-3 py-2">
-                        Download Report
-                        <svg className="w-2.5 h-2.5 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
-                        </svg>
-                    </a>
-                </div>
             </div>
         </div>
     )
