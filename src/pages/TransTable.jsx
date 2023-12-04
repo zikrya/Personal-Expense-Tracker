@@ -276,7 +276,7 @@ const TransTable = () => {
                             </tbody>
                         </table>
                     </div>
-                    <div className="button-container">
+                    <div className="button-container dialog-container">
                         <AddTransactionForm
                             fetchTransactions={fetchTransactions}
                         />

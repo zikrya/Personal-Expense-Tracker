@@ -37,5 +37,16 @@ body {
     }
 }
 
+@media (max-width: 768px) {
+    .dialog-container {
+      position: fixed; /* Stick to the bottom */
+      bottom: 0; /* Align to bottom */
+      left: 0; /* Align to left */
+      width: 100%; /* Full width */
+      border-top: 1px solid #ccc; /* Optional: adds a border top */
+      box-shadow: 0 -2px 4px rgba(0,0,0,0.1); /* Optional: adds a subtle shadow */
+      z-index: 1000; /* Ensure it stays on top */
+    }
+}
 
 
