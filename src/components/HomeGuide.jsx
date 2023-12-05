@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { Tab } from '@headlessui/react'
 import addImage from "../images/addImage.png"
+import background from "../images/background.png"
 const features = [
     {
       title: 'Tracking Expenses',
@@ -35,14 +36,14 @@ const HomeGuide = () => {
     let [tabOrientation, setTabOrientation] = useState('horizontal')
     useEffect(() => {
         let lgMediaQuery = window.matchMedia('(min-width: 1024px)')
-    
+
         function onMediaQueryChange({ matches }) {
           setTabOrientation(matches ? 'vertical' : 'horizontal')
         }
-    
+
         onMediaQueryChange(lgMediaQuery)
         lgMediaQuery.addEventListener('change', onMediaQueryChange)
-    
+
         return () => {
           lgMediaQuery.removeEventListener('change', onMediaQueryChange)
         }
@@ -73,14 +74,14 @@ const HomeGuide = () => {
                     <div
                       key={feature.title}
                       className={
-                        'group relative rounded-full px-4 py-1 lg:rounded-l-xl lg:rounded-r-none lg:p-6 ' + 
+                        'group relative rounded-full px-4 py-1 lg:rounded-l-xl lg:rounded-r-none lg:p-6 ' +
                         (selectedIndex === featureIndex
                           ? 'bg-white lg:bg-white/10 lg:ring-1 lg:ring-inset lg:ring-white/10'
                           : 'hover:bg-white/10 lg:hover:bg-white/5')}>
                       <h3>
                         <Tab
                           className={
-                            'font-display text-lg ui-not-focus-visible:outline-none ' + 
+                            'font-display text-lg ui-not-focus-visible:outline-none ' +
                             (selectedIndex === featureIndex
                               ? 'text-blue-600 lg:text-white'
                               : 'text-blue-100 hover:text-white lg:text-white')}
@@ -91,7 +92,7 @@ const HomeGuide = () => {
                       </h3>
                       <p
                         className={
-                          'mt-2 hidden text-sm lg:block ' + 
+                          'mt-2 hidden text-sm lg:block ' +
                           (selectedIndex === featureIndex
                             ? 'text-white'
                             : 'text-blue-100 group-hover:text-white')}
@@ -114,7 +115,7 @@ const HomeGuide = () => {
                     <div className="mt-10 w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:w-[67.8125rem]">
                       <img
                         className="w-full"
-                        src={feature.image}
+                        src={background}
                         alt=""
                         sizes="(min-width: 1024px) 67.8125rem, (min-width: 640px) 100vw, 45rem"
                       />
