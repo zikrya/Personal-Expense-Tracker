@@ -66,10 +66,13 @@ describe("navbar component", () => {
             currentUser = { uid: "asdasdas"};
             render(<MockLoginScreen/>);
             const dashboard = screen.getByTestId("dashboard");
+            const data = screen.getByTestId("data");
             const profile = screen.getByTestId("profile");
             const logout = screen.getByTestId("logout");
             fireEvent.click(dashboard);
             expect(window.location.href).toBe("http://localhost/transtable");
+            fireEvent.click(data);
+            expect(window.location.href).toBe("http://localhost/data");
             fireEvent.click(profile);
             expect(window.location.href).toBe("http://localhost/profile");
 
