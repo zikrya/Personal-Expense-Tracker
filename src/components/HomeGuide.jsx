@@ -5,30 +5,33 @@ import { useEffect } from "react";
 import { Tab } from '@headlessui/react'
 import addImage from "../images/addImage.png"
 import background from "../images/background.png"
+import headshot from "../images/headshot.png"
+import alert from "../images/alert.png"
+import save from "../images/save.png"
 const features = [
     {
       title: 'Tracking Expenses',
       description:
         "Users can input and categorize their daily expenses manually.",
-      image: addImage,
+      image: headshot,
     },
     {
       title: 'Saving Goals',
       description:
         "The application will enable users to set saving goals and track their progress towards achieving them.",
-      image: addImage,
+      image: save,
     },
     {
       title: 'Reminder',
       description:
         "Users can set up an alert when they are about to exceed their budget.",
-      image: addImage,
+      image: alert,
     },
     {
       title: 'Monthly Reports and Insights',
       description:
         'The application will generate a report and visual graphs for users with a clear view of their spending.',
-      image: addImage,
+      image: background,
     },
   ]
 
@@ -115,7 +118,7 @@ const HomeGuide = () => {
                     <div className="mt-10 w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:w-[67.8125rem]">
                       <img
                         className="w-full"
-                        src={background}
+                        src={feature.image}
                         alt=""
                         sizes="(min-width: 1024px) 67.8125rem, (min-width: 640px) 100vw, 45rem"
                       />
