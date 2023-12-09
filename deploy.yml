@@ -1,0 +1,56 @@
+# This workflow will deploy the application to the running environment after a successful merge to main
+
+name: deploy
+
+on:
+    workflow_run:
+        workflows: [test] # Triggered by the test workflow
+        types: [completed] # The test workflow must complete
+        branches: [main] # Only when main is updated
+
+jobs:
+    on-success:
+        runs-on: ubuntu-latest
+        if: ${{ github.event.workflow_run.conclusion == 'success' }} # Only when test completed successfully 
+        steps:
+            - uses: actions/checkout@v2
+            - name: Install dependencies
+              run: |
+                python -m pip install --upgrade pip
+                pip install wheel
+                pip install -r requirements-dev.txt
+                pip install -e .
+      
+            - name: Prepare FlaskBB
+              run: |
+                flaskbb translations compile
+
+            - name: Build binary distribution and upload to artifactory
+              run: zip -r "wisewallet_deploy-$1.zip" ./wisewallet ./.ebextensions wsgi.py setup.py setup.cfg requirements.txt wisewallet.cfg celery_worker.py
+
+            - name: Upload application artifact
+              uses: actions/upload-artifact@v3
+              with:
+                name: wisewallet_application_artifact
+                path: wisewallet_deploy-$1.zip
+
+            - name: Congifure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v2
+              with:
+                aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
+                aws-region: "us-east-1" 
+
+            - name: Upload application file to AWS
+              run: aws s3 cp "wisewallet_deploy-$1.zip" s3://wisewalletapp
+
+            - name: Create new application version
+              run: |  
+                aws elasticbeanstalk create-application-version \
+                --application-name wisewallet \
+                --source-bundle S3Bucket="terraform-start-wisewallet-noelsmathew",S3Key="wisewallet_deploy--$1.zip " \
+                --version-label "ver-$1" \
+                --description "file permissions"
+
+            - name: Deploy application
+              run: aws elasticbeanstalk update-environment --environment-name wisewallet-environment --version-label "ver-$1" --region "us-east-2"
