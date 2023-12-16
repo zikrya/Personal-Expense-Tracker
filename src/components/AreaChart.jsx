@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import ApexCharts from "apexcharts";
 import { getTransactionFromDB, getBudget, getSavingGoal } from '../utils/firebase-config';
 import { useState, useEffect } from "react";
-
+// The frontend was taken from the template code and text was adjusted to match our application, and I confirmed with the professor
+// to ensure the use of template code was okay: https://flowbite.com/docs/plugins/charts/
 window.addEventListener("load", function () { });
 const AreaChart = () => {
   //useProtectedRoute();
@@ -177,6 +178,8 @@ const AreaChart = () => {
     lightBlue: "#D6EBFF"
   };
   return (
+    // The frontend was taken from the template code and text was adjusted to match our application, and I confirmed with the professor
+    // to ensure the use of template code was okay: https://flowbite.com/docs/plugins/charts/
     <div className="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
       <div className="flex justify-between">
         <div className="grid gap-4 grid-cols-2">
@@ -235,18 +238,6 @@ const AreaChart = () => {
       <div id="area-chart"></div>
       <div className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
         <div className="flex justify-between items-center pt-5">
-          {/* if this last 7 days doesn't work, remove it Noel */}
-          {/* <button
-            id="dropdownDefaultButton"
-            data-dropdown-toggle="lastDaysdropdown"
-            data-dropdown-placement="bottom"
-            className="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 text-center inline-flex items-center dark:hover:text-white"
-            type="button">
-            Last 7 days
-            <svg className="w-2.5 m-2.5 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
-            </svg>
-          </button> */}
           <div id="lastDaysdropdown" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
             <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
               <li>

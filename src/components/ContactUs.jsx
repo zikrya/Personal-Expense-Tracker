@@ -3,7 +3,7 @@ import emailjs from '@emailjs/browser';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// contact us form taken from EmailJS website
+// contact us form backend taken from the EmailJS website as per their instructions/code provided by them
 const Contact = () => {
 
   const form = useRef(); // keeping mutable value
@@ -23,7 +23,7 @@ const Contact = () => {
         });
       });
   };
-
+// contact form front-end based on the profile page (template from tailwind UI code: https://tailwindui.com/components/application-ui/forms/form-layouts)
   return (
     <form id="contact" className="mx-36 pb-10" ref={form} onSubmit={sendEmail}>
       <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-9">

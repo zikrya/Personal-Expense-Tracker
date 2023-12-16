@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import ApexCharts from "apexcharts";
 import {getTransactionFromDB } from '../utils/firebase-config';
 import { useState,useEffect } from "react";
-
+// The frontend was taken from the template code and text was adjusted to match our application, and I confirmed with the professor
+// to ensure the use of template code was okay: https://flowbite.com/docs/plugins/charts/
 window.addEventListener("load", function() {});
 
 const PieChart = () => {

@@ -11,6 +11,7 @@ import UpdateSavingGoal from "./UpdateSavingGoal";
 import Contact from "../components/ContactUs";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// Card Code Template Source: Flowbite https://flowbite.com/docs/components/card/
 
 const TransTable = () => {
     useProtectedRoute();
@@ -163,7 +164,7 @@ const TransTable = () => {
     }, [savingGoal, moneySave])
 
 
-
+// Card Code Template Source: Flowbite https://flowbite.com/docs/components/card/
     return (
         <>
             {/* Web Responsiveness - Samira */}
@@ -219,7 +220,7 @@ const TransTable = () => {
 
                     <span onClick={() => setShowUpdateGoal(!showUpdateGoal)} className="h-36 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                         <h5 className="mb-2 text-2xl font-bold tracking-tight text-darkblue dark:text-white">Goal ${savingGoal} <PencilSquareIcon className="w-5 h-5 inline-block" /></h5>
-                        {/* Flowbite Progress Bar */}
+                        {/* Flowbite Progress Bar from https://flowbite.com/docs/components/progress/ */}
                         <div className="flex justify-between mb-1">
                             <span className="text-base font-normal text-gray-700 dark:text-gray-400">Actual Saving: ${parseFloat(moneySave) > 0 ? moneySave : 0}</span>
                             <span className="text-sm font-medium text-darkblue dark:text-white">{`${savingsPercentage}%`}</span>
