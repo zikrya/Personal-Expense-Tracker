@@ -11,6 +11,7 @@ import UpdateSavingGoal from "./UpdateSavingGoal";
 import Contact from "../components/ContactUs";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// Card Code Template Source: Flowbite https://flowbite.com/docs/components/card/
 
 const TransTable = () => {
     useProtectedRoute();
@@ -163,7 +164,7 @@ const TransTable = () => {
     }, [savingGoal, moneySave])
 
 
-
+// Card Code Template Source: Flowbite https://flowbite.com/docs/components/card/
     return (
         <>
             {/* Web Responsiveness - Samira */}

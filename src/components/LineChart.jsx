@@ -6,6 +6,8 @@ import ApexCharts from "apexcharts";
 import { getTransactionFromDB, getBudget } from '../utils/firebase-config';
 import { useState, useEffect } from "react";
 //planned budget vs total spending accumulated by each date 
+// The frontend was taken from the template code and text was adjusted to match our application, and I confirmed with the professor
+// to ensure the use of template code was okay: https://flowbite.com/docs/plugins/charts/
  window.addEventListener("load", function () { });
 const LineChart = () => {
   //useProtectedRoute();
@@ -177,6 +179,8 @@ const LineChart = () => {
     lightBlue: "#D6EBFF"
   };
   return (
+    // The frontend was taken from the template code and text was adjusted to match our application, and I confirmed with the professor
+    // to ensure the use of template code was okay: https://flowbite.com/docs/plugins/charts/
     <div className="max-w-max w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
       <div className="flex justify-between mb-1">
         <div className="grid gap-4 grid-cols-2 mb-6">

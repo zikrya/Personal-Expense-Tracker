@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import Contact from '../components/ContactUs';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// profile page frontend is from the template from tailwind UI code: https://tailwindui.com/components/application-ui/forms/form-layouts)
 
 const Profile = () => {
     const [userData, setUserData] = useState({
