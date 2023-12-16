@@ -1,4 +1,4 @@
-// Layout design: Siema Alam, Code Template Source: Flowbite https://flowbite.com/docs/components/card/
+// Code Template Source: Flowbite https://flowbite.com/docs/components/card/
 // Current: Displays four cards
 // For reference
 const DashboardCards = () => {
