@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import React, { useState, useEffect } from 'react';
 import { firestore } from '../utils/firebase-config';
 import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';

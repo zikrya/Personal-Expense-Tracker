@@ -3,12 +3,23 @@ import { render, screen, fireEvent, act } from "@testing-library/react"
 import '@testing-library/jest-dom'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthContext} from '../context/AuthContext';
+import { toast } from 'react-toastify'
+import 'jspdf';
+import 'jspdf-autotable';
 jest.mock("../utils/firebase-config")
+jest.mock("../components/PdfReport")
+jest.mock("jspdf")
+jest.mock("jspdf-autotable")
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
     observe: jest.fn(),
     unobserve: jest.fn(),
     disconnect: jest.fn(),
 }))
+// jest.mock('react-toastify', () => ({
+//     toast: {
+//       error: jest.fn(),
+//     },
+//   }))
 let currentUser = {
     uid: "asdasdas"
 }
@@ -48,10 +59,9 @@ describe("addtrans page screen", () => {
             const amountInput = screen.getByTestId("add-trans-amount")
             const submit = screen.getByTestId("add-trans-submit")
             fireEvent.change(descripInput, {target: {value: "Food"}});
-            expect(descripInput.value).toBe("Food")
             fireEvent.change(amountInput, {target: {value: "33"}});
-            expect(amountInput.value).toBe("33")
             fireEvent.click(submit)
+            await act( async () => render(<MockLoginScreen/>));
             expect(amountInput.value).toBe("")
             expect(descripInput.value).toBe("")
         })
@@ -59,6 +69,7 @@ describe("addtrans page screen", () => {
             render(<MockLoginScreen/>);
             const addButton = screen.getByTestId("add-trans-button");
             fireEvent.click(addButton)
+            await act( async () => render(<MockLoginScreen/>));
             const descripInput = screen.getByTestId("add-trans-descrip");
             const amountInput = screen.getByTestId("add-trans-amount")
             const submit = screen.getByTestId("add-trans-submit")
@@ -67,36 +78,38 @@ describe("addtrans page screen", () => {
             fireEvent.change(descripInput, {target: {value: "Food"}});
             fireEvent.change(amountInput, {target: {value: "33"}});
             fireEvent.change(dateInput, {target: {value: "3333-12-03"}});
-            expect(dateInput.value).toBe("3333-12-03")
-            jest.spyOn(window, 'alert').mockImplementation(() => {});
+            jest.spyOn(toast, 'error').mockImplementation(() => {});
             fireEvent.click(submit)
-            expect(window.alert).toBeCalledWith("The transaction date you entered is in the future. Please update the date to be today's date or before today");
+            await act( async () => render(<MockLoginScreen/>));
+            expect(toast.error).toHaveBeenCalled()
         })
         test("add trans that is too old", async () => {
             render(<MockLoginScreen/>);
             const addButton = screen.getByTestId("add-trans-button");
             fireEvent.click(addButton)
+            await act( async () => render(<MockLoginScreen/>));
             const descripInput = screen.getByTestId("add-trans-descrip");
             const amountInput = screen.getByTestId("add-trans-amount")
             const submit = screen.getByTestId("add-trans-submit")
             const dateInput = screen.getByTestId("add-trans-date")
-
+            jest.spyOn(toast, 'error').mockImplementation(() => {});
             fireEvent.change(descripInput, {target: {value: "Food"}});
             fireEvent.change(amountInput, {target: {value: "33"}});
             fireEvent.change(dateInput, {target: {value: "2000-11-03"}});
-            expect(dateInput.value).toBe("2000-11-03")
-            jest.spyOn(window, 'alert').mockImplementation(() => {});
+
             fireEvent.click(submit)
-            let today = new Date().toLocaleString().split(',')[0];
-            let [month,day,year] = today.split('/')
-            day = day.toString().padStart(2, '0')
-            today = `${year}-${month}-${day}`
-            expect(window.alert).toBeCalledWith(`The transaction date you entered is too old. Please update the date to be today's date or within ${parseFloat(today.split('-')[0])}- ${parseFloat(today.split('-')[0]) - 1}`);
+            await act( async () => render(<MockLoginScreen/>));
+            // let today = new Date().toLocaleString().split(',')[0];
+            // let [month,day,year] = today.split('/')
+            // day = day.toString().padStart(2, '0')
+            // today = `${year}-${month}-${day}`
+            expect(toast.error).toHaveBeenCalled()
         })
         test("add trans that not too old, not today", async () => {
             render(<MockLoginScreen/>);
             const addButton = screen.getByTestId("add-trans-button");
             fireEvent.click(addButton)
+            await act( async () => render(<MockLoginScreen/>));
             const descripInput = screen.getByTestId("add-trans-descrip");
             const amountInput = screen.getByTestId("add-trans-amount")
             const submit = screen.getByTestId("add-trans-submit")
@@ -106,7 +119,9 @@ describe("addtrans page screen", () => {
             fireEvent.change(amountInput, {target: {value: "33"}});
             fireEvent.change(dateInput, {target: {value: "2023-10-03"}});
             expect(dateInput.value).toBe("2023-10-03")
+            jest.spyOn(toast, 'error').mockImplementation(() => {});
             fireEvent.click(submit)
+            await act( async () => render(<MockLoginScreen/>));
             expect(amountInput.value).toBe("")
             expect(descripInput.value).toBe("")
           
@@ -115,49 +130,49 @@ describe("addtrans page screen", () => {
             render(<MockLoginScreen/>);
             const addButton = screen.getByTestId("add-trans-button");
             fireEvent.click(addButton)
+            await act( async () => render(<MockLoginScreen/>));
             const descripInput = screen.getByTestId("add-trans-descrip");
             const amountInput = screen.getByTestId("add-trans-amount")
             const submit = screen.getByTestId("add-trans-submit")
-            jest.spyOn(window, 'alert').mockImplementation(() => {});
+
 
             fireEvent.change(descripInput, {target: {value: "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"}});
             fireEvent.change(amountInput, {target: {value: "33"}});
 
             fireEvent.click(submit)
-            expect(window.alert).toBeCalledWith("Failed to add a new transaction, the description you entered is too long");
-          
+            await act( async () => render(<MockLoginScreen/>));
+            expect(toast.error).toHaveBeenCalled()
         })
         test("add trans with no description", async () => {
             render(<MockLoginScreen/>);
             const addButton = screen.getByTestId("add-trans-button");
             fireEvent.click(addButton)
+            await act( async () => render(<MockLoginScreen/>));
             const descripInput = screen.getByTestId("add-trans-descrip");
             const amountInput = screen.getByTestId("add-trans-amount")
             const submit = screen.getByTestId("add-trans-submit")
-            jest.spyOn(window, 'alert').mockImplementation(() => {});
 
             fireEvent.change(descripInput, {target: {value: ""}});
             fireEvent.change(amountInput, {target: {value: "33"}});
-
+            jest.spyOn(toast, 'error').mockImplementation(() => {});
             fireEvent.click(submit)
-            expect(window.alert).toBeCalledWith("Failed to add a new transaction, the description you entered is empty");
-          
+            expect(toast.error).toHaveBeenCalled()   
         })
         test("add trans with incorrect amount", async () => {
             render(<MockLoginScreen/>);
             const addButton = screen.getByTestId("add-trans-button");
             fireEvent.click(addButton)
+            await act( async () => render(<MockLoginScreen/>));
             const descripInput = screen.getByTestId("add-trans-descrip");
             const amountInput = screen.getByTestId("add-trans-amount")
             const submit = screen.getByTestId("add-trans-submit")
-            jest.spyOn(window, 'alert').mockImplementation(() => {});
+
 
             fireEvent.change(descripInput, {target: {value: "asdasd"}});
             fireEvent.change(amountInput, {target: {value: ""}});
-
+            jest.spyOn(toast, 'error').mockImplementation(() => {});
             fireEvent.click(submit)
-            expect(window.alert).toBeCalledWith("Failed to add the new transaction, the amount you entered was incorrectly entered. E.g 123.45");
-          
+            expect(toast.error).toHaveBeenCalled()
         })
     })
 

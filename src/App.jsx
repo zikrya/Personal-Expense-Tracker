@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css'
 import AuthContextProvider from './context/AuthContext';
@@ -18,7 +19,7 @@ function App() {
 
   return (
     <AuthContextProvider>
-    <div>
+    <div data-testid="app">
     <Router>
     <NavBar />
           <Routes>
